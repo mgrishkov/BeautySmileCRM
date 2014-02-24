@@ -44,8 +44,9 @@
                 </Style>
             </dxlc:TileLayoutControl.GroupHeaderStyle>
             
-            <dxlc:Tile Content="1" Header="Клиенты" 
-                       dxlc:TileLayoutControl.GroupHeader="">
+            <dxlc:Tile Header="Клиенты" 
+                       dxlc:TileLayoutControl.GroupHeader=""
+                       dxwuin:Navigation.NavigateTo="ClientView">
                 <dxlc:Tile.ContentTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10,0,10,10">
@@ -54,14 +55,16 @@
                                 <TextBlock Text="Станислав" FontSize="20" Foreground="#FFFFFFFF" />
                                 <TextBlock Text="Эдуардович" FontSize="20" Foreground="#FFFFFFFF" Margin="5,0,0,0" />
                             </StackPanel>
-                            <TextBlock HorizontalAlignment="Right" Margin="0,35,0,0" 
+                            <TextBlock Text="Задолженность 2000 руб" FontSize="20" Foreground="#FFFFFFFF" Margin="5,0,0,0" />
+                            <TextBlock HorizontalAlignment="Right" Margin="0,25,0,0" 
                                        Foreground="#FFFFFFFF" FontSize="18"
                                        Text="8 (921) 999-99-99" />
                         </StackPanel>
                     </DataTemplate>
                 </dxlc:Tile.ContentTemplate>
             </dxlc:Tile>
-            <dxlc:Tile Content="2" Header="История посещения" Size="Large" >
+            <dxlc:Tile Header="История посещения" Size="Large"
+                       dxwuin:Navigation.NavigateTo="VisitHistoryView">
                 <dxlc:Tile.ContentTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10,0,10,10">
@@ -104,12 +107,20 @@
                 </dxlc:Tile.ContentTemplate>
             </dxlc:Tile>
 
+            <dxlc:Tile Header="Финансовые операции" Size="Small" dxlc:FlowLayoutControl.IsFlowBreak="True" 
+                       Background="Gray"
+                       dxwuin:Navigation.NavigateTo="FinancialTransactionView" />
+            
             <dxlc:Tile Header="Администрирование" Size="Small" dxlc:FlowLayoutControl.IsFlowBreak="True" 
                        Background="Gray"
-                       dxlc:TileLayoutControl.GroupHeader="Конфигурация" />
-            <dxlc:Tile Header="Скидки" Size="Small" Background="Gray" />
-            <dxlc:Tile Header="Персонал" Size="Small" Background="Gray" />
-            <dxlc:Tile Header="Должности" Size="Small" Background="Gray" />
+                       dxlc:TileLayoutControl.GroupHeader="Конфигурация" 
+                       dxwuin:Navigation.NavigateTo="AdministrationView" />
+            <dxlc:Tile Header="Скидки" Size="Small" Background="Gray" 
+                       dxwuin:Navigation.NavigateTo="DiscountView" />
+            <dxlc:Tile Header="Персонал" Size="Small" Background="Gray" 
+                       dxwuin:Navigation.NavigateTo="StaffView" />
+            <dxlc:Tile Header="Должности" Size="Small" Background="Gray"
+                       dxwuin:Navigation.NavigateTo="VisitHistoryView" />
             
             
         </dxlc:TileLayoutControl>

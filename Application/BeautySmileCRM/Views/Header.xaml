@@ -88,14 +88,14 @@
 
         <TextBlock Grid.Column="0" Style="{StaticResource Title}"
                    Text="Beauty Smile CMS"/>
-        <dxwuii:SplitPanel Grid.Column="2" 
+        <dxwuii:SplitPanel Grid.Column="2" Margin="0, 0, 10, 0"
                            ItemSpacing="20" Orientation="Horizontal" ItemSizeMode="AutoSize"
                            Visibility="{Binding Path='ShowNavigationPanel', ElementName='root', Converter={converters:BoolToVisibilityConverter}}">
-            <dxwui:NavigationButton NavigateTo="UserManagementView" Content="Клиенты" />
-            <dxwui:NavigationButton NavigateTo="ResearchView" Content="История визитов" />
-            <dxwui:NavigationButton NavigateTo="ZillowView" Content="Отчеты" />
-            <dxwui:NavigationButton NavigateTo="MortgageRatesView" Content="Администрирование" />
-            <dxwui:NavigationButton NavigateTo="MortgageRatesView" Content="Настройки" />
+            <dxwui:NavigationButton NavigateTo="ClientView" Content="Клиенты" />
+            <dxwui:NavigationButton NavigateTo="VisitHistoryView" Content="История визитов" />
+            <dxwui:NavigationButton NavigateTo="ReportView" Content="Отчеты" />
+            <dxwui:NavigationButton NavigateTo="AdministrationView" Content="Администрирование" />
+            <dxwui:NavigationButton Content="Конфигурация" />
         </dxwuii:SplitPanel>
         
     </Grid>
