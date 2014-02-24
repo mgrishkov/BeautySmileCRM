@@ -1,0 +1,6 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <BitmapImage x:Key="WarningIcon64" UriSource="/BeautySmileCRM;component/Content/Icons/64x64/sign_warning.png"></BitmapImage>
+    
+    
+</ResourceDictionary>
