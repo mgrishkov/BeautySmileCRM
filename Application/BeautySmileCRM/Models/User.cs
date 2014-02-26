@@ -19,6 +19,8 @@ namespace BeautySmileCRM.Models
             this.CreatedAppointments = new HashSet<Appointment>();
             this.ModifiedAppointments = new HashSet<Appointment>();
             this.Customers = new HashSet<Customer>();
+            this.CreatedFinancialTransaction = new HashSet<FinancialTransaction>();
+            this.ModifiedFinancialTransaction = new HashSet<FinancialTransaction>();
             this.Staffs = new HashSet<Staff>();
             this.Privileges = new HashSet<Privilege>();
         }
@@ -33,6 +35,8 @@ namespace BeautySmileCRM.Models
         public virtual ICollection<Appointment> CreatedAppointments { get; set; }
         public virtual ICollection<Appointment> ModifiedAppointments { get; set; }
         public virtual ICollection<Customer> Customers { get; set; }
+        public virtual ICollection<FinancialTransaction> CreatedFinancialTransaction { get; set; }
+        public virtual ICollection<FinancialTransaction> ModifiedFinancialTransaction { get; set; }
         public virtual ICollection<Staff> Staffs { get; set; }
         public virtual ICollection<Privilege> Privileges { get; set; }
     }

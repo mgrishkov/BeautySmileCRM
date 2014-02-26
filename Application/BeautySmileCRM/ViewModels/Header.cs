@@ -8,7 +8,7 @@ using DevExpress.Xpf.Mvvm;
 
 namespace BeautySmileCRM.ViewModels
 {
-    public class Header : ViewModelBase
+    public class Header : BaseNavigationViewModel
     {
     }
 }

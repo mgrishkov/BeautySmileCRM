@@ -8,11 +8,14 @@ using System.Windows.Input;
 using System.Windows.Navigation;
 using System.Windows.Threading;
 using BeautySmileCRM.Enums;
+using BeautySmileCRM.Models;
 using DevExpress.Xpf.Mvvm;
+using SmartClasses.Extensions;
+using System.Data.Entity;
 
 namespace BeautySmileCRM.ViewModels
 {
-    public class Login : NavigationViewModelBase
+    public class Login : BaseNavigationViewModel
     {
         private string _account;
         private ObservableCollection<string> _usedAccounts;
@@ -80,10 +83,6 @@ namespace BeautySmileCRM.ViewModels
                 }
             }
         }
-        public INavigationService NavigationService 
-        { 
-            get { return ServiceContainer.GetService<INavigationService>(); } 
-        }
 
         public ICommand RetryLoginCommand { get; private set; }
         public ICommand LoginCommand { get; private set; }
@@ -93,6 +92,10 @@ namespace BeautySmileCRM.ViewModels
             initialize();
             RetryLoginCommand = new DelegateCommand(onRetryLoginCommandExecute);
             LoginCommand = new DelegateCommand(onLoginCommandExecute);
+#if(DEBUG)
+            Account = "sysdba";
+            Password = "qwerty~123";
+#endif
         }
 
         private void initialize()
@@ -114,25 +117,26 @@ namespace BeautySmileCRM.ViewModels
                 AuthorizationStage = Enums.AuthorizationStage.Authorization;
                 Task.Factory.StartNew(() =>
                 {
-                    System.Threading.Thread.Sleep(1000);
-                    AuthorizationStage = Enums.AuthorizationStage.Authorized;
-
-                    /*var profile = AdminProfile.FindProfile(Login, Password);
-                    if (profile != null)
+                    using(var dc = new CRMContext())
                     {
-                        Profile.AdminProfile = profile;
-                        this.Dispatcher.Invoke(() => AuthorizationStage = LoadingStage.Loaded);
-                    }
-                    else
-                    {
-                        ErrorMessage = "Администратор с указанным логином и паролем не найден";
-                        this.Dispatcher.Invoke(() =>
+                        var encriptedPassword = Password.ToMD5Hash();
+                        var user = dc.Users
+                            .Where(x => x.Login == Account && x.Password == encriptedPassword)
+                            .Include(x => x.Privileges)
+                            .SingleOrDefault();
+                        if(user != null)
                         {
-                            AuthorizationStage = LoadingStage.Error;
-                        });
-                    };*/
-
-                    NavigationService.Navigate("DashboardView", null, this);
+                            user.Password = "*".PadLeft(user.Password.Length, '*');
+                            CurrentUser = user;
+                            AuthorizationStage = Enums.AuthorizationStage.Authorized;
+                            NavigationService.Navigate("DashboardView", null, this);
+                        }
+                        else
+                        {
+                            ErrorMessage = "Пользователь с указанным логином и паролем не найден";
+                            AuthorizationStage = Enums.AuthorizationStage.Error;
+                        }
+                    };                    
                 });   
             }
             else
@@ -141,6 +145,5 @@ namespace BeautySmileCRM.ViewModels
                 AuthorizationStage = Enums.AuthorizationStage.Error;
             };
         }
-
     }
 }

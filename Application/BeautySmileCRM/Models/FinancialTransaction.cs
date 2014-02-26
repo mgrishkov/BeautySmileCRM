@@ -14,29 +14,21 @@ namespace BeautySmileCRM.Models
     
     public partial class FinancialTransaction
     {
-        public FinancialTransaction()
-        {
-            this.PaymentSystemResponses = new HashSet<PaymentSystemResponse>();
-        }
-    
-        public long ID { get; set; }
-        public int ClientID { get; set; }
-        public int Type { get; set; }
-        public int Status { get; set; }
+        public int ID { get; set; }
+        public int CustomerID { get; set; }
+        public Nullable<int> AppointmentID { get; set; }
+        public int TransactionTypeID { get; set; }
         public decimal Amount { get; set; }
-        public int Initiator { get; set; }
-        public System.DateTime CreationTime { get; set; }
-        public int Unit { get; set; }
-        public Nullable<int> ContestID { get; set; }
-        public string VisibleComment { get; set; }
-        public string InternalComment { get; set; }
-        public Nullable<System.DateTime> StateChangedTime { get; set; }
-        public Nullable<int> PaymentSystem { get; set; }
-        public string RecipientPSAccountNumber { get; set; }
-        public string RecipientPSUniqueID { get; set; }
+        public string Comment { get; set; }
+        public System.DateTime CreationTIme { get; set; }
+        public int CreatedBy { get; set; }
+        public Nullable<System.DateTime> ModificationTime { get; set; }
+        public Nullable<int> ModifiedBy { get; set; }
     
-        public virtual Client Client { get; set; }
-        public virtual Contest Contest { get; set; }
-        public virtual ICollection<PaymentSystemResponse> PaymentSystemResponses { get; set; }
+        public virtual User CreatedByUser { get; set; }
+        public virtual User ModifiedByUser { get; set; }
+        public virtual TransactionType TransactionType { get; set; }
+        public virtual Appointment Appointment { get; set; }
+        public virtual Customer Customer { get; set; }
     }
 }

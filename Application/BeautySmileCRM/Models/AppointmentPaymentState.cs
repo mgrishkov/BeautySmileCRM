@@ -12,18 +12,18 @@ namespace BeautySmileCRM.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Position
+    public partial class AppointmentPaymentState
     {
-        public Position()
+        public AppointmentPaymentState()
         {
-            this.Staffs = new HashSet<Staff>();
+            this.Appointments = new HashSet<Appointment>();
         }
     
         public int ID { get; set; }
+        public string Code { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public bool IsActive { get; set; }
     
-        public virtual ICollection<Staff> Staffs { get; set; }
+        public virtual ICollection<Appointment> Appointments { get; set; }
     }
 }

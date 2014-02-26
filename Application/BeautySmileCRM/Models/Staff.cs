@@ -17,21 +17,18 @@ namespace BeautySmileCRM.Models
         public Staff()
         {
             this.Appointments = new HashSet<Appointment>();
-            this.Awards = new HashSet<Award>();
         }
     
         public int ID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string MiddleName { get; set; }
-        public int PositionID { get; set; }
         public byte[] Photo { get; set; }
         public Nullable<System.DateTime> DismissalDate { get; set; }
         public Nullable<int> UserID { get; set; }
+        public string Position { get; set; }
     
         public virtual User User { get; set; }
         public virtual ICollection<Appointment> Appointments { get; set; }
-        public virtual ICollection<Award> Awards { get; set; }
-        public virtual Position Position { get; set; }
     }
 }

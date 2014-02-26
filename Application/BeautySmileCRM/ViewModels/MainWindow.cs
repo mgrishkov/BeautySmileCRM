@@ -8,7 +8,7 @@ using DevExpress.Xpf.Mvvm;
 
 namespace BeautySmileCRM.ViewModels
 {
-    public class MainWindow : ViewModelBase
+    public class MainWindow : BaseNavigationViewModel
     {
         public ICommand OnViewLoadedCommand { get; private set; }
         public MainWindow()

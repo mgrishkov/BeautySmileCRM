@@ -12,7 +12,7 @@ using BeautySmileCRM.Enums;
 
 namespace BeautySmileCRM.ViewModels
 {
-    public class VisitHistory : ViewModelBase
+    public class VisitHistory : BaseNavigationViewModel
     {
     }
 }

@@ -19,8 +19,5 @@ namespace BeautySmileCRM.Models
         public decimal MinDiscount { get; set; }
         public decimal MaxDiscount { get; set; }
         public decimal PurchaseTopLimit { get; set; }
-        public System.DateTime ValidFrom { get; set; }
-        public System.DateTime PurchaseStartTime { get; set; }
-        public System.DateTime PurchaseEndTime { get; set; }
     }
 }

@@ -1,5 +1,12 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <BitmapImage x:Key="Add24" UriSource="/BeautySmileCRM;component/Content/Icons/24x24/add.png"></BitmapImage>
+    <BitmapImage x:Key="Edit24" UriSource="/BeautySmileCRM;component/Content/Icons/24x24/edit.png"></BitmapImage>
+    <BitmapImage x:Key="Excel24" UriSource="/BeautySmileCRM;component/Content/Icons/24x24/excel.png"></BitmapImage>
+    <BitmapImage x:Key="Delete24" UriSource="/BeautySmileCRM;component/Content/Icons/24x24/delete.png"></BitmapImage>
+    <BitmapImage x:Key="Refresh24" UriSource="/BeautySmileCRM;component/Content/Icons/24x24/refresh.png"></BitmapImage>
+
     <BitmapImage x:Key="WarningIcon64" UriSource="/BeautySmileCRM;component/Content/Icons/64x64/sign_warning.png"></BitmapImage>
     
     

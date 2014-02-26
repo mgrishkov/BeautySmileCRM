@@ -12,12 +12,19 @@ namespace BeautySmileCRM.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ElementParameter
+    public partial class TransactionType
     {
-        public string Parameter { get; set; }
-        public int ElementID { get; set; }
-        public string Value { get; set; }
+        public TransactionType()
+        {
+            this.FinancialTransactions = new HashSet<FinancialTransaction>();
+        }
     
-        public virtual Element Element { get; set; }
+        public int ID { get; set; }
+        public string Code { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int OperationSign { get; set; }
+    
+        public virtual ICollection<FinancialTransaction> FinancialTransactions { get; set; }
     }
 }

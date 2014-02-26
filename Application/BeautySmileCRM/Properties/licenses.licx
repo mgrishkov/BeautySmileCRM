@@ -2,3 +2,4 @@ DevExpress.Xpf.Bars.BarManager, DevExpress.Xpf.Core.v13.2, Version=13.2.7.0, Cul
 DevExpress.Xpf.WindowsUI.NavigationFrame, DevExpress.Xpf.Controls.v13.2, Version=13.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a
 DevExpress.Xpf.WindowsUI.PageAdornerControl, DevExpress.Xpf.Controls.v13.2, Version=13.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a
 DevExpress.Xpf.LayoutControl.TileLayoutControl, DevExpress.Xpf.LayoutControl.v13.2, Version=13.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a
+DevExpress.Xpf.Grid.GridControl, DevExpress.Xpf.Grid.v13.2, Version=13.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a

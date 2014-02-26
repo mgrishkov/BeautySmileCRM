@@ -6,14 +6,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
              xmlns:converters="clr-namespace:BeautySmileCRM.Converters"
-             xmlns:preloader="clr-namespace:PreloaderControll;assembly=PreloaderControll"
              xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"  
              xmlns:dxwuin="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/navigation"
              xmlns:ViewModel="clr-namespace:BeautySmileCRM.ViewModels" 
              xmlns:Views="clr-namespace:BeautySmileCRM.Views" 
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
              x:Class="BeautySmileCRM.Views.DiscountView"
              mc:Ignorable="d" 
-             d:DesignWidth="600" d:DesignHeight="600"
+             d:DesignWidth="1000" d:DesignHeight="600"
              Background="White"
              dx:ThemeManager.ThemeName="MetropolisLight">
     <UserControl.Resources>
@@ -28,13 +28,96 @@
     <UserControl.DataContext>
         <ViewModel:Discount/>
     </UserControl.DataContext>
-    
+
     <dxwui:PageAdornerControl>
         <dxwui:PageAdornerControl.HeaderTemplate>
             <DataTemplate>
                 <Views:Header Grid.Row="0" />
             </DataTemplate>
         </dxwui:PageAdornerControl.HeaderTemplate>
-        
+
+        <dxb:BarManager Grid.Row="0">
+            <dxb:BarManager.Items>
+                <dxb:BarButtonItem x:Name="RefreshButton" Content="Обновить" 
+				               LargeGlyph="{StaticResource Refresh24}" Command="{Binding RefreshCommand}" />
+                <dxb:BarButtonItem x:Name="AddButton" Content="Создать дисконт..." 
+				               LargeGlyph="{StaticResource Add24}" Command="{Binding AddDiscountCommand}" />
+                <dxb:BarButtonItem x:Name="EditButton" Content="Редактировать дисконт..." 
+				               LargeGlyph="{StaticResource Edit24}" Command="{Binding EditDiscountCommand}" />
+                <dxb:BarButtonItem x:Name="DeleteButton" Content="Удалить дисконт..." 
+				               LargeGlyph="{StaticResource Delete24}" Command="{Binding DeleteDiscountCommand}" />
+                <dxb:BarButtonItem x:Name="ExportButton" Content="Экспортировать..."
+				               LargeGlyph="{StaticResource Excel24}" Command="{Binding ExportCommand}" />
+            </dxb:BarManager.Items>
+            <dxb:BarManager.Bars>
+                <dxb:Bar x:Name="mainMenuBar" Caption="Панель инструментов" 
+				         IsMainMenu="True" UseWholeRow="True" AllowCustomizationMenu="False" AllowDrop="False">
+                    <dxb:Bar.DockInfo>
+                        <dxb:BarDockInfo ContainerType="Top" />
+                    </dxb:Bar.DockInfo>
+                    <dxb:BarButtonItemLink BarItemName="RefreshButton" />
+                    <dxb:BarItemLinkSeparator />
+                    <dxb:BarButtonItemLink BarItemName="AddButton" />
+                    <dxb:BarButtonItemLink BarItemName="EditButton" />
+                    <dxb:BarButtonItemLink BarItemName="DeleteButton" />
+                    <dxb:BarItemLinkSeparator />
+                    <dxb:BarButtonItemLink BarItemName="ExportButton" />
+                </dxb:Bar>
+                <dxb:Bar x:Name="statusBar" Caption="Строка состояния" IsStatusBar="True">
+                    <dxb:Bar.DockInfo>
+                        <dxb:BarDockInfo ContainerType="Bottom" />
+                    </dxb:Bar.DockInfo>
+                </dxb:Bar>
+            </dxb:BarManager.Bars>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <dxg:GridControl x:Name="mainGrid" 
+				                 Grid.Row="0" Grid.Column="0"
+				                 ItemsSource="{Binding DataSource.Data}">
+                    <dxg:GridControl.Columns>
+                        <dxg:GridColumn x:Name="idField" FieldName="ID" Header="ИД" Width="40" ReadOnly="True" VisibleIndex="0" >
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:SpinEditSettings IsFloatValue="False" />
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn x:Name="percentField" FieldName="Percent" Header="Процент скидки" Width="60" ReadOnly="True" VisibleIndex="1" >
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:SpinEditSettings IsFloatValue="True" MaxValue="99.99" MinValue="0" MaskType="Numeric" Mask="n2"/>
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn x:Name="minDiscountField" FieldName="MinDiscount" Header="Мин. скидка" Width="120" ReadOnly="True" VisibleIndex="2" >
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:SpinEditSettings IsFloatValue="True" MinValue="0" MaskType="Numeric" Mask="n2"/>
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn x:Name="maxDiscountField" FieldName="MaxDiscount" Header="Макс. скидка" Width="120" ReadOnly="True" VisibleIndex="3" >
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:SpinEditSettings IsFloatValue="True" MinValue="0" MaskType="Numeric" Mask="n2"/>
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn x:Name="зurchaseTopLimitField" FieldName="PurchaseTopLimit" Header="Верхняя граница расходов для предоставления скидки" Width="120" ReadOnly="True" VisibleIndex="4" >
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:SpinEditSettings IsFloatValue="True" MinValue="0" MaskType="Numeric" Mask="n2"/>
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                    </dxg:GridControl.Columns>
+
+                    <dxg:GridControl.View>
+                        <dxg:TableView x:Name="view" ShowTotalSummary="True" AllowEditing="True"
+						               ShowAutoFilterRow="True" ShowGroupedColumns="True" AllowHorizontalScrollingVirtualization="False" 
+            					       ShowGroupPanel="False" 
+                                       FocusedRow="{Binding SelectedDiscount, Converter={converters:ReadonlyThreadSafeProxyForObjectFromAnotherThreadToOrigianlConverter}, Mode=TwoWay}"/>
+                    </dxg:GridControl.View>
+                </dxg:GridControl>
+            </Grid>
+        </dxb:BarManager>
+
+
     </dxwui:PageAdornerControl>
 </UserControl>

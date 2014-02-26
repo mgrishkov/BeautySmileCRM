@@ -10,7 +10,7 @@ using DevExpress.Xpf.Mvvm;
 
 namespace BeautySmileCRM.ViewModels
 {
-    public class Dashboard : NavigationViewModelBase
+    public class Dashboard : BaseNavigationViewModel
     {
 
     }
