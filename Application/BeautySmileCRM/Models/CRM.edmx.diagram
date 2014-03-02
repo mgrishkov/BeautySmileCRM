@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="0b23b891dfaa4c78a5a8b0057803e60b" Name="Diagram1" ZoomLevel="108">
+      <Diagram DiagramId="0b23b891dfaa4c78a5a8b0057803e60b" Name="Diagram1" ZoomLevel="80">
         <EntityTypeShape EntityType="CRMModel.Privilege" Width="1.5" PointX="0.75" PointY="7.75" />
         <EntityTypeShape EntityType="CRMModel.User" Width="1.5" PointX="3" PointY="7" />
         <EntityTypeShape EntityType="CRMModel.AppointmentPaymentState" Width="1.5" PointX="5.25" PointY="7.5" />
@@ -35,6 +35,7 @@
         <AssociationConnector Association="CRMModel.FK_Customer_DiscountCardID_DiscountCard_ID" />
         <AssociationConnector Association="CRMModel.FK_FinancialTransaction_CustomerID_Customer_ID" />
         <AssociationConnector Association="CRMModel.UserPrivilege" />
+        <EntityTypeShape EntityType="CRMModel.CustomerView" Width="1.5" PointX="8.75" PointY="10.875" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -91,8 +91,37 @@
     <Compile Include="Converters\NotBoolToVisibilityConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\ReadonlyThreadSafeProxyForObjectFromAnotherThreadToOrigianlConverter.cs" />
+    <Compile Include="Enums\Gender.cs" />
+    <Compile Include="Enums\Privilege.cs">
+      <DependentUpon>Privilege.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Enums\DiscountType.cs">
+      <DependentUpon>DiscountType.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Enums\TransactionType.cs">
+      <DependentUpon>TransactionType.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Enums\AppointmentPaymentState.cs">
+      <DependentUpon>AppointmentPaymentState.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Enums\AuthorizationStage.cs" />
+    <Compile Include="Enums\AppointmentState.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AppointmentState.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Appointment.cs">
+      <DependentUpon>CRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AppointmentDashboardData.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AppointmentPaymentState.cs">
@@ -120,6 +149,12 @@
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Customer.cs">
+      <DependentUpon>CRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CustomerDashboardData.cs">
+      <DependentUpon>CRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CustomerView.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DiscountCard.cs">
@@ -217,6 +252,26 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>CRM.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <None Include="Enums\Privilege.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Privilege.cs</LastGenOutput>
+    </None>
+    <None Include="Enums\DiscountType.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DiscountType.cs</LastGenOutput>
+    </None>
+    <None Include="Enums\TransactionType.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TransactionType.cs</LastGenOutput>
+    </None>
+    <None Include="Enums\AppointmentPaymentState.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AppointmentPaymentState.cs</LastGenOutput>
+    </None>
+    <None Include="Enums\AppointmentState.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AppointmentState.cs</LastGenOutput>
+    </None>
     <None Include="Models\CRM.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>CRM.edmx</DependentUpon>

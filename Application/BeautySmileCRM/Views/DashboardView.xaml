@@ -43,32 +43,39 @@
                     <Setter Property="Foreground" Value="Black"/>
                 </Style>
             </dxlc:TileLayoutControl.GroupHeaderStyle>
-            
-            <dxlc:Tile Header="Клиенты" 
+
+            <dxlc:Tile Header="Клиенты" Size="Large"
                        dxlc:TileLayoutControl.GroupHeader=""
+                       ContentChangeInterval="00:00:05" AnimateContentChange="True"
+                       ContentSource="{Binding Clients}"
                        dxwuin:Navigation.NavigateTo="ClientView">
                 <dxlc:Tile.ContentTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10,0,10,10">
-                            <TextBlock Text="Малиновскай" FontSize="36" Foreground="#FFFFFFFF" />
+                            <TextBlock Text="{Binding LastName}" FontSize="36" Foreground="#FFFFFFFF" />
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Станислав" FontSize="20" Foreground="#FFFFFFFF" />
-                                <TextBlock Text="Эдуардович" FontSize="20" Foreground="#FFFFFFFF" Margin="5,0,0,0" />
+                                <TextBlock Text="{Binding FirstName}" FontSize="20" Foreground="#FFFFFFFF" />
+                                <TextBlock Text="{Binding MiddleName}" FontSize="20" Foreground="#FFFFFFFF" Margin="5,0,0,0" />
                             </StackPanel>
-                            <TextBlock Text="Задолженность 2000 руб" FontSize="20" Foreground="#FFFFFFFF" Margin="5,0,0,0" />
-                            <TextBlock HorizontalAlignment="Right" Margin="0,25,0,0" 
+                            <TextBlock Text="{Binding Debt, StringFormat={}Задолженность {0:0.00} руб}" FontSize="20" Foreground="#FFFFFFFF" Margin="5,0,0,0" />
+                            <TextBlock HorizontalAlignment="Right" Margin="0,10,0,0" 
                                        Foreground="#FFFFFFFF" FontSize="18"
-                                       Text="8 (921) 999-99-99" />
+                                       Text="{Binding MobilePhone}" />
+                            <TextBlock HorizontalAlignment="Right" Margin="0,10,0,0" 
+                                       Foreground="#FFFFFFFF" FontSize="18"
+                                       Text="{Binding Phone}" />
                         </StackPanel>
                     </DataTemplate>
                 </dxlc:Tile.ContentTemplate>
             </dxlc:Tile>
             <dxlc:Tile Header="История посещения" Size="Large"
+                       ContentSource="{Binding Appointments}"
+                       ContentChangeInterval="00:00:05" AnimateContentChange="True"
                        dxwuin:Navigation.NavigateTo="VisitHistoryView">
                 <dxlc:Tile.ContentTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10,0,10,10">
-                            <TextBlock Text="01.01.2014" FontSize="20" Foreground="#FFFFFFFF" />
+                            <TextBlock Text="{Binding Date, StringFormat=d}" FontSize="20" Foreground="#FFFFFFFF" />
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
@@ -85,21 +92,21 @@
                                        Text="Запланировано:" 
                                        FontSize="20" Foreground="#FFFFFFFF" />
                                 <TextBlock Grid.Column="2" Grid.Row="0"
-                                       Text="10" 
+                                       Text="{Binding Planned}" 
                                        FontSize="22" Foreground="#FFFFFFFF" />
 
                                 <TextBlock Grid.Column="0" Grid.Row="1"
                                        Text="Выполнено:" 
                                        FontSize="20" Foreground="#FFFFFFFF" />
                                 <TextBlock Grid.Column="2" Grid.Row="1"
-                                       Text="8" 
+                                       Text="{Binding Completed}" 
                                        FontSize="22" Foreground="#FFFFFFFF" />
 
                                 <TextBlock Grid.Column="0" Grid.Row="2"
                                        Text="Оплачено:" 
                                        FontSize="20" Foreground="#FFFFFFFF" />
                                 <TextBlock Grid.Column="2" Grid.Row="2"
-                                       Text="90%" 
+                                       Text="{Binding Payed, StringFormat={}{0:0.00}%}" 
                                        FontSize="22" Foreground="#FFFFFFFF" />
                             </Grid>
                         </StackPanel>
@@ -107,10 +114,6 @@
                 </dxlc:Tile.ContentTemplate>
             </dxlc:Tile>
 
-            <dxlc:Tile Header="Финансовые операции" Size="Small" dxlc:FlowLayoutControl.IsFlowBreak="True" 
-                       Background="Gray"
-                       dxwuin:Navigation.NavigateTo="FinancialTransactionView" />
-            
             <dxlc:Tile Header="Администрирование" Size="Small" dxlc:FlowLayoutControl.IsFlowBreak="True" 
                        Background="Gray"
                        dxlc:TileLayoutControl.GroupHeader="Конфигурация" 
@@ -119,10 +122,8 @@
                        dxwuin:Navigation.NavigateTo="DiscountView" />
             <dxlc:Tile Header="Персонал" Size="Small" Background="Gray" 
                        dxwuin:Navigation.NavigateTo="StaffView" />
-            <dxlc:Tile Header="Должности" Size="Small" Background="Gray"
-                       dxwuin:Navigation.NavigateTo="VisitHistoryView" />
-            
-            
+
+
         </dxlc:TileLayoutControl>
 
     </dxwui:PageAdornerControl>

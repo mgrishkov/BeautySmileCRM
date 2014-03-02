@@ -6,14 +6,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
              xmlns:converters="clr-namespace:BeautySmileCRM.Converters"
-             xmlns:preloader="clr-namespace:PreloaderControll;assembly=PreloaderControll"
              xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"  
              xmlns:dxwuin="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/navigation"
              xmlns:ViewModel="clr-namespace:BeautySmileCRM.ViewModels" 
              xmlns:Views="clr-namespace:BeautySmileCRM.Views" 
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
              x:Class="BeautySmileCRM.Views.ClientView"
              mc:Ignorable="d" 
-             d:DesignWidth="600" d:DesignHeight="600"
+             d:DesignWidth="1800" d:DesignHeight="600"
              Background="White"
              dx:ThemeManager.ThemeName="MetropolisLight">
     <UserControl.Resources>
@@ -28,13 +28,196 @@
     <UserControl.DataContext>
         <ViewModel:Client/>
     </UserControl.DataContext>
-    
+
     <dxwui:PageAdornerControl>
         <dxwui:PageAdornerControl.HeaderTemplate>
             <DataTemplate>
                 <Views:Header Grid.Row="0" />
             </DataTemplate>
         </dxwui:PageAdornerControl.HeaderTemplate>
-        
+
+        <dxb:BarManager Grid.Row="0">
+            <dxb:BarManager.Items>
+                <dxb:BarButtonItem x:Name="RefreshButton" Content="Обновить" 
+				               LargeGlyph="{StaticResource Refresh24}" Command="{Binding RefreshCommand}" />
+                <dxb:BarButtonItem x:Name="AddButton" Content="Добавить клиента..." 
+				               LargeGlyph="{StaticResource Add24}" Command="{Binding AddUserCommand}" />
+                <dxb:BarButtonItem x:Name="EditButton" Content="Редактировать клиента..." 
+				               LargeGlyph="{StaticResource Edit24}" Command="{Binding EditUserCommand}" />
+                <dxb:BarButtonItem x:Name="DeleteButton" Content="Удалить клиента..." 
+				               LargeGlyph="{StaticResource Delete24}" Command="{Binding DeleteUserCommand}" />
+                <dxb:BarButtonItem x:Name="ExportButton" Content="Экспортировать..."
+				               LargeGlyph="{StaticResource Excel24}" Command="{Binding ExportCommand}" />
+            </dxb:BarManager.Items>
+            <dxb:BarManager.Bars>
+                <dxb:Bar x:Name="mainMenuBar" Caption="Панель инструментов" 
+				         IsMainMenu="True" UseWholeRow="True" AllowCustomizationMenu="False" AllowDrop="False">
+                    <dxb:Bar.DockInfo>
+                        <dxb:BarDockInfo ContainerType="Top" />
+                    </dxb:Bar.DockInfo>
+                    <dxb:BarButtonItemLink BarItemName="RefreshButton" />
+                    <dxb:BarItemLinkSeparator />
+                    <dxb:BarButtonItemLink BarItemName="AddButton" />
+                    <dxb:BarButtonItemLink BarItemName="EditButton" />
+                    <dxb:BarButtonItemLink BarItemName="DeleteButton" />
+                    <dxb:BarItemLinkSeparator />
+                    <dxb:BarButtonItemLink BarItemName="ExportButton" />
+                </dxb:Bar>
+                <dxb:Bar x:Name="statusBar" Caption="Строка состояния" IsStatusBar="True">
+                    <dxb:Bar.DockInfo>
+                        <dxb:BarDockInfo ContainerType="Bottom" />
+                    </dxb:Bar.DockInfo>
+                </dxb:Bar>
+            </dxb:BarManager.Bars>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <dxg:GridControl x:Name="mainGrid" 
+				                 Grid.Row="0" Grid.Column="0"
+				                 ItemsSource="{Binding DataSource.Data}">
+                    <dxg:GridControl.Bands>
+                        <dxg:GridControlBand Header="Личные данные" VisibleIndex="0" HorizontalHeaderContentAlignment="Center">
+                            <dxg:GridColumn FieldName="LastName" Header="Фамилия" Width="130" ReadOnly="True" SortIndex="0" SortOrder="Ascending" VisibleIndex="0" >
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:TextEditSettings />
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="FirstName" Header="Имя" Width="130" ReadOnly="True" SortIndex="1" SortOrder="Ascending" VisibleIndex="1" >
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:TextEditSettings />
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="MiddleName" Header="Отчество" Width="130" ReadOnly="True" SortIndex="2" SortOrder="Ascending" VisibleIndex="2" >
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:TextEditSettings />
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="Gender" Header="Пол" Width="30" ReadOnly="True" VisibleIndex="3" >
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:ComboBoxEditSettings ItemsSource="{Binding Genders}" DisplayMember="Value" ValueMember="Key" />
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="BirthDate" Header="Дата рождения" Width="90" ReadOnly="True" VisibleIndex="4" >
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:DateEditSettings Mask="d" MaskType="DateTime" MaskUseAsDisplayFormat="True" />
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="MoneyBalance" Header="Баланс" Width="80" ReadOnly="True" VisibleIndex="5" >
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:SpinEditSettings Mask="c" MaskType="Numeric" MaskUseAsDisplayFormat="True" />
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                        </dxg:GridControlBand>
+                        <dxg:GridControlBand Header="Дисконтная карта" VisibleIndex="2">
+                            <dxg:GridColumn FieldName="DiscountCardCode" Header="Номер" Width="90" ReadOnly="True" VisibleIndex="6" >
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:TextEditSettings />
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+
+                            <dxg:GridColumn FieldName="DiscountPercent" Header="Скидка" Width="50" ReadOnly="True" VisibleIndex="7" >
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:SpinEditSettings IsFloatValue="False" Mask="P" MaskType="Numeric" MaskUseAsDisplayFormat="True" />
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                        </dxg:GridControlBand>
+
+                        <dxg:GridControlBand Header="Визиты" VisibleIndex="3" HorizontalHeaderContentAlignment="Center">
+                            <dxg:GridColumn FieldName="FirstVisit" Header="Первый" Width="90" ReadOnly="True" VisibleIndex="6" >
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:DateEditSettings Mask="d" MaskType="DateTime" MaskUseAsDisplayFormat="True" />
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="LastVisit" Header="Последний" Width="90" ReadOnly="True" VisibleIndex="6" >
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:DateEditSettings Mask="d" MaskType="DateTime" MaskUseAsDisplayFormat="True" />
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="NextVisit" Header="Следующий" Width="90" ReadOnly="True" VisibleIndex="6" >
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:DateEditSettings Mask="d" MaskType="DateTime" MaskUseAsDisplayFormat="True" />
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+
+                        </dxg:GridControlBand>
+
+                        <dxg:GridControlBand Header="Контактные данные" VisibleIndex="4" HorizontalHeaderContentAlignment="Center">
+                            <dxg:GridColumn FieldName="Zip" Header="Индекс" Width="100" ReadOnly="True" VisibleIndex="8" >
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:TextEditSettings />
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="Country" Header="Страна" Width="100" ReadOnly="True" VisibleIndex="9" >
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:TextEditSettings />
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="Region" Header="Область" Width="100" ReadOnly="True" VisibleIndex="10" >
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:TextEditSettings />
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="City" Header="Город" Width="100" ReadOnly="True" VisibleIndex="11" >
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:TextEditSettings />
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="Address" Header="Адрес" Width="180" ReadOnly="True" VisibleIndex="12" >
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:TextEditSettings />
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="MobilePhone" Header="Контактный телефон" Width="120" ReadOnly="True" VisibleIndex="13" >
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:TextEditSettings />
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="Phone" Header="Домашний телефон" Width="120" ReadOnly="True" VisibleIndex="14" >
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:TextEditSettings />
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="Email" Header="Эл.почта" Width="120" ReadOnly="True" VisibleIndex="15" >
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:TextEditSettings />
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                        </dxg:GridControlBand>
+                        <dxg:GridControlBand Header="Оповещения" VisibleIndex="5" HorizontalHeaderContentAlignment="Center">
+                            <dxg:GridColumn FieldName="NotifyByEmail" Header="Эл.почте" Width="40" ReadOnly="True" VisibleIndex="16" >
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:CheckEditSettings />
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="NotifyBySms" Header="СМС" Width="40" ReadOnly="True" VisibleIndex="17" >
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:CheckEditSettings />
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="NotifyByPost" Header="Почта" Width="40" ReadOnly="True" VisibleIndex="18" >
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:CheckEditSettings />
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+
+                        </dxg:GridControlBand>
+                    </dxg:GridControl.Bands>
+                    <dxg:GridControl.View>
+                        <dxg:TableView x:Name="view" ShowTotalSummary="True" AllowEditing="True"
+						               ShowAutoFilterRow="True" ShowGroupedColumns="True" AllowHorizontalScrollingVirtualization="False" 
+            					       ShowGroupPanel="False" 
+                                       FocusedRow="{Binding SelectedCustomer, Converter={converters:ReadonlyThreadSafeProxyForObjectFromAnotherThreadToOrigianlConverter}, Mode=TwoWay}"/>
+                    </dxg:GridControl.View>
+
+                </dxg:GridControl>
+            </Grid>
+        </dxb:BarManager>
+
+
     </dxwui:PageAdornerControl>
 </UserControl>

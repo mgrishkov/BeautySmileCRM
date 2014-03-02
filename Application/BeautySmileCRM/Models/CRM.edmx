@@ -95,8 +95,8 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CustomerID" Type="int" Nullable="false" />
-          <Property Name="StartTime" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="EndTime" Type="varchar" MaxLength="50" />
+          <Property Name="StartTime" Type="datetime" Nullable="false" />
+          <Property Name="EndTime" Type="datetime" />
           <Property Name="StaffID" Type="int" Nullable="false" />
           <Property Name="Purpose" Type="nvarchar" MaxLength="4000" Nullable="false" />
           <Property Name="Price" Type="decimal" Precision="13" Scale="2" Nullable="false" />
@@ -115,7 +115,7 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="FirsName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="LastName" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="MiddleName" Type="nvarchar" MaxLength="255" />
           <Property Name="Phone" Type="varchar" MaxLength="17" />
@@ -177,6 +177,39 @@
           <Property Name="DismissalDate" Type="datetime" />
           <Property Name="UserID" Type="int" />
           <Property Name="Position" Type="nvarchar" MaxLength="4000" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'CRM.CST.CustomerView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="CustomerView">
+          <Key>
+            <PropertyRef Name="CustomerID" />
+          </Key>
+          <Property Name="CustomerID" Type="int" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="MiddleName" Type="nvarchar" MaxLength="255" />
+          <Property Name="Gender" Type="int" Nullable="false" />
+          <Property Name="Country" Type="nvarchar" MaxLength="4000" />
+          <Property Name="City" Type="nvarchar" MaxLength="4000" />
+          <Property Name="Region" Type="nvarchar" MaxLength="4000" />
+          <Property Name="Zip" Type="int" />
+          <Property Name="Phone" Type="varchar" MaxLength="17" />
+          <Property Name="MobilePhone" Type="varchar" MaxLength="17" />
+          <Property Name="Email" Type="nvarchar" MaxLength="255" />
+          <Property Name="Address" Type="nvarchar" MaxLength="4000" Nullable="false" />
+          <Property Name="BirthDate" Type="datetime" Nullable="false" />
+          <Property Name="MoneyBalance" Type="decimal" Precision="13" Scale="2" Nullable="false" />
+          <Property Name="NotifyByEmail" Type="bit" Nullable="false" />
+          <Property Name="NotifyBySms" Type="bit" Nullable="false" />
+          <Property Name="NotifyByPost" Type="bit" Nullable="false" />
+          <Property Name="CreationTime" Type="datetime" Nullable="false" />
+          <Property Name="ModificationTime" Type="datetime" />
+          <Property Name="DiscountcardID" Type="int" />
+          <Property Name="DiscountCardCode" Type="varchar" MaxLength="50" />
+          <Property Name="DiscountPercent" Type="decimal" Precision="4" Scale="2" />
+          <Property Name="FirstVisit" Type="datetime" />
+          <Property Name="LastVisit" Type="datetime" />
+          <Property Name="NextVisit" Type="datetime" />
         </EntityType>
         <Association Name="FK#Appointment@CreatedBy#User@ID">
           <End Role="User" Type="Self.User" Multiplicity="1" />
@@ -394,6 +427,8 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="GetAppointmentDashboardData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="APP" />
+        <Function Name="GetCustomerDashboardData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="APP" />
         <EntityContainer Name="CRMModelStoreContainer">
           <EntitySet Name="Privilege" EntityType="Self.Privilege" Schema="ADM" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="ADM" store:Type="Tables" />
@@ -409,6 +444,36 @@
           <EntitySet Name="DiscountCard" EntityType="Self.DiscountCard" Schema="CST" store:Type="Tables" />
           <EntitySet Name="FinancialTransaction" EntityType="Self.FinancialTransaction" Schema="CST" store:Type="Tables" />
           <EntitySet Name="Staff" EntityType="Self.Staff" Schema="STF" store:Type="Tables" />
+          <EntitySet Name="CustomerView" EntityType="Self.CustomerView" store:Type="Views" store:Schema="CST">
+            <DefiningQuery>SELECT 
+    [CustomerView].[CustomerID] AS [CustomerID], 
+    [CustomerView].[FirstName] AS [FirstName], 
+    [CustomerView].[LastName] AS [LastName], 
+    [CustomerView].[MiddleName] AS [MiddleName], 
+    [CustomerView].[Gender] AS [Gender], 
+    [CustomerView].[Country] AS [Country], 
+    [CustomerView].[City] AS [City], 
+    [CustomerView].[Region] AS [Region], 
+    [CustomerView].[Zip] AS [Zip], 
+    [CustomerView].[Phone] AS [Phone], 
+    [CustomerView].[MobilePhone] AS [MobilePhone], 
+    [CustomerView].[Email] AS [Email], 
+    [CustomerView].[Address] AS [Address], 
+    [CustomerView].[BirthDate] AS [BirthDate], 
+    [CustomerView].[MoneyBalance] AS [MoneyBalance], 
+    [CustomerView].[NotifyByEmail] AS [NotifyByEmail], 
+    [CustomerView].[NotifyBySms] AS [NotifyBySms], 
+    [CustomerView].[NotifyByPost] AS [NotifyByPost], 
+    [CustomerView].[CreationTime] AS [CreationTime], 
+    [CustomerView].[ModificationTime] AS [ModificationTime], 
+    [CustomerView].[DiscountcardID] AS [DiscountcardID], 
+    [CustomerView].[DiscountCardCode] AS [DiscountCardCode], 
+    [CustomerView].[DiscountPercent] AS [DiscountPercent], 
+    [CustomerView].[FirstVisit] AS [FirstVisit], 
+    [CustomerView].[LastVisit] AS [LastVisit], 
+    [CustomerView].[NextVisit] AS [NextVisit]
+    FROM [CST].[CustomerView] AS [CustomerView]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK#Appointment@CreatedBy#User@ID" Association="Self.FK#Appointment@CreatedBy#User@ID">
             <End Role="User" EntitySet="User" />
             <End Role="Appointment" EntitySet="Appointment" />
@@ -568,6 +633,9 @@
             <End Role="Privilege" EntitySet="Privileges" />
             <End Role="User" EntitySet="Users" />
           </AssociationSet>
+          <FunctionImport Name="GetAppointmentDashboardData" ReturnType="Collection(CRMModel.AppointmentDashboardData)" />
+          <FunctionImport Name="GetCustomerDashboardData" ReturnType="Collection(CRMModel.CustomerDashboardData)" />
+          <EntitySet Name="CustomerView" EntityType="CRMModel.CustomerView" />
         </EntityContainer>
         <EntityType Name="Privilege">
           <Key>
@@ -665,8 +733,8 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CustomerID" Type="Int32" Nullable="false" />
-          <Property Name="StartTime" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="EndTime" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndTime" Type="DateTime" Precision="3" />
           <Property Name="StaffID" Type="Int32" Nullable="false" />
           <Property Name="Purpose" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
           <Property Name="Price" Type="Decimal" Nullable="false" Precision="13" Scale="2" />
@@ -692,7 +760,6 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FirsName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="LastName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="MiddleName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Phone" Type="String" MaxLength="17" FixedLength="false" Unicode="false" />
@@ -718,6 +785,7 @@
           <Property Name="NotifyByPost" Type="Boolean" Nullable="false" />
           <Property Name="CreationTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ModificationTime" Type="DateTime" Precision="3" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="DiscountCard">
           <Key>
@@ -964,6 +1032,50 @@
           <End Type="CRMModel.Privilege" Role="Privilege" Multiplicity="*" />
           <End Type="CRMModel.User" Role="User" Multiplicity="*" />
         </Association>
+        <ComplexType Name="AppointmentDashboardData">
+          <Property Type="DateTime" Name="Date" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="Planned" Nullable="true" />
+          <Property Type="Int32" Name="Completed" Nullable="true" />
+          <Property Type="Decimal" Name="Payed" Nullable="true" Precision="5" Scale="2" />
+        </ComplexType>
+        <ComplexType Name="CustomerDashboardData">
+          <Property Type="String" Name="FirstName" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="LastName" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="MiddleName" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="MobilePhone" Nullable="true" MaxLength="17" />
+          <Property Type="Decimal" Name="Debt" Nullable="true" Precision="13" Scale="2" />
+        </ComplexType>
+        <EntityType Name="CustomerView">
+          <Key>
+            <PropertyRef Name="CustomerID" />
+          </Key>
+          <Property Name="CustomerID" Type="Int32" Nullable="false" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MiddleName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Gender" Type="Int32" Nullable="false" />
+          <Property Name="Country" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="Region" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="Zip" Type="Int32" />
+          <Property Name="Phone" Type="String" MaxLength="17" FixedLength="false" Unicode="false" />
+          <Property Name="MobilePhone" Type="String" MaxLength="17" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="BirthDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MoneyBalance" Type="Decimal" Nullable="false" Precision="13" Scale="2" />
+          <Property Name="NotifyByEmail" Type="Boolean" Nullable="false" />
+          <Property Name="NotifyBySms" Type="Boolean" Nullable="false" />
+          <Property Name="NotifyByPost" Type="Boolean" Nullable="false" />
+          <Property Name="CreationTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModificationTime" Type="DateTime" Precision="3" />
+          <Property Name="DiscountcardID" Type="Int32" />
+          <Property Name="DiscountCardCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DiscountPercent" Type="Decimal" Precision="4" Scale="2" />
+          <Property Name="FirstVisit" Type="DateTime" Precision="3" />
+          <Property Name="LastVisit" Type="DateTime" Precision="3" />
+          <Property Name="NextVisit" Type="DateTime" Precision="3" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1079,6 +1191,7 @@
           <EntitySetMapping Name="Customers">
             <EntityTypeMapping TypeName="CRMModel.Customer">
               <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="ModificationTime" ColumnName="ModificationTime" />
                 <ScalarProperty Name="CreationTime" ColumnName="CreationTime" />
                 <ScalarProperty Name="NotifyByPost" ColumnName="NotifyByPost" />
@@ -1100,7 +1213,6 @@
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="FirsName" ColumnName="FirsName" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1156,6 +1268,59 @@
               <ScalarProperty Name="ID" ColumnName="PrivilegeID" />
             </EndProperty>
           </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="GetAppointmentDashboardData" FunctionName="CRMModel.Store.GetAppointmentDashboardData">
+          <ResultMapping>
+              <ComplexTypeMapping TypeName="CRMModel.AppointmentDashboardData">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Planned" ColumnName="Planned" />
+                <ScalarProperty Name="Completed" ColumnName="Completed" />
+                <ScalarProperty Name="Payed" ColumnName="Payed" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetCustomerDashboardData" FunctionName="CRMModel.Store.GetCustomerDashboardData">
+          <ResultMapping>
+              <ComplexTypeMapping TypeName="CRMModel.CustomerDashboardData">
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="MobilePhone" ColumnName="MobilePhone" />
+                <ScalarProperty Name="Debt" ColumnName="Debt" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="CustomerView">
+            <EntityTypeMapping TypeName="CRMModel.CustomerView">
+              <MappingFragment StoreEntitySet="CustomerView">
+                <ScalarProperty Name="NextVisit" ColumnName="NextVisit" />
+                <ScalarProperty Name="LastVisit" ColumnName="LastVisit" />
+                <ScalarProperty Name="FirstVisit" ColumnName="FirstVisit" />
+                <ScalarProperty Name="DiscountPercent" ColumnName="DiscountPercent" />
+                <ScalarProperty Name="DiscountCardCode" ColumnName="DiscountCardCode" />
+                <ScalarProperty Name="DiscountcardID" ColumnName="DiscountcardID" />
+                <ScalarProperty Name="ModificationTime" ColumnName="ModificationTime" />
+                <ScalarProperty Name="CreationTime" ColumnName="CreationTime" />
+                <ScalarProperty Name="NotifyByPost" ColumnName="NotifyByPost" />
+                <ScalarProperty Name="NotifyBySms" ColumnName="NotifyBySms" />
+                <ScalarProperty Name="NotifyByEmail" ColumnName="NotifyByEmail" />
+                <ScalarProperty Name="MoneyBalance" ColumnName="MoneyBalance" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="MobilePhone" ColumnName="MobilePhone" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Zip" ColumnName="Zip" />
+                <ScalarProperty Name="Region" ColumnName="Region" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -23,5 +23,10 @@ namespace BeautySmileCRM.ViewModels
         {
             get { return ServiceContainer.GetService<INavigationService>(); }
         }
+
+        public BaseNavigationViewModel()
+        {
+            
+        }
     }
 }

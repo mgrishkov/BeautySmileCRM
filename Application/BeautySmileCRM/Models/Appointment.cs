@@ -21,8 +21,8 @@ namespace BeautySmileCRM.Models
     
         public int ID { get; set; }
         public int CustomerID { get; set; }
-        public string StartTime { get; set; }
-        public string EndTime { get; set; }
+        public System.DateTime StartTime { get; set; }
+        public Nullable<System.DateTime> EndTime { get; set; }
         public int StaffID { get; set; }
         public string Purpose { get; set; }
         public decimal Price { get; set; }

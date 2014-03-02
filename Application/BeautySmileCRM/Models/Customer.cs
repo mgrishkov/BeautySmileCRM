@@ -21,7 +21,6 @@ namespace BeautySmileCRM.Models
         }
     
         public int ID { get; set; }
-        public string FirsName { get; set; }
         public string LastName { get; set; }
         public string MiddleName { get; set; }
         public string Phone { get; set; }
@@ -43,6 +42,7 @@ namespace BeautySmileCRM.Models
         public bool NotifyByPost { get; set; }
         public System.DateTime CreationTime { get; set; }
         public Nullable<System.DateTime> ModificationTime { get; set; }
+        public string FirstName { get; set; }
     
         public virtual User User { get; set; }
         public virtual ICollection<Appointment> Appointments { get; set; }

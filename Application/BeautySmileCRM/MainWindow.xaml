@@ -12,7 +12,8 @@
              ShowIcon="False" ShowTitle="False" ShowInTaskbar="True" Icon="logo.ico"
              WindowState="Maximized"
              Background="White" 
-             dx:ThemeManager.ThemeName="MetropolisLight">
+             dx:ThemeManager.ThemeName="MetropolisLight"
+             >
     <dx:DXWindow.DataContext>
         <ViewModel:MainWindow/>
     </dx:DXWindow.DataContext>

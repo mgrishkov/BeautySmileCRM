@@ -12,6 +12,8 @@ namespace BeautySmileCRM.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class CRMContext : DbContext
     {
@@ -38,5 +40,16 @@ namespace BeautySmileCRM.Models
         public virtual DbSet<DiscountCard> DiscountCards { get; set; }
         public virtual DbSet<FinancialTransaction> FinancialTransactions { get; set; }
         public virtual DbSet<Staff> Staffs { get; set; }
+        public virtual DbSet<CustomerView> CustomerView { get; set; }
+    
+        public virtual ObjectResult<AppointmentDashboardData> GetAppointmentDashboardData()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<AppointmentDashboardData>("GetAppointmentDashboardData");
+        }
+    
+        public virtual ObjectResult<CustomerDashboardData> GetCustomerDashboardData()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CustomerDashboardData>("GetCustomerDashboardData");
+        }
     }
 }
