@@ -179,10 +179,44 @@
           <Property Name="Position" Type="nvarchar" MaxLength="4000" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'CRM.CST.AppointmentView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="AppointmentView">
+          <Key>
+            <PropertyRef Name="AppointmentID" />
+          </Key>
+          <Property Name="AppointmentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerID" Type="int" Nullable="false" />
+          <Property Name="StartTime" Type="datetime" Nullable="false" />
+          <Property Name="EndTime" Type="datetime" />
+          <Property Name="StaffID" Type="int" Nullable="false" />
+          <Property Name="Purpose" Type="nvarchar" MaxLength="4000" Nullable="false" />
+          <Property Name="Price" Type="decimal" Precision="13" Scale="2" Nullable="false" />
+          <Property Name="DiscountPercent" Type="decimal" Precision="4" Scale="2" Nullable="false" />
+          <Property Name="Discount" Type="decimal" Precision="13" Scale="2" Nullable="false" />
+          <Property Name="ToPay" Type="decimal" Precision="13" Scale="2" Nullable="false" />
+          <Property Name="Payed" Type="decimal" Precision="13" Scale="2" />
+          <Property Name="PaymentStateID" Type="int" Nullable="false" />
+          <Property Name="StateID" Type="int" Nullable="false" />
+          <Property Name="CreatintTime" Type="datetime" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="ModificationTime" Type="datetime" />
+          <Property Name="ModifiedBy" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'CRM.CST.CustomerView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="CustomerView">
           <Key>
             <PropertyRef Name="CustomerID" />
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
           </Key>
           <Property Name="CustomerID" Type="int" Nullable="false" />
           <Property Name="FirstName" Type="nvarchar" MaxLength="255" Nullable="false" />
@@ -444,6 +478,27 @@ warning 6002: The table/view 'CRM.CST.CustomerView' does not have a primary key 
           <EntitySet Name="DiscountCard" EntityType="Self.DiscountCard" Schema="CST" store:Type="Tables" />
           <EntitySet Name="FinancialTransaction" EntityType="Self.FinancialTransaction" Schema="CST" store:Type="Tables" />
           <EntitySet Name="Staff" EntityType="Self.Staff" Schema="STF" store:Type="Tables" />
+          <EntitySet Name="AppointmentView" EntityType="Self.AppointmentView" store:Type="Views" store:Schema="CST">
+            <DefiningQuery>SELECT 
+    [AppointmentView].[AppointmentID] AS [AppointmentID], 
+    [AppointmentView].[CustomerID] AS [CustomerID], 
+    [AppointmentView].[StartTime] AS [StartTime], 
+    [AppointmentView].[EndTime] AS [EndTime], 
+    [AppointmentView].[StaffID] AS [StaffID], 
+    [AppointmentView].[Purpose] AS [Purpose], 
+    [AppointmentView].[Price] AS [Price], 
+    [AppointmentView].[DiscountPercent] AS [DiscountPercent], 
+    [AppointmentView].[Discount] AS [Discount], 
+    [AppointmentView].[ToPay] AS [ToPay], 
+    [AppointmentView].[Payed] AS [Payed], 
+    [AppointmentView].[PaymentStateID] AS [PaymentStateID], 
+    [AppointmentView].[StateID] AS [StateID], 
+    [AppointmentView].[CreatintTime] AS [CreatintTime], 
+    [AppointmentView].[CreatedBy] AS [CreatedBy], 
+    [AppointmentView].[ModificationTime] AS [ModificationTime], 
+    [AppointmentView].[ModifiedBy] AS [ModifiedBy]
+    FROM [CST].[AppointmentView] AS [AppointmentView]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="CustomerView" EntityType="Self.CustomerView" store:Type="Views" store:Schema="CST">
             <DefiningQuery>SELECT 
     [CustomerView].[CustomerID] AS [CustomerID], 
@@ -636,6 +691,7 @@ warning 6002: The table/view 'CRM.CST.CustomerView' does not have a primary key 
           <FunctionImport Name="GetAppointmentDashboardData" ReturnType="Collection(CRMModel.AppointmentDashboardData)" />
           <FunctionImport Name="GetCustomerDashboardData" ReturnType="Collection(CRMModel.CustomerDashboardData)" />
           <EntitySet Name="CustomerView" EntityType="CRMModel.CustomerView" />
+          <EntitySet Name="AppointmentView" EntityType="CRMModel.AppointmentView" />
         </EntityContainer>
         <EntityType Name="Privilege">
           <Key>
@@ -1076,6 +1132,28 @@ warning 6002: The table/view 'CRM.CST.CustomerView' does not have a primary key 
           <Property Name="LastVisit" Type="DateTime" Precision="3" />
           <Property Name="NextVisit" Type="DateTime" Precision="3" />
         </EntityType>
+        <EntityType Name="AppointmentView">
+          <Key>
+            <PropertyRef Name="AppointmentID" />
+          </Key>
+          <Property Name="AppointmentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerID" Type="Int32" Nullable="false" />
+          <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndTime" Type="DateTime" Precision="3" />
+          <Property Name="StaffID" Type="Int32" Nullable="false" />
+          <Property Name="Purpose" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="Price" Type="Decimal" Nullable="false" Precision="13" Scale="2" />
+          <Property Name="DiscountPercent" Type="Decimal" Nullable="false" Precision="4" Scale="2" />
+          <Property Name="Discount" Type="Decimal" Nullable="false" Precision="13" Scale="2" />
+          <Property Name="ToPay" Type="Decimal" Nullable="false" Precision="13" Scale="2" />
+          <Property Name="Payed" Type="Decimal" Precision="13" Scale="2" />
+          <Property Name="PaymentStateID" Type="Int32" Nullable="false" />
+          <Property Name="StateID" Type="Int32" Nullable="false" />
+          <Property Name="CreatintTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="ModificationTime" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1318,6 +1396,29 @@ warning 6002: The table/view 'CRM.CST.CustomerView' does not have a primary key 
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AppointmentView">
+            <EntityTypeMapping TypeName="CRMModel.AppointmentView">
+              <MappingFragment StoreEntitySet="AppointmentView">
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModificationTime" ColumnName="ModificationTime" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatintTime" ColumnName="CreatintTime" />
+                <ScalarProperty Name="StateID" ColumnName="StateID" />
+                <ScalarProperty Name="PaymentStateID" ColumnName="PaymentStateID" />
+                <ScalarProperty Name="Payed" ColumnName="Payed" />
+                <ScalarProperty Name="ToPay" ColumnName="ToPay" />
+                <ScalarProperty Name="Discount" ColumnName="Discount" />
+                <ScalarProperty Name="DiscountPercent" ColumnName="DiscountPercent" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Purpose" ColumnName="Purpose" />
+                <ScalarProperty Name="StaffID" ColumnName="StaffID" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="AppointmentID" ColumnName="AppointmentID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

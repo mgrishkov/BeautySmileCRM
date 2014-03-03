@@ -10,7 +10,7 @@
              xmlns:ViewModel="clr-namespace:BeautySmileCRM.ViewModels" 
              xmlns:Views="clr-namespace:BeautySmileCRM.Views" 
              mc:Ignorable="d" 
-             d:DesignWidth="1000" Height="50"
+             d:DesignWidth="1280" Height="50"
              Background="White"
              dx:ThemeManager.ThemeName="MetropolisLight"
              x:Name="root">
@@ -71,7 +71,7 @@
                                     </VisualStateGroup>
                                 </VisualStateManager.VisualStateGroups>
                                 <dx:BackgroundPanel Background="Transparent">
-                                    <TextBlock x:Name="TextBlock" Text="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" FontSize="17" Opacity="0.7" />
+                                    <TextBlock x:Name="TextBlock" Text="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" FontSize="16" Opacity="0.7" />
                                 </dx:BackgroundPanel>
                             </Grid>
                         </ControlTemplate>
@@ -88,6 +88,9 @@
 
         <TextBlock Grid.Column="0" Style="{StaticResource Title}"
                    Text="Beauty Smile CMS"/>
+        <TextBlock Grid.Column="1" Style="{StaticResource ImportantHeader}"
+                   VerticalAlignment="Bottom" Margin="10, 0, 10, 5"
+                   Text="{Binding Path='SubTitle',  ElementName='root'}"/>
         <dxwuii:SplitPanel Grid.Column="2" Margin="0, 0, 10, 0"
                            ItemSpacing="20" Orientation="Horizontal" ItemSizeMode="AutoSize"
                            Visibility="{Binding Path='ShowNavigationPanel', ElementName='root', Converter={converters:BoolToVisibilityConverter}}">

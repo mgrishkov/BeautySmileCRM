@@ -37,8 +37,7 @@
     
     <Grid>
         <dxwui:NavigationFrame x:Name="MainNavigationFrame"
-                               AnimationType="SlideHorizontal"
-                               BackNavigationMode="Root" />
+                               AnimationType="Fade"/>
 
     </Grid>
 </dx:DXWindow>

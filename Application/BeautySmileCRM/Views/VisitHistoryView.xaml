@@ -9,11 +9,12 @@
              xmlns:preloader="clr-namespace:PreloaderControll;assembly=PreloaderControll"
              xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"  
              xmlns:dxwuin="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/navigation"
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
              xmlns:ViewModel="clr-namespace:BeautySmileCRM.ViewModels" 
              xmlns:Views="clr-namespace:BeautySmileCRM.Views" 
              x:Class="BeautySmileCRM.Views.VisitHistoryView"
              mc:Ignorable="d" 
-             d:DesignWidth="600" d:DesignHeight="600"
+             d:DesignWidth="1280" d:DesignHeight="600"
              Background="White"
              dx:ThemeManager.ThemeName="MetropolisLight">
     <UserControl.Resources>
@@ -28,13 +29,156 @@
     <UserControl.DataContext>
         <ViewModel:VisitHistory/>
     </UserControl.DataContext>
-    
+
     <dxwui:PageAdornerControl>
         <dxwui:PageAdornerControl.HeaderTemplate>
             <DataTemplate>
-                <Views:Header Grid.Row="0" />
+                <Views:Header Grid.Row="0" SubTitle="История визитов" />
             </DataTemplate>
         </dxwui:PageAdornerControl.HeaderTemplate>
-        
+
+        <dxb:BarManager Grid.Row="0">
+            <dxb:BarManager.Items>
+                <dxb:BarButtonItem x:Name="RefreshButton" Content="Обновить" 
+				               LargeGlyph="{StaticResource Refresh24}" Command="{Binding RefreshCommand}" />
+                <dxb:BarButtonItem x:Name="AddButton" Content="Создать дисконт..." 
+				               LargeGlyph="{StaticResource Add24}" Command="{Binding AddDiscountCommand}" />
+                <dxb:BarButtonItem x:Name="EditButton" Content="Редактировать дисконт..." 
+				               LargeGlyph="{StaticResource Edit24}" Command="{Binding EditDiscountCommand}" />
+                <dxb:BarButtonItem x:Name="DeleteButton" Content="Удалить дисконт..." 
+				               LargeGlyph="{StaticResource Delete24}" Command="{Binding DeleteDiscountCommand}" />
+                <dxb:BarButtonItem x:Name="ExportButton" Content="Экспортировать..."
+				               LargeGlyph="{StaticResource Excel24}" Command="{Binding ExportCommand}" />
+            </dxb:BarManager.Items>
+            <dxb:BarManager.Bars>
+                <dxb:Bar x:Name="mainMenuBar" Caption="Панель инструментов" 
+				         IsMainMenu="True" UseWholeRow="True" AllowCustomizationMenu="False" AllowDrop="False">
+                    <dxb:Bar.DockInfo>
+                        <dxb:BarDockInfo ContainerType="Top" />
+                    </dxb:Bar.DockInfo>
+                    <dxb:BarButtonItemLink BarItemName="RefreshButton" />
+                    <dxb:BarItemLinkSeparator />
+                    <dxb:BarButtonItemLink BarItemName="AddButton" />
+                    <dxb:BarButtonItemLink BarItemName="EditButton" />
+                    <dxb:BarButtonItemLink BarItemName="DeleteButton" />
+                    <dxb:BarItemLinkSeparator />
+                    <dxb:BarButtonItemLink BarItemName="ExportButton" />
+                </dxb:Bar>
+                <dxb:Bar x:Name="statusBar" Caption="Строка состояния" IsStatusBar="True">
+                    <dxb:Bar.DockInfo>
+                        <dxb:BarDockInfo ContainerType="Bottom" />
+                    </dxb:Bar.DockInfo>
+                </dxb:Bar>
+            </dxb:BarManager.Bars>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <dxg:GridControl x:Name="mainGrid" 
+				                 Grid.Row="0" Grid.Column="0"
+				                 ItemsSource="{Binding DataSource.Data}">
+                    <dxg:GridControl.Bands>
+                        <dxg:GridControlBand Header="Основные данные" HorizontalHeaderContentAlignment="Center" VisibleIndex="0">
+                            <dxg:GridColumn FieldName="CustomerID" Header="ФИО клиента" Width="130" ReadOnly="True" VisibleIndex="0">
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:ComboBoxEditSettings ItemsSource="{Binding Clients}" DisplayMember="Value" ValueMember="Key" />
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="StartTime" Header="Начало визита" Width="120" ReadOnly="True" VisibleIndex="1" >
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:DateEditSettings Mask="g" MaskType="DateTime" MaskUseAsDisplayFormat="True" />
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="EndTime" Header="Окончание визита" Width="120" ReadOnly="True" VisibleIndex="2" >
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:DateEditSettings Mask="g" MaskType="DateTime" MaskUseAsDisplayFormat="True" />
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="Purpose" Header="Цель визита" Width="280" ReadOnly="True" VisibleIndex="3" >
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:TextEditSettings />
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="StaffID" Header="Лечащий врач" Width="130" ReadOnly="True" VisibleIndex="4">
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:ComboBoxEditSettings ItemsSource="{Binding Staff}" DisplayMember="Value" ValueMember="Key" />
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="StateID" Header="Состояние" Width="120" ReadOnly="True" VisibleIndex="5">
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:ComboBoxEditSettings ItemsSource="{Binding States}" DisplayMember="Value" ValueMember="Key" />
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                        </dxg:GridControlBand>
+                        <dxg:GridControlBand Header="Финансовые данные" HorizontalHeaderContentAlignment="Center" VisibleIndex="1">
+                            <dxg:GridColumn FieldName="PaymentStateID" Header="Статус оплаты" Width="80" ReadOnly="True" VisibleIndex="6">
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:ComboBoxEditSettings ItemsSource="{Binding PaymentStates}" DisplayMember="Value" ValueMember="Key" />
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="Price" Header="Стоимсть услуг" Width="80" ReadOnly="True" VisibleIndex="7">
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:SpinEditSettings IsFloatValue="True"  MaskType="Numeric" Mask="C" MaskUseAsDisplayFormat="True" HorizontalContentAlignment="Right"/>
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="DiscountPercent" Header="Процент скидки" Width="80" ReadOnly="True" VisibleIndex="8">
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:SpinEditSettings IsFloatValue="True"  MaskType="Numeric" Mask="P" MaskUseAsDisplayFormat="True" HorizontalContentAlignment="Right"/>
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="Discount" Header="Cкидка" Width="80" ReadOnly="True" VisibleIndex="9">
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:SpinEditSettings IsFloatValue="True"  MaskType="Numeric" Mask="C" MaskUseAsDisplayFormat="True" HorizontalContentAlignment="Right"/>
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="ToPay" Header="К оплате" Width="80" ReadOnly="True" VisibleIndex="10">
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:SpinEditSettings IsFloatValue="True"  MaskType="Numeric" Mask="C" MaskUseAsDisplayFormat="True" HorizontalContentAlignment="Right"/>
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="Payed" Header="Оплачено" Width="80" ReadOnly="True" VisibleIndex="11">
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:SpinEditSettings IsFloatValue="True"  MaskType="Numeric" Mask="C" MaskUseAsDisplayFormat="True" HorizontalContentAlignment="Right"/>
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                        </dxg:GridControlBand>
+                        <dxg:GridControlBand Header="Прочее" HorizontalHeaderContentAlignment="Center" VisibleIndex="2">
+                            <dxg:GridColumn FieldName="CreatintTime" Header="Дата зарегистрации визита" Width="120" ReadOnly="True" VisibleIndex="13" >
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:DateEditSettings Mask="g" MaskType="DateTime" MaskUseAsDisplayFormat="True" />
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="CreatedBy" Header="Создал" Width="160" ReadOnly="True" VisibleIndex="14">
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:ComboBoxEditSettings ItemsSource="{Binding Users}" DisplayMember="Value" ValueMember="Key" />
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="ModificationTime" Header="Дата изменения визита" Width="120" ReadOnly="True" VisibleIndex="15" >
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:DateEditSettings Mask="g" MaskType="DateTime" MaskUseAsDisplayFormat="True" />
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="ModifiedBy" Header="Изменил" Width="160" ReadOnly="True" VisibleIndex="16">
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:ComboBoxEditSettings ItemsSource="{Binding Users}" DisplayMember="Value" ValueMember="Key" />
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                        </dxg:GridControlBand>
+                    </dxg:GridControl.Bands>
+
+                    <dxg:GridControl.View>
+                        <dxg:TableView x:Name="view" ShowTotalSummary="True" AllowEditing="True"
+						               ShowAutoFilterRow="True" ShowGroupedColumns="True" AllowHorizontalScrollingVirtualization="False" 
+            					       ShowGroupPanel="False" 
+                                       FocusedRow="{Binding SelectedAppointment, Converter={converters:ReadonlyThreadSafeProxyForObjectFromAnotherThreadToOrigianlConverter}, Mode=TwoWay}"/>
+                    </dxg:GridControl.View>
+                </dxg:GridControl>
+            </Grid>
+        </dxb:BarManager>
+
     </dxwui:PageAdornerControl>
 </UserControl>

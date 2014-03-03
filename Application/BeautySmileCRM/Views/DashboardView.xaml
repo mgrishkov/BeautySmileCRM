@@ -30,10 +30,10 @@
         <ViewModel:Dashboard/>
     </UserControl.DataContext>
 
-    <dxwui:PageAdornerControl>
+    <dxwui:PageAdornerControl ShowBackButton="False" >
         <dxwui:PageAdornerControl.HeaderTemplate>
             <DataTemplate>
-                <Views:Header Grid.Row="0" ShowNavigationPanel="False" />
+                <Views:Header Grid.Row="0" ShowNavigationPanel="False" SubTitle="Главное меню"/>
             </DataTemplate>
         </dxwui:PageAdornerControl.HeaderTemplate>
 

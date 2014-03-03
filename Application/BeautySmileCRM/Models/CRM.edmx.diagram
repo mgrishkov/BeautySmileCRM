@@ -36,6 +36,7 @@
         <AssociationConnector Association="CRMModel.FK_FinancialTransaction_CustomerID_Customer_ID" />
         <AssociationConnector Association="CRMModel.UserPrivilege" />
         <EntityTypeShape EntityType="CRMModel.CustomerView" Width="1.5" PointX="8.75" PointY="10.875" />
+        <EntityTypeShape EntityType="CRMModel.AppointmentView" Width="1.5" PointX="11.375" PointY="9.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

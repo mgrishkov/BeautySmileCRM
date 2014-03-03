@@ -32,7 +32,7 @@
     <dxwui:PageAdornerControl>
         <dxwui:PageAdornerControl.HeaderTemplate>
             <DataTemplate>
-                <Views:Header Grid.Row="0" />
+                <Views:Header Grid.Row="0" SubTitle="База клиентов" />
             </DataTemplate>
         </dxwui:PageAdornerControl.HeaderTemplate>
 

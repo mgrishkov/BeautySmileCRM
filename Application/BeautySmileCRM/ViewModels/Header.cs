@@ -10,5 +10,6 @@ namespace BeautySmileCRM.ViewModels
 {
     public class Header : BaseNavigationViewModel
     {
+        
     }
 }

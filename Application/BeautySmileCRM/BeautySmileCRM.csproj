@@ -130,6 +130,9 @@
     <Compile Include="Models\AppointmentState.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\AppointmentView.cs">
+      <DependentUpon>CRM.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\CRM.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -151,6 +154,8 @@
     <Compile Include="Models\Customer.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Staff.Extended.cs" />
+    <Compile Include="Models\Customer.Extended.cs" />
     <Compile Include="Models\CustomerDashboardData.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
@@ -194,12 +199,6 @@
     <Compile Include="ViewModels\Header.cs" />
     <Compile Include="ViewModels\Login.cs" />
     <Compile Include="ViewModels\MainWindow.cs" />
-    <Compile Include="Views\ReportView.xaml.cs">
-      <DependentUpon>ReportView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\PositionView.xaml.cs">
-      <DependentUpon>PositionView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\StaffView.xaml.cs">
       <DependentUpon>StaffView.xaml</DependentUpon>
     </Compile>
@@ -308,14 +307,6 @@
     <Page Include="Resources\TextBlockResourceDictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ReportView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\PositionView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\StaffView.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -32,7 +32,7 @@
     <dxwui:PageAdornerControl>
         <dxwui:PageAdornerControl.HeaderTemplate>
             <DataTemplate>
-                <Views:Header Grid.Row="0" />
+                <Views:Header Grid.Row="0" SubTitle="Справочник скидок" />
             </DataTemplate>
         </dxwui:PageAdornerControl.HeaderTemplate>
 
@@ -117,7 +117,6 @@
                 </dxg:GridControl>
             </Grid>
         </dxb:BarManager>
-
 
     </dxwui:PageAdornerControl>
 </UserControl>

@@ -28,8 +28,8 @@
     <UserControl.DataContext>
         <ViewModel:Login/>
     </UserControl.DataContext>
-    
-    <dxwui:PageAdornerControl>
+
+    <dxwui:PageAdornerControl ShowBackButton="False">
         <dxwui:PageAdornerControl.HeaderTemplate>
             <DataTemplate>
                 <Views:Header Grid.Row="0" ShowNavigationPanel="False" />

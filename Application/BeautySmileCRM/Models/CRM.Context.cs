@@ -41,6 +41,7 @@ namespace BeautySmileCRM.Models
         public virtual DbSet<FinancialTransaction> FinancialTransactions { get; set; }
         public virtual DbSet<Staff> Staffs { get; set; }
         public virtual DbSet<CustomerView> CustomerView { get; set; }
+        public virtual DbSet<AppointmentView> AppointmentView { get; set; }
     
         public virtual ObjectResult<AppointmentDashboardData> GetAppointmentDashboardData()
         {

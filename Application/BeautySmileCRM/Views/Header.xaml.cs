@@ -25,11 +25,19 @@ namespace BeautySmileCRM.Views
             get { return (bool)GetValue(ShowNavigationPanelProperty); }
             set { SetValue(ShowNavigationPanelProperty, value); }
         }
-
-        // Using a DependencyProperty as the backing store for ShowNavigationPanel.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ShowNavigationPanelProperty =
             DependencyProperty.Register("ShowNavigationPanel", typeof(bool), typeof(Header), new PropertyMetadata(true));
-        
+
+        public string SubTitle
+        {
+            get { return (string)GetValue(SubTitleProperty); }
+            set { SetValue(SubTitleProperty, value); }
+        }
+        public static readonly DependencyProperty SubTitleProperty =
+            DependencyProperty.Register("SubTitle", typeof(string), typeof(Views.Header), new PropertyMetadata(String.Empty));
+
+
+
         public Header()
         {
             InitializeComponent();   
