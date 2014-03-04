@@ -88,6 +88,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Converters\AuthorizationStageToVisibilityConverter.cs" />
+    <Compile Include="Converters\MouseButtonEventArgsConverter.cs" />
     <Compile Include="Converters\NotBoolToVisibilityConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\ReadonlyThreadSafeProxyForObjectFromAnotherThreadToOrigianlConverter.cs" />
@@ -118,6 +119,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AppointmentState.tt</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\Interface1.cs" />
     <Compile Include="Models\Appointment.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
@@ -188,6 +190,7 @@
     </Compile>
     <Compile Include="Utils\Notification.cs" />
     <Compile Include="ViewModels\BaseNavigationViewModel.cs" />
+    <Compile Include="ViewModels\DialogWindow.cs" />
     <Compile Include="ViewModels\Report.cs" />
     <Compile Include="ViewModels\Position.cs" />
     <Compile Include="ViewModels\Staff.cs" />
@@ -222,6 +225,9 @@
     </Compile>
     <Compile Include="Views\Header.xaml.cs">
       <DependentUpon>Header.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\DialogWindow.xaml.cs">
+      <DependentUpon>DialogWindow.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -337,6 +343,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Header.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\DialogWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

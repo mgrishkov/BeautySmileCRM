@@ -6,10 +6,24 @@
         <Setter Property="FontFamily" Value="Segoe UI Light"/>
         <Setter Property="Margin" Value="10, 0, 0, 5"/>
     </Style>
+    <Style x:Key="SubTitle" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="#382F21"/>
+        <Setter Property="FontFamily" Value="Segoe UI Light"/>
+        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="Margin" Value="10, 0, 10, 5"/>
+        <Setter Property="VerticalAlignment" Value="Bottom" />
+    </Style>
     <Style x:Key="DialogTitle" TargetType="{x:Type TextBlock}">
         <Setter Property="Foreground" Value="#FFF78A09"/>
         <Setter Property="FontSize" Value="24"/>
         <Setter Property="FontFamily" Value="Segoe UI Light"/>
+    </Style>
+    <Style x:Key="DialogSubTitle" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="#382F21"/>
+        <Setter Property="FontFamily" Value="Segoe UI Light"/>
+        <Setter Property="FontSize" Value="19"/>
+        <Setter Property="Margin" Value="10, 0, 10, 5"/>
+        <Setter Property="VerticalAlignment" Value="Bottom" />
     </Style>
     <Style x:Key="ImportantHeader" TargetType="{x:Type TextBlock}">
         <Setter Property="Foreground" Value="#382F21"/>
