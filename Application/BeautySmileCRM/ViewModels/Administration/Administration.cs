@@ -10,14 +10,21 @@ using System.Windows.Navigation;
 using System.Windows.Threading;
 using BeautySmileCRM.Enums;
 using DevExpress.Xpf.Core.ServerMode;
-using Models =BeautySmileCRM.Models;
+using BeautySmileCRM.ViewModels.Base;
+using System.ComponentModel;
+using System.Windows;
+using SmartClasses.Extensions;
 
 namespace BeautySmileCRM.ViewModels
 {
     public class Administration : BaseNavigationViewModel
     {
+        protected IDialogService DialogService { get { return GetService<IDialogService>(); } }
+        protected IMessageBoxService MessageService { get { return GetService<IMessageBoxService>(); } }
+
         private readonly Models.CRMContext _dc;
         private Models.User _selectedUser;
+        private AdminEdit _viewModel;
 
         public Models.User SelectedUser
         {
@@ -72,7 +79,7 @@ namespace BeautySmileCRM.ViewModels
         }
         private void onEditUserCommandExecute()
         {
-
+            ShowDialog(DialogMode.Update);
         }
         private void onDeleteUserCommandExecute()
         {
@@ -81,6 +88,47 @@ namespace BeautySmileCRM.ViewModels
         private void onExportCommandExecute()
         {
 
+        }
+
+
+        private void ShowDialog(DialogMode mode)
+        {
+            if (_viewModel == null)
+                _viewModel = new AdminEdit();
+
+            _viewModel.Mode = mode;
+
+            var saveCommand = new UICommand()
+            {
+                Id = MessageBoxResult.OK,
+                Caption = "Сохранить",
+                IsCancel = false,
+                IsDefault = true,
+                Command = new DelegateCommand<CancelEventArgs>(
+                    x => { },
+                    x => { return _viewModel.AllowSave; }
+                ),
+            };
+            var cancelCommand = new UICommand()
+            {
+                Id = MessageBoxResult.Cancel,
+                Caption = "Отменить",
+                IsCancel = true,
+                IsDefault = false,
+                Command = new DelegateCommand<CancelEventArgs>(onDialogCancelCommandtExecuting)
+            };
+
+            var result = DialogService.ShowDialog(
+                dialogCommands: new List<UICommand>() { saveCommand, cancelCommand },
+                title: _viewModel.FullTitle,
+                viewModel: _viewModel
+            );
+        }
+        private void onDialogCancelCommandtExecuting(CancelEventArgs parameter)
+        {
+            MessageService.Show(messageBoxText: "Want to save your changes?", 
+                caption: "Document", 
+                button: MessageBoxButton.YesNoCancel);
         }
     }
 }

@@ -11,6 +11,7 @@ using System.Windows.Threading;
 using BeautySmileCRM.Enums;
 using Models = BeautySmileCRM.Models;
 using DevExpress.Xpf.Core.ServerMode;
+using BeautySmileCRM.ViewModels.Base;
 
 namespace BeautySmileCRM.ViewModels
 {

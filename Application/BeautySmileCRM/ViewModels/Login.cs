@@ -12,6 +12,7 @@ using BeautySmileCRM.Models;
 using DevExpress.Xpf.Mvvm;
 using SmartClasses.Extensions;
 using System.Data.Entity;
+using BeautySmileCRM.ViewModels.Base;
 
 namespace BeautySmileCRM.ViewModels
 {

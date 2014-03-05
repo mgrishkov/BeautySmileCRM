@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using DevExpress.Xpf.Mvvm;
+using BeautySmileCRM.ViewModels.Base;
 
 namespace BeautySmileCRM.ViewModels
 {

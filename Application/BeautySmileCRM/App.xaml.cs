@@ -7,6 +7,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Threading;
 using BeautySmileCRM.Models;
+using DevExpress.Xpf.Core;
 
 namespace BeautySmileCRM
 {
@@ -20,6 +21,7 @@ namespace BeautySmileCRM
             Application.Current.DispatcherUnhandledException += new DispatcherUnhandledExceptionEventHandler(AppDispatcherUnhandledException);
             var culture = new CultureInfo("RU-ru");
             System.Threading.Thread.CurrentThread.CurrentCulture = culture;
+            ThemeManager.ApplicationThemeName = "MetropolisLight";
         }
         void AppDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {

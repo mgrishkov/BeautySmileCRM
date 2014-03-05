@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using BeautySmileCRM.Models;
 using DevExpress.Xpf.Mvvm;
 
-namespace BeautySmileCRM.ViewModels
+namespace BeautySmileCRM.ViewModels.Base
 {
     public class BaseNavigationViewModel : NavigationViewModelBase
     {

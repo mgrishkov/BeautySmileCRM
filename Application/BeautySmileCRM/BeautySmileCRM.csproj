@@ -92,6 +92,7 @@
     <Compile Include="Converters\NotBoolToVisibilityConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\ReadonlyThreadSafeProxyForObjectFromAnotherThreadToOrigianlConverter.cs" />
+    <Compile Include="Enums\DialogMode.cs" />
     <Compile Include="Enums\Gender.cs" />
     <Compile Include="Enums\Privilege.cs">
       <DependentUpon>Privilege.tt</DependentUpon>
@@ -189,13 +190,12 @@
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
     <Compile Include="Utils\Notification.cs" />
-    <Compile Include="ViewModels\BaseNavigationViewModel.cs" />
-    <Compile Include="ViewModels\DialogWindow.cs" />
-    <Compile Include="ViewModels\Report.cs" />
-    <Compile Include="ViewModels\Position.cs" />
+    <Compile Include="ViewModels\Administration\AdminEdit.cs" />
+    <Compile Include="ViewModels\Base\BaseDialogViewModel.cs" />
+    <Compile Include="ViewModels\Base\BaseNavigationViewModel.cs" />
     <Compile Include="ViewModels\Staff.cs" />
     <Compile Include="ViewModels\Discount.cs" />
-    <Compile Include="ViewModels\Administration.cs" />
+    <Compile Include="ViewModels\Administration\Administration.cs" />
     <Compile Include="ViewModels\VisitHistory.cs" />
     <Compile Include="ViewModels\Client.cs" />
     <Compile Include="ViewModels\Dashboard.cs" />
@@ -208,7 +208,7 @@
     <Compile Include="Views\DiscountView.xaml.cs">
       <DependentUpon>DiscountView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AdministrationView.xaml.cs">
+    <Compile Include="Views\Administration\AdministrationView.xaml.cs">
       <DependentUpon>AdministrationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\VisitHistoryView.xaml.cs">
@@ -226,8 +226,8 @@
     <Compile Include="Views\Header.xaml.cs">
       <DependentUpon>Header.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\DialogWindow.xaml.cs">
-      <DependentUpon>DialogWindow.xaml</DependentUpon>
+    <Compile Include="Views\Administration\AdminEditVIew.xaml.cs">
+      <DependentUpon>AdminEditVIew.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -322,7 +322,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\AdministrationView.xaml">
+    <Page Include="Views\Administration\AdministrationView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -346,7 +346,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\DialogWindow.xaml">
+    <Page Include="Views\Administration\AdminEditVIew.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -355,6 +355,7 @@
     <Folder Include="Content\Icons\16x16\" />
     <Folder Include="Content\Icons\48x48\" />
     <Folder Include="Content\Images\" />
+    <Folder Include="Windows\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="logo.ico" />

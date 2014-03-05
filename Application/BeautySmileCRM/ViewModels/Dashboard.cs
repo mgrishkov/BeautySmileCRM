@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using BeautySmileCRM.Enums;
 using DevExpress.Xpf.Mvvm;
+using BeautySmileCRM.ViewModels.Base;
 
 namespace BeautySmileCRM.ViewModels
 {

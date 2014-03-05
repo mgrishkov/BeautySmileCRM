@@ -10,6 +10,7 @@ using System.Windows.Navigation;
 using System.Windows.Threading;
 using BeautySmileCRM.Enums;
 using DevExpress.Xpf.Core.ServerMode;
+using BeautySmileCRM.ViewModels.Base;
 
 namespace BeautySmileCRM.ViewModels
 {
