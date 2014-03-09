@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
              xmlns:converters="clr-namespace:BeautySmileCRM.Converters"
              xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"  
              xmlns:dxwuin="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/navigation"
@@ -16,6 +17,22 @@
              d:DesignWidth="1000" d:DesignHeight="600"
              Background="White"
              dx:ThemeManager.ThemeName="MetropolisLight">
+    <dxmvvm:Interaction.Behaviors>
+        <dx:DXMessageBoxService/>
+        <dx:DialogService DialogWindowStartupLocation="CenterOwner">
+            <dx:DialogService.ViewTemplate>
+                <DataTemplate>
+                    <Views:CumulativeDiscountEditView />
+                </DataTemplate>
+            </dx:DialogService.ViewTemplate>
+            <dx:DialogService.DialogStyle>
+                <Style TargetType="dx:DXDialogWindow">
+                    <Setter Property="Width" Value="400"/>
+                    <Setter Property="Height" Value="270"/>
+                </Style>
+            </dx:DialogService.DialogStyle>
+        </dx:DialogService>
+    </dxmvvm:Interaction.Behaviors>
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -86,24 +103,29 @@
                                 <dxe:SpinEditSettings IsFloatValue="False" />
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
-                        <dxg:GridColumn x:Name="percentField" FieldName="Percent" Header="Процент скидки" Width="60" ReadOnly="True" VisibleIndex="1" >
+                        <dxg:GridColumn x:Name="nameField" FieldName="Name" Header="Название" Width="140" ReadOnly="True" VisibleIndex="1" >
                             <dxg:GridColumn.EditSettings>
-                                <dxe:SpinEditSettings IsFloatValue="True" MaxValue="99.99" MinValue="0" MaskType="Numeric" Mask="n2"/>
+                                <dxe:TextEditSettings />
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
-                        <dxg:GridColumn x:Name="minDiscountField" FieldName="MinDiscount" Header="Мин. скидка" Width="120" ReadOnly="True" VisibleIndex="2" >
+                        <dxg:GridColumn x:Name="percentField" FieldName="Percent" Header="Процент скидки" Width="60" ReadOnly="True" VisibleIndex="2" >
                             <dxg:GridColumn.EditSettings>
-                                <dxe:SpinEditSettings IsFloatValue="True" MinValue="0" MaskType="Numeric" Mask="n2"/>
+                                <dxe:SpinEditSettings IsFloatValue="True" MaxValue="100" MinValue="0" DisplayFormat="P"/>
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
-                        <dxg:GridColumn x:Name="maxDiscountField" FieldName="MaxDiscount" Header="Макс. скидка" Width="120" ReadOnly="True" VisibleIndex="3" >
+                        <dxg:GridColumn x:Name="minDiscountField" FieldName="MinDiscount" Header="Мин. скидка" Width="120" ReadOnly="True" VisibleIndex="3" >
                             <dxg:GridColumn.EditSettings>
-                                <dxe:SpinEditSettings IsFloatValue="True" MinValue="0" MaskType="Numeric" Mask="n2"/>
+                                <dxe:SpinEditSettings IsFloatValue="True" MinValue="0" DisplayFormat="C"/>
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
-                        <dxg:GridColumn x:Name="зurchaseTopLimitField" FieldName="PurchaseTopLimit" Header="Верхняя граница расходов для предоставления скидки" Width="120" ReadOnly="True" VisibleIndex="4" >
+                        <dxg:GridColumn x:Name="maxDiscountField" FieldName="MaxDiscount" Header="Макс. скидка" Width="120" ReadOnly="True" VisibleIndex="4" >
                             <dxg:GridColumn.EditSettings>
-                                <dxe:SpinEditSettings IsFloatValue="True" MinValue="0" MaskType="Numeric" Mask="n2"/>
+                                <dxe:SpinEditSettings IsFloatValue="True" MinValue="0" DisplayFormat="C"/>
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn x:Name="зurchaseTopLimitField" FieldName="PurchaseTopLimit" Header="Верхняя граница расходов для предоставления скидки" Width="120" ReadOnly="True" VisibleIndex="5" >
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:SpinEditSettings IsFloatValue="True" MinValue="0" DisplayFormat="C"/>
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
                     </dxg:GridControl.Columns>

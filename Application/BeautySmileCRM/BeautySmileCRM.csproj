@@ -120,7 +120,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AppointmentState.tt</DependentUpon>
     </Compile>
-    <Compile Include="Interfaces\Interface1.cs" />
     <Compile Include="Models\Appointment.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
@@ -193,8 +192,10 @@
     <Compile Include="ViewModels\Administration\AdminEdit.cs" />
     <Compile Include="ViewModels\Base\BaseDialogViewModel.cs" />
     <Compile Include="ViewModels\Base\BaseNavigationViewModel.cs" />
-    <Compile Include="ViewModels\Staff.cs" />
-    <Compile Include="ViewModels\Discount.cs" />
+    <Compile Include="ViewModels\Discount\CumulativeDiscountEdit.cs" />
+    <Compile Include="ViewModels\Staff\StaffEdit.cs" />
+    <Compile Include="ViewModels\Staff\Staff.cs" />
+    <Compile Include="ViewModels\Discount\Discount.cs" />
     <Compile Include="ViewModels\Administration\Administration.cs" />
     <Compile Include="ViewModels\VisitHistory.cs" />
     <Compile Include="ViewModels\Client.cs" />
@@ -202,10 +203,16 @@
     <Compile Include="ViewModels\Header.cs" />
     <Compile Include="ViewModels\Login.cs" />
     <Compile Include="ViewModels\MainWindow.cs" />
-    <Compile Include="Views\StaffView.xaml.cs">
+    <Compile Include="Views\Discount\CumulativeDiscountEditView.xaml.cs">
+      <DependentUpon>CumulativeDiscountEditView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Staff\StaffEditView.xaml.cs">
+      <DependentUpon>StaffEditView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Staff\StaffView.xaml.cs">
       <DependentUpon>StaffView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DiscountView.xaml.cs">
+    <Compile Include="Views\Discount\DiscountView.xaml.cs">
       <DependentUpon>DiscountView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Administration\AdministrationView.xaml.cs">
@@ -306,6 +313,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Resources\GridResourceDictionary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Resources\StackPanelResourceDictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -314,11 +325,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StaffView.xaml">
+    <Page Include="Views\Discount\CumulativeDiscountEditView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\DiscountView.xaml">
+    <Page Include="Views\Staff\StaffEditView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Staff\StaffView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Discount\DiscountView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

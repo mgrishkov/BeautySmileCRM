@@ -24,7 +24,6 @@ namespace BeautySmileCRM.ViewModels
 
         private readonly Models.CRMContext _dc;
         private Models.User _selectedUser;
-        private AdminEdit _viewModel;
 
         public Models.User SelectedUser
         {
@@ -71,11 +70,11 @@ namespace BeautySmileCRM.ViewModels
         }
         private void onRefreshCommandExecute()
         {
-
+            DataSource.Refresh();
         }
         private void onAddUserCommandExecute()
         {
-
+            ShowDialog(DialogMode.Update);
         }
         private void onEditUserCommandExecute()
         {
@@ -93,42 +92,18 @@ namespace BeautySmileCRM.ViewModels
 
         private void ShowDialog(DialogMode mode)
         {
-            if (_viewModel == null)
-                _viewModel = new AdminEdit();
-
-            _viewModel.Mode = mode;
-
-            var saveCommand = new UICommand()
+            AdminEdit viewModel = null;
+            switch (mode)
             {
-                Id = MessageBoxResult.OK,
-                Caption = "Сохранить",
-                IsCancel = false,
-                IsDefault = true,
-                Command = new DelegateCommand<CancelEventArgs>(
-                    x => { },
-                    x => { return _viewModel.AllowSave; }
-                ),
-            };
-            var cancelCommand = new UICommand()
-            {
-                Id = MessageBoxResult.Cancel,
-                Caption = "Отменить",
-                IsCancel = true,
-                IsDefault = false,
-                Command = new DelegateCommand<CancelEventArgs>(onDialogCancelCommandtExecuting)
-            };
-
-            var result = DialogService.ShowDialog(
-                dialogCommands: new List<UICommand>() { saveCommand, cancelCommand },
-                title: _viewModel.FullTitle,
-                viewModel: _viewModel
-            );
-        }
-        private void onDialogCancelCommandtExecuting(CancelEventArgs parameter)
-        {
-            MessageService.Show(messageBoxText: "Want to save your changes?", 
-                caption: "Document", 
-                button: MessageBoxButton.YesNoCancel);
+                case DialogMode.Create:
+                    viewModel = new AdminEdit(mode, DialogService, MessageService);
+                    break;
+                case DialogMode.Update:
+                case DialogMode.View:
+                    viewModel = new AdminEdit(mode, SelectedUser.ID, DialogService, MessageService);
+                    break;
+            }
+            viewModel.ShowEditDialog();
         }
     }
 }

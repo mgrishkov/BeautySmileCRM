@@ -16,6 +16,9 @@ namespace BeautySmileCRM.ViewModels
 {
     public class Discount : BaseNavigationViewModel
     {
+        protected IDialogService DialogService { get { return GetService<IDialogService>(); } }
+        protected IMessageBoxService MessageService { get { return GetService<IMessageBoxService>(); } }
+
         private readonly Models.CRMContext _dc;
         private Models.CumulativeDiscount _selectedDiscount;
 
@@ -68,11 +71,11 @@ namespace BeautySmileCRM.ViewModels
         }
         private void onAddDiscountCommandExecute()
         {
-
+            ShowDialog(DialogMode.Create);
         }
         private void onEditDiscountCommandExecute()
         {
-
+            ShowDialog(DialogMode.Update);
         }
         private void onDeleteDiscountCommandExecute()
         {
@@ -81,6 +84,22 @@ namespace BeautySmileCRM.ViewModels
         private void onExportCommandExecute()
         {
 
+        }
+
+        private void ShowDialog(DialogMode mode)
+        {
+            CumulativeDiscountEdit viewModel = null;
+            switch (mode)
+            {
+                case DialogMode.Create:
+                    viewModel = new CumulativeDiscountEdit(mode, DialogService, MessageService);
+                    break;
+                case DialogMode.Update:
+                case DialogMode.View:
+                    viewModel = new CumulativeDiscountEdit(mode, SelectedDiscount.ID, DialogService, MessageService);
+                    break;
+            }
+            viewModel.ShowEditDialog();
         }
     }
 }

@@ -17,6 +17,9 @@ namespace BeautySmileCRM.ViewModels
 {
     public class Staff : BaseNavigationViewModel
     {
+        protected IDialogService DialogService { get { return GetService<IDialogService>(); } }
+        protected IMessageBoxService MessageService { get { return GetService<IMessageBoxService>(); } }
+
         private readonly Models.CRMContext _dc;
         private Models.Staff _selectedStaff;
 
@@ -65,15 +68,15 @@ namespace BeautySmileCRM.ViewModels
         }
         private void onRefreshCommandExecute()
         {
-
+            DataSource.Refresh();
         }
         private void onAddStaffCommandExecute()
         {
-
+            ShowDialog(DialogMode.Update);
         }
         private void onEditStaffCommandExecute()
         {
-
+            ShowDialog(DialogMode.Update);
         }
         private void onDeleteStaffCommandExecute()
         {
@@ -82,6 +85,23 @@ namespace BeautySmileCRM.ViewModels
         private void onExportCommandExecute()
         {
 
+        }
+
+
+        private void ShowDialog(DialogMode mode)
+        {
+            StaffEdit viewModel = null;
+            switch (mode)
+            {
+                case DialogMode.Create:
+                    viewModel = new StaffEdit(mode, DialogService, MessageService);
+                    break;
+                case DialogMode.Update:
+                case DialogMode.View:
+                    viewModel = new StaffEdit(mode, SelectedStaff.ID, DialogService, MessageService);
+                    break;
+            }
+            viewModel.ShowEditDialog();
         }
     }
 }

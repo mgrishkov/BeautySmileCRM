@@ -22,7 +22,7 @@
           <Property Name="Login" Type="nvarchar" MaxLength="256" Nullable="false" />
           <Property Name="Password" Type="nvarchar" MaxLength="256" Nullable="false" />
           <Property Name="Email" Type="nvarchar" MaxLength="255" />
-          <Property Name="ExpirationDate" Type="datetime" />
+          <Property Name="ExpirationDate" Type="date" />
           <Property Name="IsSystem" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="UserPrivilege">
@@ -56,6 +56,7 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="Percent" Type="decimal" Precision="4" Scale="2" Nullable="false" />
           <Property Name="MinDiscount" Type="decimal" Precision="13" Scale="2" Nullable="false" />
           <Property Name="MaxDiscount" Type="decimal" Precision="13" Scale="2" Nullable="false" />
@@ -174,7 +175,7 @@
           <Property Name="LastName" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="MiddleName" Type="nvarchar" MaxLength="255" />
           <Property Name="Photo" Type="image" />
-          <Property Name="DismissalDate" Type="datetime" />
+          <Property Name="DismissalDate" Type="date" />
           <Property Name="UserID" Type="int" />
           <Property Name="Position" Type="nvarchar" MaxLength="4000" Nullable="false" />
         </EntityType>
@@ -183,6 +184,18 @@ warning 6002: The table/view 'CRM.CST.AppointmentView' does not have a primary k
         <EntityType Name="AppointmentView">
           <Key>
             <PropertyRef Name="AppointmentID" />
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
           </Key>
           <Property Name="AppointmentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CustomerID" Type="int" Nullable="false" />
@@ -712,7 +725,7 @@ warning 6002: The table/view 'CRM.CST.CustomerView' does not have a primary key 
           <Property Name="Login" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="Password" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="ExpirationDate" Type="DateTime" Precision="3" />
+          <Property Name="ExpirationDate" Type="DateTime" Precision="0" />
           <Property Name="IsSystem" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="CreatedAppointments" Relationship="CRMModel.FK_Appointment_CreatedBy_User_ID" FromRole="User" ToRole="Appointment" />
           <NavigationProperty Name="ModifiedAppointments" Relationship="CRMModel.FK_Appointment_ModfiedBy_User_ID" FromRole="User" ToRole="Appointment" />
@@ -751,6 +764,7 @@ warning 6002: The table/view 'CRM.CST.CustomerView' does not have a primary key 
           <Property Name="MinDiscount" Type="Decimal" Nullable="false" Precision="13" Scale="2" />
           <Property Name="MaxDiscount" Type="Decimal" Nullable="false" Precision="13" Scale="2" />
           <Property Name="PurchaseTopLimit" Type="Decimal" Nullable="false" Precision="13" Scale="2" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
           </EntityType>
         <EntityType Name="DiscountType">
           <Key>
@@ -886,7 +900,7 @@ warning 6002: The table/view 'CRM.CST.CustomerView' does not have a primary key 
           <Property Name="LastName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="MiddleName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Photo" Type="Binary" MaxLength="Max" FixedLength="false" />
-          <Property Name="DismissalDate" Type="DateTime" Precision="3" />
+          <Property Name="DismissalDate" Type="DateTime" Precision="0" />
           <Property Name="UserID" Type="Int32" />
           <NavigationProperty Name="User" Relationship="CRMModel.FK_Staff_UserID_User_ID" FromRole="Staff" ToRole="User" />
           <NavigationProperty Name="Appointments" Relationship="CRMModel.FK_Appointment_StaffID_Staff_ID" FromRole="Staff" ToRole="Appointment" />
@@ -1205,6 +1219,7 @@ warning 6002: The table/view 'CRM.CST.CustomerView' does not have a primary key 
           <EntitySetMapping Name="CumulativeDiscounts">
             <EntityTypeMapping TypeName="CRMModel.CumulativeDiscount">
               <MappingFragment StoreEntitySet="CumulativeDiscount">
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="PurchaseTopLimit" ColumnName="PurchaseTopLimit" />
                 <ScalarProperty Name="MaxDiscount" ColumnName="MaxDiscount" />
                 <ScalarProperty Name="MinDiscount" ColumnName="MinDiscount" />

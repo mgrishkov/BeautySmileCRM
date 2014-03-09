@@ -19,5 +19,6 @@ namespace BeautySmileCRM.Models
         public decimal MinDiscount { get; set; }
         public decimal MaxDiscount { get; set; }
         public decimal PurchaseTopLimit { get; set; }
+        public string Name { get; set; }
     }
 }
