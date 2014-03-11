@@ -17,7 +17,7 @@ namespace BeautySmileCRM.Models
         public int AppointmentID { get; set; }
         public int CustomerID { get; set; }
         public System.DateTime StartTime { get; set; }
-        public Nullable<System.DateTime> EndTime { get; set; }
+        public System.DateTime EndTime { get; set; }
         public int StaffID { get; set; }
         public string Purpose { get; set; }
         public decimal Price { get; set; }
@@ -25,7 +25,6 @@ namespace BeautySmileCRM.Models
         public decimal Discount { get; set; }
         public decimal ToPay { get; set; }
         public Nullable<decimal> Payed { get; set; }
-        public int PaymentStateID { get; set; }
         public int StateID { get; set; }
         public System.DateTime CreatintTime { get; set; }
         public int CreatedBy { get; set; }

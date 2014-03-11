@@ -12,41 +12,33 @@ namespace BeautySmileCRM.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Customer
+    public partial class CustomerView
     {
-        public Customer()
-        {
-            this.Appointments = new HashSet<Appointment>();
-            this.FinancialTransactions = new HashSet<FinancialTransaction>();
-        }
-    
-        public int ID { get; set; }
+        public int CustomerID { get; set; }
+        public string FirstName { get; set; }
         public string LastName { get; set; }
         public string MiddleName { get; set; }
-        public string Phone { get; set; }
-        public string Email { get; set; }
-        public string Address { get; set; }
-        public Nullable<System.DateTime> BirthDate { get; set; }
-        public Nullable<int> DiscountCardID { get; set; }
-        public Nullable<int> UserID { get; set; }
-        public byte[] Photo { get; set; }
-        public decimal MoneyBalance { get; set; }
-        public string MobilePhone { get; set; }
         public int Gender { get; set; }
         public string Country { get; set; }
         public string City { get; set; }
         public string Region { get; set; }
         public Nullable<int> Zip { get; set; }
+        public string Phone { get; set; }
+        public string MobilePhone { get; set; }
+        public string Email { get; set; }
+        public string Address { get; set; }
+        public System.DateTime BirthDate { get; set; }
+        public decimal MoneyBalance { get; set; }
         public bool NotifyByEmail { get; set; }
         public bool NotifyBySms { get; set; }
         public bool NotifyByPost { get; set; }
         public System.DateTime CreationTime { get; set; }
         public Nullable<System.DateTime> ModificationTime { get; set; }
-        public string FirstName { get; set; }
-    
-        public virtual User User { get; set; }
-        public virtual ICollection<Appointment> Appointments { get; set; }
-        public virtual DiscountCard DiscountCard { get; set; }
-        public virtual ICollection<FinancialTransaction> FinancialTransactions { get; set; }
+        public Nullable<int> DiscountcardID { get; set; }
+        public string DiscountCardCode { get; set; }
+        public Nullable<decimal> DiscountPercent { get; set; }
+        public Nullable<System.DateTime> FirstVisit { get; set; }
+        public Nullable<System.DateTime> LastVisit { get; set; }
+        public Nullable<System.DateTime> NextVisit { get; set; }
     }
 }

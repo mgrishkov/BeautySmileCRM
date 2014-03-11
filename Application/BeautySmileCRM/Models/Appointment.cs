@@ -22,23 +22,21 @@ namespace BeautySmileCRM.Models
         public int ID { get; set; }
         public int CustomerID { get; set; }
         public System.DateTime StartTime { get; set; }
-        public Nullable<System.DateTime> EndTime { get; set; }
+        public System.DateTime EndTime { get; set; }
         public int StaffID { get; set; }
         public string Purpose { get; set; }
         public decimal Price { get; set; }
         public decimal DiscountPercent { get; set; }
         public decimal Discount { get; set; }
         public decimal ToPay { get; set; }
-        public int PaymentStateID { get; set; }
         public int StateID { get; set; }
-        public System.DateTime CreatintTime { get; set; }
         public int CreatedBy { get; set; }
         public Nullable<System.DateTime> ModificationTime { get; set; }
         public Nullable<int> ModifiedBy { get; set; }
+        public System.DateTime CreationTime { get; set; }
     
         public virtual User CreatedByUser { get; set; }
         public virtual User ModifiedByUser { get; set; }
-        public virtual AppointmentPaymentState AppointmentPaymentState { get; set; }
         public virtual AppointmentState AppointmentState { get; set; }
         public virtual Customer Customer { get; set; }
         public virtual Staff Staff { get; set; }

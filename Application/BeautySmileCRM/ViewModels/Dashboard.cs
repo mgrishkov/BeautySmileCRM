@@ -13,6 +13,8 @@ namespace BeautySmileCRM.ViewModels
 {
     public class Dashboard : BaseNavigationViewModel
     {
+        public ICommand OnNavigatingToClientView { get; private set; }
+
         private List<Models.CustomerDashboardData> _clients;
         private List<Models.AppointmentDashboardData> _appointments;
         
@@ -43,11 +45,17 @@ namespace BeautySmileCRM.ViewModels
 
         public Dashboard()
         {
+            OnNavigatingToClientView = new DelegateCommand(OnNavigatingToClientViewExecuted);
             using(var dc = new Models.CRMContext())
             {
                 Clients = dc.GetCustomerDashboardData().ToList();
                 Appointments = dc.GetAppointmentDashboardData().ToList();
             }
+        }
+
+        private void OnNavigatingToClientViewExecuted()
+        {
+            NavigationService.Navigate("ClientView", null, this);
         }
 
     }

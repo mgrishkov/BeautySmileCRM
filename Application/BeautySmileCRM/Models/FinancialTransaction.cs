@@ -20,10 +20,10 @@ namespace BeautySmileCRM.Models
         public int TransactionTypeID { get; set; }
         public decimal Amount { get; set; }
         public string Comment { get; set; }
-        public System.DateTime CreationTIme { get; set; }
         public int CreatedBy { get; set; }
         public Nullable<System.DateTime> ModificationTime { get; set; }
         public Nullable<int> ModifiedBy { get; set; }
+        public System.DateTime CreationTime { get; set; }
     
         public virtual User CreatedByUser { get; set; }
         public virtual User ModifiedByUser { get; set; }

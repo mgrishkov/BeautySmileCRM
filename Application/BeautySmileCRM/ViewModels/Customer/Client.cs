@@ -12,6 +12,7 @@ using BeautySmileCRM.Enums;
 using DevExpress.Xpf.Core.ServerMode;
 using Ext = SmartClasses;
 using BeautySmileCRM.ViewModels.Base;
+using DevExpress.Xpf.Grid;
 
 namespace BeautySmileCRM.ViewModels
 {
@@ -47,7 +48,7 @@ namespace BeautySmileCRM.ViewModels
         public ICommand EditUserCommand { get; private set; }
         public ICommand DeleteUserCommand { get; private set; }
         public ICommand ExportCommand { get; private set; }
-
+        public ICommand OnClientDoubleClickCommand { get; private set; }
 
         public Client()
         {
@@ -59,6 +60,7 @@ namespace BeautySmileCRM.ViewModels
             DeleteUserCommand = new DelegateCommand(onDeleteUserCommandExecute,
                 () => { return SelectedCustomer != null; });
             ExportCommand = new DelegateCommand(onExportCommandExecute);
+            OnClientDoubleClickCommand = new DelegateCommand<RowDoubleClickEventArgs>(onClientDoubleClickCommandExecuted);
             initDataSource();
         }
         private void initDataSource()
@@ -81,7 +83,7 @@ namespace BeautySmileCRM.ViewModels
         }
         private void onEditUserCommandExecute()
         {
-
+            NavigationService.Navigate("ClientPageView", SelectedCustomer.CustomerID, this);
         }
         private void onDeleteUserCommandExecute()
         {
@@ -90,6 +92,10 @@ namespace BeautySmileCRM.ViewModels
         private void onExportCommandExecute()
         {
 
+        }
+        private void onClientDoubleClickCommandExecuted(RowDoubleClickEventArgs e)
+        {
+            NavigationService.Navigate("ClientPageView", SelectedCustomer.CustomerID, this);
         }
     }
 }

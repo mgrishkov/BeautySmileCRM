@@ -162,7 +162,7 @@ namespace BeautySmileCRM.ViewModels.Base
             CancelCommandExecuted();
         }
             
-        protected virtual bool Validate()
+        public virtual bool Validate()
         {
             var validationProperties = AttributeUtils.GetProperties<ValidateAttribute>(this.GetType());
             var sb = new StringBuilder();
@@ -171,13 +171,22 @@ namespace BeautySmileCRM.ViewModels.Base
                 sb.Append(this[itm.Name]);
             };
             Error = String.Empty;
-            return true;
+            return String.IsNullOrWhiteSpace(Error);
         }
         protected virtual void ApplyCommandExecuted()
         {
         }
         protected virtual void CancelCommandExecuted()
         {
+        }
+
+        public Models.User CurrentUser
+        {
+            get { return ServiceContainer.GetService<Models.User>(); }
+            set
+            {
+                ServiceContainer.RegisterService(value);
+            }
         }
     }
 }

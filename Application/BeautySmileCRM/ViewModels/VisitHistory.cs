@@ -76,15 +76,7 @@ namespace BeautySmileCRM.ViewModels
             {
                 return Ext.Utils.EnumUtils.ToDescriptionDictionary<Enums.AppointmentState>();
             }
-        }
-        public IDictionary<int, string> PaymentStates
-        {
-            get
-            {
-                return Ext.Utils.EnumUtils.ToDescriptionDictionary<Enums.AppointmentPaymentState>();
-            }
-        }
-        
+        }        
         
 
         public ICommand RefreshCommand { get; private set; }

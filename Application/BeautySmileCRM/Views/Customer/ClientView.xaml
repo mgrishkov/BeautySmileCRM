@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
              xmlns:converters="clr-namespace:BeautySmileCRM.Converters"
              xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"  
              xmlns:dxwuin="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/navigation"
@@ -13,7 +14,7 @@
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
              x:Class="BeautySmileCRM.Views.ClientView"
              mc:Ignorable="d" 
-             d:DesignWidth="1800" d:DesignHeight="600"
+             d:DesignWidth="2200" d:DesignHeight="600"
              Background="White"
              dx:ThemeManager.ThemeName="MetropolisLight">
     <UserControl.Resources>
@@ -43,7 +44,8 @@
                 <dxb:BarButtonItem x:Name="AddButton" Content="Добавить клиента..." 
 				               LargeGlyph="{StaticResource Add24}" Command="{Binding AddUserCommand}" />
                 <dxb:BarButtonItem x:Name="EditButton" Content="Редактировать клиента..." 
-				               LargeGlyph="{StaticResource Edit24}" Command="{Binding EditUserCommand}" />
+				               LargeGlyph="{StaticResource Edit24}" 
+                               Command="{Binding EditUserCommand}" />
                 <dxb:BarButtonItem x:Name="DeleteButton" Content="Удалить клиента..." 
 				               LargeGlyph="{StaticResource Delete24}" Command="{Binding DeleteUserCommand}" />
                 <dxb:BarButtonItem x:Name="ExportButton" Content="Экспортировать..."
@@ -210,8 +212,12 @@
                     <dxg:GridControl.View>
                         <dxg:TableView x:Name="view" ShowTotalSummary="True" AllowEditing="True"
 						               ShowAutoFilterRow="True" ShowGroupedColumns="True" AllowHorizontalScrollingVirtualization="False" 
-            					       ShowGroupPanel="False" 
-                                       FocusedRow="{Binding SelectedCustomer, Converter={converters:ReadonlyThreadSafeProxyForObjectFromAnotherThreadToOrigianlConverter}, Mode=TwoWay}"/>
+            					       ShowGroupPanel="False" NavigationStyle="Row"
+                                       FocusedRow="{Binding SelectedCustomer, Converter={converters:ReadonlyThreadSafeProxyForObjectFromAnotherThreadToOrigianlConverter}, Mode=TwoWay}">
+                            <dxmvvm:Interaction.Triggers>
+                                <dxmvvm:EventToCommand EventName="RowDoubleClick" Command="{Binding OnClientDoubleClickCommand}" />
+                            </dxmvvm:Interaction.Triggers>
+                        </dxg:TableView>
                     </dxg:GridControl.View>
 
                 </dxg:GridControl>

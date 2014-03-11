@@ -18,7 +18,7 @@ namespace BeautySmileCRM.ViewModels
         }
         private void OnNavigateLoginCommandExecute() 
         {
-            ServiceContainer.GetService<INavigationService>().Navigate("LoginView", null, this);
+            NavigationService.Navigate("LoginView", null, this);
         }
     }
 }

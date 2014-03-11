@@ -1,0 +1,213 @@
+﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
+        xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+        xmlns:converters="clr-namespace:BeautySmileCRM.Converters"
+        xmlns:ViewModel="clr-namespace:BeautySmileCRM.ViewModels" 
+        x:Class="BeautySmileCRM.Views.AppointmentEditView"
+        SnapsToDevicePixels="True" UseLayoutRounding="True"
+        dx:ThemeManager.ThemeName="MetropolisLight"
+        Width="480" Height="225"
+        x:Name="root" Background="White">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/TextBlockResourceDictionary.xaml" />
+                <ResourceDictionary Source="/Resources/ImageResourceDictionary.xaml" />
+                <ResourceDictionary Source="/Resources/StackPanelResourceDictionary.xaml" />
+                <ResourceDictionary Source="/Resources/GridResourceDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid x:Name="formGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3"
+                   Text="Основные данные" 
+                   Style="{StaticResource GroupHeader}"/>
+        <TextBlock Grid.Column="0" Grid.Row="1"
+                   Text="Пациент"
+                   Style="{StaticResource GroupItem}"/>
+
+        <dxe:TextEdit Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="3"
+                      IsReadOnly="True" FontSize="14" FontWeight="Bold" >
+            <dxe:TextEdit.EditValue>
+                <Binding Path="ClientFullName"
+                         Mode="OneWay"/>
+            </dxe:TextEdit.EditValue>
+        </dxe:TextEdit>
+        <dxe:TextEdit Grid.Column="6" Grid.Row="1"
+                          IsReadOnly="True">
+            <dxe:TextEdit.EditValue>
+                <Binding Path="DisountCardCode"
+                         Mode="TwoWay"
+                         UpdateSourceTrigger="PropertyChanged"
+                         ValidatesOnDataErrors="True"
+                         ValidatesOnExceptions="True"
+                         ValidatesOnNotifyDataErrors="True"/>
+            </dxe:TextEdit.EditValue>
+        </dxe:TextEdit>
+
+
+
+        <TextBlock Grid.Column="0" Grid.Row="2"
+                   Text="Начало визита" 
+                   Style="{StaticResource GroupItem}"/>
+        <dxe:DateEdit Grid.Column="2" Grid.Row="2"
+                      HorizontalAlignment="Left" Width="105"
+                      DisplayFormatString="dd.MM.yyyy HH:mm" Mask="dd.MM.yyyy HH:mm">
+            <dxe:DateEdit.EditValue>
+                <Binding Path="StartTime"
+                         Mode="TwoWay"
+                         UpdateSourceTrigger="PropertyChanged"
+                         ValidatesOnDataErrors="True"
+                         ValidatesOnExceptions="True"
+                         ValidatesOnNotifyDataErrors="True"/>
+            </dxe:DateEdit.EditValue>
+        </dxe:DateEdit>
+
+        <TextBlock Grid.Column="4" Grid.Row="2"
+                   Text="Окончание визита" 
+                   Style="{StaticResource GroupItem}"/>
+        <dxe:DateEdit Grid.Column="6" Grid.Row="2"
+                      HorizontalAlignment="Left" Width="105"
+                      MinValue="{Binding StartTime}"
+                      DisplayFormatString="dd.MM.yyyy HH:mm" Mask="dd.MM.yyyy HH:mm">
+            <dxe:DateEdit.EditValue>
+                <Binding Path="EndTime"
+                         Mode="TwoWay"
+                         UpdateSourceTrigger="PropertyChanged"
+                         ValidatesOnDataErrors="True"
+                         ValidatesOnExceptions="True"
+                         ValidatesOnNotifyDataErrors="True"/>
+            </dxe:DateEdit.EditValue>
+        </dxe:DateEdit>
+
+        <TextBlock Grid.Column="0" Grid.Row="4"
+                   Text="Лечащий врач" 
+                   Style="{StaticResource GroupItem}"/>
+        <dxe:ComboBoxEdit Grid.Column="2" Grid.Row="4" Grid.ColumnSpan="5"
+                          ItemsSource="{Binding Stuff}"
+                          DisplayMember="Value" ValueMember="Key">
+            <dxe:ComboBoxEdit.EditValue>
+                <Binding Path="StaffID"
+                         Mode="TwoWay"
+                         UpdateSourceTrigger="PropertyChanged"
+                         ValidatesOnDataErrors="True"
+                         ValidatesOnExceptions="True"
+                         ValidatesOnNotifyDataErrors="True"/>
+            </dxe:ComboBoxEdit.EditValue>
+        </dxe:ComboBoxEdit>
+
+        <TextBlock Grid.Column="0" Grid.Row="5"
+                   Text="Цель визита" 
+                   Style="{StaticResource GroupItem}"/>
+        <dxe:TextEdit Grid.Column="2" Grid.Row="5" Grid.ColumnSpan="5"
+                      HorizontalContentAlignment="Left"
+                      VerticalContentAlignment="Top"
+                      Height="40"
+                      IsReadOnly="True">
+            <dxe:TextEdit.EditValue>
+                <Binding Path="Purpose"
+                         Mode="TwoWay"
+                         UpdateSourceTrigger="PropertyChanged"
+                         ValidatesOnDataErrors="True"
+                         ValidatesOnExceptions="True"
+                         ValidatesOnNotifyDataErrors="True"/>
+            </dxe:TextEdit.EditValue>
+        </dxe:TextEdit>
+
+        <TextBlock Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="3"
+                   Text="Финансовые данные" 
+                   Style="{StaticResource GroupHeader}"/>
+        <TextBlock Grid.Column="0" Grid.Row="7"
+                   Text="Сумма" 
+                   Style="{StaticResource GroupItem}"/>
+        <dxe:SpinEdit Grid.Column="2" Grid.Row="7"
+                      MinValue="0"
+                      DisplayFormatString="C" Mask="C">
+            <dxe:SpinEdit.EditValue>
+                <Binding Path="Price"
+                         Mode="TwoWay"
+                         UpdateSourceTrigger="PropertyChanged"
+                         ValidatesOnDataErrors="True"
+                         ValidatesOnExceptions="True"
+                         ValidatesOnNotifyDataErrors="True"/>
+            </dxe:SpinEdit.EditValue>
+        </dxe:SpinEdit>
+
+        <TextBlock Grid.Column="4" Grid.Row="7"
+                   Text="Процент скидки" 
+                   Style="{StaticResource GroupItem}"/>
+        <dxe:SpinEdit Grid.Column="6" Grid.Row="7"
+                      DisplayFormatString="0 %" Mask="0 %"
+                      MinValue="0" MaxValue="100"
+                      IsFloatValue="False" FontWeight="Bold" FontSize="14">
+            <dxe:SpinEdit.EditValue>
+                <Binding Path="DiscountPercent"
+                         Mode="TwoWay"
+                         UpdateSourceTrigger="PropertyChanged"
+                         ValidatesOnDataErrors="True"
+                         ValidatesOnExceptions="True"
+                         ValidatesOnNotifyDataErrors="True"/>
+            </dxe:SpinEdit.EditValue>
+        </dxe:SpinEdit>
+
+        <TextBlock Grid.Column="0" Grid.Row="8"
+                   Text="К оплате" 
+                   Style="{StaticResource GroupItem}"/>
+        <dxe:SpinEdit Grid.Column="2" Grid.Row="8"
+                      DisplayFormatString="C" Mask="C" 
+                      IsReadOnly="True"
+                      FontSize="14" FontWeight="Bold">
+            <dxe:SpinEdit.EditValue>
+                <Binding Path="ToPay"
+                         Mode="TwoWay"
+                         UpdateSourceTrigger="PropertyChanged"
+                         ValidatesOnDataErrors="True"
+                         ValidatesOnExceptions="True"
+                         ValidatesOnNotifyDataErrors="True"/>
+            </dxe:SpinEdit.EditValue>
+        </dxe:SpinEdit>
+
+        <TextBlock Grid.Column="4" Grid.Row="8"
+                   Text="Скидка" 
+                   Style="{StaticResource GroupItem}"/>
+        <dxe:SpinEdit Grid.Column="6" Grid.Row="8"
+                      DisplayFormatString="C" Mask="C"
+                      IsReadOnly="True">
+            <dxe:SpinEdit.EditValue>
+                <Binding Path="Discount"
+                         Mode="TwoWay"
+                         UpdateSourceTrigger="PropertyChanged"
+                         ValidatesOnDataErrors="True"
+                         ValidatesOnExceptions="True"
+                         ValidatesOnNotifyDataErrors="True"/>
+            </dxe:SpinEdit.EditValue>
+        </dxe:SpinEdit>
+    </Grid>
+</UserControl>

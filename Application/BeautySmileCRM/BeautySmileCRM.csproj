@@ -88,6 +88,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Converters\AuthorizationStageToVisibilityConverter.cs" />
+    <Compile Include="Converters\ObjectToVisibilityConverter.cs" />
+    <Compile Include="Converters\NotBoolConverter.cs" />
+    <Compile Include="Converters\ObjectToBoolConverter.cs" />
     <Compile Include="Converters\MouseButtonEventArgsConverter.cs" />
     <Compile Include="Converters\NotBoolToVisibilityConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
@@ -109,11 +112,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Enums\AppointmentPaymentState.cs">
-      <DependentUpon>AppointmentPaymentState.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Enums\AuthorizationStage.cs" />
     <Compile Include="Enums\AppointmentState.cs">
       <AutoGen>True</AutoGen>
@@ -124,9 +122,6 @@
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AppointmentDashboardData.cs">
-      <DependentUpon>CRM.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\AppointmentPaymentState.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AppointmentState.cs">
@@ -156,8 +151,6 @@
     <Compile Include="Models\Customer.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Staff.Extended.cs" />
-    <Compile Include="Models\Customer.Extended.cs" />
     <Compile Include="Models\CustomerDashboardData.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
@@ -167,6 +160,7 @@
     <Compile Include="Models\DiscountCard.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DiscountCard.Extended.cs" />
     <Compile Include="Models\DiscountType.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
@@ -182,6 +176,8 @@
     <Compile Include="Models\Staff.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Staff.Extended.cs" />
+    <Compile Include="Models\Customer.Extended.cs" />
     <Compile Include="Models\TransactionType.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
@@ -192,17 +188,29 @@
     <Compile Include="ViewModels\Administration\AdminEdit.cs" />
     <Compile Include="ViewModels\Base\BaseDialogViewModel.cs" />
     <Compile Include="ViewModels\Base\BaseNavigationViewModel.cs" />
+    <Compile Include="ViewModels\Customer\FinancialTransactionEdit.cs" />
+    <Compile Include="ViewModels\Customer\AppointmentEdit.cs" />
+    <Compile Include="ViewModels\Customer\ClientPage.cs" />
     <Compile Include="ViewModels\Discount\CumulativeDiscountEdit.cs" />
     <Compile Include="ViewModels\Staff\StaffEdit.cs" />
     <Compile Include="ViewModels\Staff\Staff.cs" />
     <Compile Include="ViewModels\Discount\Discount.cs" />
     <Compile Include="ViewModels\Administration\Administration.cs" />
     <Compile Include="ViewModels\VisitHistory.cs" />
-    <Compile Include="ViewModels\Client.cs" />
+    <Compile Include="ViewModels\Customer\Client.cs" />
     <Compile Include="ViewModels\Dashboard.cs" />
     <Compile Include="ViewModels\Header.cs" />
     <Compile Include="ViewModels\Login.cs" />
     <Compile Include="ViewModels\MainWindow.cs" />
+    <Compile Include="Views\Customer\FinancialTransactionEditView.xaml.cs">
+      <DependentUpon>FinancialTransactionEditView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Customer\AppointmentEditView.xaml.cs">
+      <DependentUpon>AppointmentEditView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Customer\ClientPageView.xaml.cs">
+      <DependentUpon>ClientPageView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Discount\CumulativeDiscountEditView.xaml.cs">
       <DependentUpon>CumulativeDiscountEditView.xaml</DependentUpon>
     </Compile>
@@ -224,7 +232,7 @@
     <Compile Include="Views\DashboardView.xaml.cs">
       <DependentUpon>DashboardView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ClientView.xaml.cs">
+    <Compile Include="Views\Customer\ClientView.xaml.cs">
       <DependentUpon>ClientView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LoginView.xaml.cs">
@@ -276,10 +284,6 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>TransactionType.cs</LastGenOutput>
     </None>
-    <None Include="Enums\AppointmentPaymentState.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>AppointmentPaymentState.cs</LastGenOutput>
-    </None>
     <None Include="Enums\AppointmentState.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>AppointmentState.cs</LastGenOutput>
@@ -309,6 +313,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Resources\ButtonResourceDictionary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Resources\ImageResourceDictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -324,6 +332,18 @@
     <Page Include="Resources\TextBlockResourceDictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Customer\FinancialTransactionEditView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Customer\AppointmentEditView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Customer\ClientPageView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Discount\CumulativeDiscountEditView.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -353,7 +373,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\ClientView.xaml">
+    <Page Include="Views\Customer\ClientView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -371,7 +391,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Content\Icons\16x16\" />
     <Folder Include="Content\Icons\48x48\" />
     <Folder Include="Content\Images\" />
     <Folder Include="Windows\" />
@@ -402,6 +421,11 @@
   <ItemGroup>
     <Resource Include="Content\Icons\24x24\excel.png" />
     <Resource Include="Content\Icons\24x24\refresh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Content\Icons\16x16\minus.png" />
+    <Resource Include="Content\Icons\16x16\plus.png" />
+    <Resource Include="Content\Icons\16x16\sign_warning1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

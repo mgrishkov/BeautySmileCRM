@@ -29,7 +29,6 @@ namespace BeautySmileCRM.Models
     
         public virtual DbSet<Privilege> Privileges { get; set; }
         public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<AppointmentPaymentState> AppointmentPaymentStates { get; set; }
         public virtual DbSet<AppointmentState> AppointmentStates { get; set; }
         public virtual DbSet<CumulativeDiscount> CumulativeDiscounts { get; set; }
         public virtual DbSet<DiscountType> DiscountTypes { get; set; }

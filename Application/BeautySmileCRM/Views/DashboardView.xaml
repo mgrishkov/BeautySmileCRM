@@ -33,7 +33,7 @@
     <dxwui:PageAdornerControl ShowBackButton="False" >
         <dxwui:PageAdornerControl.HeaderTemplate>
             <DataTemplate>
-                <Views:Header Grid.Row="0" ShowNavigationPanel="False" SubTitle="Главное меню"/>
+                <Views:Header Grid.Row="0" SubTitle="Главное меню"/>
             </DataTemplate>
         </dxwui:PageAdornerControl.HeaderTemplate>
 
@@ -45,10 +45,9 @@
             </dxlc:TileLayoutControl.GroupHeaderStyle>
 
             <dxlc:Tile Header="Клиенты" Size="Large"
-                       dxlc:TileLayoutControl.GroupHeader=""
                        ContentChangeInterval="00:00:05" AnimateContentChange="True"
                        ContentSource="{Binding Clients}"
-                       dxwuin:Navigation.NavigateTo="ClientView">
+                       Command="{Binding OnNavigatingToClientView}">
                 <dxlc:Tile.ContentTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10,0,10,10">

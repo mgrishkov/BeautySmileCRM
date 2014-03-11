@@ -93,11 +93,9 @@
         <dxwuii:SplitPanel Grid.Column="2" Margin="0, 0, 10, 0"
                            ItemSpacing="20" Orientation="Horizontal" ItemSizeMode="AutoSize"
                            Visibility="{Binding Path='ShowNavigationPanel', ElementName='root', Converter={converters:BoolToVisibilityConverter}}">
-            <dxwui:NavigationButton NavigateTo="ClientView" Content="Клиенты" />
+            <dxwui:NavigationButton NavigateTo="ClientView" Content="Добавить клиента" />
+            <dxwui:NavigationButton NavigateTo="ClientView" Content="Добавить визит" />
             <dxwui:NavigationButton NavigateTo="VisitHistoryView" Content="История визитов" />
-            <dxwui:NavigationButton NavigateTo="ReportView" Content="Отчеты" />
-            <dxwui:NavigationButton NavigateTo="AdministrationView" Content="Администрирование" />
-            <dxwui:NavigationButton Content="Конфигурация" />
         </dxwuii:SplitPanel>
         
     </Grid>
