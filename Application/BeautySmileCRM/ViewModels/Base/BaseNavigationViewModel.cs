@@ -12,10 +12,10 @@ namespace BeautySmileCRM.ViewModels.Base
     {
         public User CurrentUser
         {
-            get { return ServiceContainer.GetService<User>(); }
+            get { return Services.UserProfileService.CurrentUser; }
             set 
-            { 
-                ServiceContainer.RegisterService(value); 
+            {
+                Services.UserProfileService.CurrentUser = value;
             }
         }
 

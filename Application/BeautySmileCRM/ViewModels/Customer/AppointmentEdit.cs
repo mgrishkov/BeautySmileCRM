@@ -14,6 +14,7 @@ using System.Collections.Specialized;
 using BeautySmileCRM.Enums;
 using System.ComponentModel;
 using SmartClasses.Attributes;
+using System.Windows;
 
 namespace BeautySmileCRM.ViewModels
 {
@@ -217,6 +218,39 @@ namespace BeautySmileCRM.ViewModels
         }
         public AppointmentEdit(DialogMode mode, int clientID, IDialogService dialogService, IMessageBoxService messageService)
             : this(mode, (int?)null, clientID, dialogService, messageService)
+        {
+
+        }
+
+        protected override void ExtendDialogCommands(List<UICommand> commands)
+        {
+            base.ExtendDialogCommands(commands);
+            commands.Insert(0, new UICommand()
+            {
+                Id = MessageBoxResult.OK,
+                Caption = "Оплатить",
+                IsCancel = false,
+                IsDefault = false,
+                Command = new DelegateCommand<CancelEventArgs>(
+                    OnDialogPayCommandtExecuting,
+                    x => { return this.AllowSave; }
+                ),
+            });
+            commands.Insert(0, new UICommand()
+            {
+                Id = MessageBoxResult.OK,
+                Caption = "Отменить визит",
+                IsCancel = false,
+                IsDefault = false,
+                Command = new DelegateCommand(OnDialogCancelCommandtExecuting),
+            });
+        }
+
+        private void OnDialogPayCommandtExecuting(CancelEventArgs args)
+        {
+
+        }
+        private void OnDialogCancelCommandtExecuting()
         {
 
         }

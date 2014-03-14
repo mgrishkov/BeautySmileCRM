@@ -13,6 +13,9 @@ using SmartClasses.Extensions;
 using DevExpress.Xpf.Core.ServerMode;
 using System.Data.Entity;
 using System.Windows.Input;
+using System.Windows;
+using BeautySmileCRM.Enums;
+using DevExpress.Xpf.Core;
 
 namespace BeautySmileCRM.ViewModels
 {
@@ -76,14 +79,25 @@ namespace BeautySmileCRM.ViewModels
         private Models.Customer _customer;
         private Models.DiscountCard _discountCard;
         private IEnumerable<Models.CumulativeDiscount> _cumulativeDiscounts;
+        
         private IEnumerable<Models.Appointment> _visitHistory;
+        private Models.Appointment _seletedAppointment;
+
+        private IEnumerable<Models.FinancialTransaction> _financialTransactions;
+        private Models.FinancialTransaction _selectedFinancialTransaction;
+
+        private DXTabItem _selectedTab;
 
         private bool _allowSave = false;
         private bool _nameChanged = false;
         private bool _discountCardEnabled = false;
 
-        public ICommand OnLinkDiscountCardCommand { get; private set; }
-        public ICommand OnUnlinkDiscountCardCommand { get; private set; }
+        public ICommand LinkDiscountCardCommand { get; private set; }
+        public ICommand UnlinkDiscountCardCommand { get; private set; }
+        public ICommand AddCommand { get; private set; }
+        public ICommand EditCommand { get; private set; }
+        public ICommand DeleteCommand { get; private set; }
+        public ICommand ExportCommand { get; private set; }
 
         public bool AllowSave
         {
@@ -196,6 +210,10 @@ namespace BeautySmileCRM.ViewModels
         {
             get { return EnumUtils.ToDescriptionDictionary<Enums.AppointmentState>(); }
         }
+        public IDictionary<int, string> TransactionTypes
+        {
+            get { return EnumUtils.ToDescriptionDictionary<Enums.TransactionType>(); }
+        }
 
         public IEnumerable<Models.Appointment> VisitHistory 
         { 
@@ -206,6 +224,56 @@ namespace BeautySmileCRM.ViewModels
                 {
                     _visitHistory = value;
                     RaisePropertyChanged("VisitHistory");
+                }
+            }
+        }
+        public Models.Appointment SelectedAppointment
+        {
+            get { return _seletedAppointment; }
+            set
+            {
+                if (_seletedAppointment != value)
+                {
+                    _seletedAppointment = value;
+                    RaisePropertyChanged("SelectedAppointment");
+                };
+            }
+        }
+
+        public IEnumerable<Models.FinancialTransaction> FinancialTransactions
+        {
+            get { return _financialTransactions; } 
+            set
+            {
+                if(_financialTransactions != value)
+                {
+                    _financialTransactions = value;
+                    RaisePropertyChanged("FinancialTransactions");
+                }
+            }
+        }
+        public Models.FinancialTransaction SelectedFinancialTransaction
+        {
+            get { return _selectedFinancialTransaction; }
+            set
+            {
+                if (_selectedFinancialTransaction != value)
+                {
+                    _selectedFinancialTransaction = value;
+                    RaisePropertyChanged("SelectedFinancialTransaction");
+                }
+            }
+        }
+
+        public DXTabItem SelectedTab
+        {
+            get { return _selectedTab; }
+            set
+            {
+                if(_selectedTab != value)
+                {
+                    _selectedTab = value;
+                    RaisePropertyChanged("SelectedTab");
                 }
             }
         }
@@ -500,14 +568,22 @@ namespace BeautySmileCRM.ViewModels
             }
         }
 
-        protected IDialogService DialogService { get { return GetService<IDialogService>(); } }
+        protected IDialogService AppointmentDialogService { get { return GetService<IDialogService>("AppointmentEditDialog"); } }
+        protected IDialogService FinancialTransactionDialogService { get { return GetService<IDialogService>("FinancialTransactionEditDialog"); } }
         protected IMessageBoxService MessageService { get { return GetService<IMessageBoxService>(); } }
 
         public ClientPage()
         {
             _dc = new Models.CRMContext();
-            OnLinkDiscountCardCommand = new DelegateCommand(OnLinkDiscountCardCommandExecuted);
-            OnUnlinkDiscountCardCommand = new DelegateCommand(OnUnlinkDiscountCardCommandExecuted);
+            LinkDiscountCardCommand = new DelegateCommand(OnLinkDiscountCardCommandExecuted,
+                () => { return !DiscountCardEnabled; });
+            UnlinkDiscountCardCommand = new DelegateCommand(OnUnlinkDiscountCardCommandExecuted,
+                () => { return DiscountCardEnabled; });
+
+            AddCommand = new DelegateCommand(OnAddCommandExecuted);
+            EditCommand = new DelegateCommand(OnEditCommandExecuted);
+            DeleteCommand = new DelegateCommand(OnDeleteCommandExecuted);
+            ExportCommand = new DelegateCommand(OnExportCommandExecuted);
         }
         
         protected override void OnNavigatedTo()
@@ -519,17 +595,21 @@ namespace BeautySmileCRM.ViewModels
                     .Where(x => x.ID == customerID)
                     .Include(x => x.DiscountCard)
                     .Include(x => x.Appointments)
+                    .Include(x => x.Appointments.Select(t => t.Staff))
+                    .Include(x => x.FinancialTransactions)
                     .First();
-                
+
                 _discountCard = _customer.DiscountCard;
                 DiscountCardEnabled = _discountCard != null;
 
                 VisitHistory = _customer.Appointments;
+                FinancialTransactions = _customer.FinancialTransactions;
             }
             else
             {
                 _customer = new Models.Customer();
                 VisitHistory = new List<Models.Appointment>();
+                FinancialTransactions = new List<Models.FinancialTransaction>();
                 /*var initialDiscount = _dc.CumulativeDiscounts
                     .OrderBy(x => x.Percent)
                     .Take(1)
@@ -576,5 +656,75 @@ namespace BeautySmileCRM.ViewModels
             _discountCard = null;
             RaisePropertiesChanged(BindGroupAttribute.GetPropertiesOfGroup(this.GetType(), "DiscountCard").Select(x => x.Name).ToArray());
         }
+
+        private void OnAddCommandExecuted()
+        {
+            ShowDialog(DialogMode.Create);
+        }
+        private void OnEditCommandExecuted()
+        {
+            ShowDialog(DialogMode.Update);
+        }
+        private void OnDeleteCommandExecuted()
+        {
+        }
+        private void OnExportCommandExecuted()
+        {
+        }
+        private void OnDialogApplyCommandtExecuting(CancelEventArgs args)
+        {
+
+        }
+        private void OnDialogCancelCommandtExecuting(CancelEventArgs args)
+        {
+
+        }
+
+        private void ShowDialog(DialogMode mode)
+        { 
+            switch(SelectedTab.Name)
+            {
+                case "visitHistoryTab":
+                    ShowAppointmentEditDialog(mode);
+                    break;
+                case "financialTransactionsTab":
+                    ShowFinancialTransactionEditDialog(mode);
+                    break;
+            }
+        }
+        private void ShowAppointmentEditDialog(DialogMode mode)
+        {
+            AppointmentEdit viewModel = null;
+            switch (mode)
+            {
+                case DialogMode.Create:
+                    viewModel = new AppointmentEdit(mode, _customer.ID, AppointmentDialogService, MessageService);
+                    break;
+                case DialogMode.Update:
+                case DialogMode.View:
+                    viewModel = new AppointmentEdit(mode, SelectedAppointment.ID, _customer.ID, AppointmentDialogService, MessageService);
+                    break;
+            }
+            viewModel.ShowEditDialog();
+        }
+        private void ShowFinancialTransactionEditDialog(DialogMode mode, bool allowChangeAppointment = true)
+        {
+            FinancialTransactionEdit viewModel = null;
+            switch (mode)
+            {
+                case DialogMode.Create:
+                    viewModel = new FinancialTransactionEdit(mode, _customer.ID, (SelectedAppointment != null) ? (int?)SelectedAppointment.ID : null, FinancialTransactionDialogService, MessageService);
+                    break;
+                case DialogMode.Update:
+                case DialogMode.View:
+                    viewModel = new FinancialTransactionEdit(mode, SelectedFinancialTransaction.ID, _customer.ID, (SelectedAppointment != null) ? (int?)SelectedAppointment.ID : null, FinancialTransactionDialogService, MessageService);
+                    break;
+            };
+            viewModel.AllowSelectVisit = allowChangeAppointment;
+
+            viewModel.ShowEditDialog();
+        }
+
     }
+
 }

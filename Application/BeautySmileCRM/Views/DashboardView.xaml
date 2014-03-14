@@ -60,9 +60,6 @@
                             <TextBlock HorizontalAlignment="Right" Margin="0,10,0,0" 
                                        Foreground="#FFFFFFFF" FontSize="18"
                                        Text="{Binding MobilePhone}" />
-                            <TextBlock HorizontalAlignment="Right" Margin="0,10,0,0" 
-                                       Foreground="#FFFFFFFF" FontSize="18"
-                                       Text="{Binding Phone}" />
                         </StackPanel>
                     </DataTemplate>
                 </dxlc:Tile.ContentTemplate>

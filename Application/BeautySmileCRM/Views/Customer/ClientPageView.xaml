@@ -33,7 +33,37 @@
     <UserControl.DataContext>
         <ViewModel:ClientPage/>
     </UserControl.DataContext>
-    
+
+    <dxmvvm:Interaction.Behaviors>
+        <dx:DXMessageBoxService/>
+        <dx:DialogService Name="AppointmentEditDialog" DialogWindowStartupLocation="CenterOwner">
+            <dx:DialogService.ViewTemplate>
+                <DataTemplate>
+                    <Views:AppointmentEditView />
+                </DataTemplate>
+            </dx:DialogService.ViewTemplate>
+            <dx:DialogService.DialogStyle>
+                <Style TargetType="dx:DXDialogWindow">
+                    <Setter Property="Width" Value="620"/>
+                    <Setter Property="Height" Value="340"/>
+                </Style>
+            </dx:DialogService.DialogStyle>
+        </dx:DialogService>
+        <dx:DialogService Name="FinancialTransactionEditDialog" DialogWindowStartupLocation="CenterOwner">
+            <dx:DialogService.ViewTemplate>
+                <DataTemplate>
+                    <Views:FinancialTransactionEditView />
+                </DataTemplate>
+            </dx:DialogService.ViewTemplate>
+            <dx:DialogService.DialogStyle>
+                <Style TargetType="dx:DXDialogWindow">
+                    <Setter Property="Width" Value="620"/>
+                    <Setter Property="Height" Value="340"/>
+                </Style>
+            </dx:DialogService.DialogStyle>
+        </dx:DialogService>
+    </dxmvvm:Interaction.Behaviors>
+
     <dxwui:PageAdornerControl>
         <dxwui:PageAdornerControl.HeaderTemplate>
             <DataTemplate>
@@ -201,13 +231,11 @@
                         <Button Grid.Column="2"
                                 Style="{StaticResource FlatAddButton}"
                                 ToolTip="Привязать дисконтную карту к клиенту"
-                                IsEnabled="{Binding DiscountCardEnabled, Converter={converters:NotBoolConverter}}"
-                                Command="{Binding OnLinkDiscountCardCommand}"/>
+                                Command="{Binding LinkDiscountCardCommand}"/>
                         <Button Grid.Column="4"
                                 Style="{StaticResource FlatRemoveButton}"
                                 ToolTip="Отвязать дисконтную карту от клиента"
-                                IsEnabled="{Binding DiscountCardEnabled}"
-                                Command="{Binding OnUnlinkDiscountCardCommand}"/>
+                                Command="{Binding UnlinkDiscountCardCommand}"/>
                     </Grid>
                 
                     <TextBlock Grid.Column="0" Grid.Row="7"
@@ -495,10 +523,12 @@
                     </dxb:Bar>
                 </dxb:BarManager.Bars>
 
-                <dx:DXTabControl>
-                    <dx:DXTabItem Header="История визитов">
+                <dx:DXTabControl SelectedItem="{Binding SelectedTab}">
+                    <dx:DXTabItem Name="visitHistoryTab"
+                                  Header="История визитов">
                         <Grid>
-                            <dxg:GridControl ItemsSource="{Binding VisitHistory}">
+                            <dxg:GridControl ItemsSource="{Binding VisitHistory}"
+                                             SelectedItem="{Binding SelectedAppointment, Mode=TwoWay}">
                                 <dxg:GridControl.Columns>
                                     <dxg:GridColumn x:Name="startTimeField" FieldName="StartTime" Header="Начало" Width="105" ReadOnly="True" VisibleIndex="0" >
                                         <dxg:GridColumn.EditSettings>
@@ -534,7 +564,7 @@
                                     </dxg:GridColumn>
                                     <dxg:GridColumn x:Name="discountPercentField" FieldName="DiscountPercent" Header="Процент" Width="60" ReadOnly="True" VisibleIndex="6" >
                                         <dxg:GridColumn.EditSettings>
-                                            <dxe:SpinEditSettings DisplayFormat="0 %" MinValue="0" MaxValue="100" />
+                                            <dxe:SpinEditSettings DisplayFormat="P" MinValue="0" MaxValue="100" />
                                         </dxg:GridColumn.EditSettings>
                                     </dxg:GridColumn>
                                     <dxg:GridColumn x:Name="discountField" FieldName="Discount" Header="Скидка" Width="60" ReadOnly="True" VisibleIndex="7" >
@@ -578,8 +608,59 @@
                             </dxg:GridControl>
                         </Grid>
                     </dx:DXTabItem>
-                    <dx:DXTabItem Header="Финансовые операции">
+                    <dx:DXTabItem Name="financialTransactionsTab"
+                                  Header="Финансовые операции">
                         <Grid>
+                            <dxg:GridControl ItemsSource="{Binding FinancialTransactions}"
+                                             SelectedItem="{Binding SelectedFinancialTransaction, Mode=TwoWay}">
+                                <dxg:GridControl.Columns>
+                                    <dxg:GridColumn x:Name="appointmentIDField" FieldName="AppointmentID" Header="Визит" Width="430" ReadOnly="True" VisibleIndex="0" >
+                                        <dxg:GridColumn.EditSettings>
+                                            <dxe:ComboBoxEditSettings ItemsSource="{Binding VisitHistory}"
+                                                                      ValueMember="ID" DisplayMember="Title" />
+                                        </dxg:GridColumn.EditSettings>
+                                    </dxg:GridColumn>
+                                    <dxg:GridColumn x:Name="TransactionTypeIDField" FieldName="TransactionTypeID" Header="Тип операции" Width="80" ReadOnly="True" VisibleIndex="1" >
+                                        <dxg:GridColumn.EditSettings>
+                                            <dxe:ComboBoxEditSettings ItemsSource="{Binding TransactionTypes}"
+                                                                      ValueMember="Key" DisplayMember="Value" />
+                                        </dxg:GridColumn.EditSettings>
+                                    </dxg:GridColumn>
+                                    <dxg:GridColumn x:Name="amountField" FieldName="Amount" Header="Сумма" Width="80" ReadOnly="True" VisibleIndex="2" >
+                                        <dxg:GridColumn.EditSettings>
+                                            <dxe:SpinEditSettings DisplayFormat="C" />
+                                        </dxg:GridColumn.EditSettings>
+                                    </dxg:GridColumn>
+                                    
+                                    <dxg:GridColumn x:Name="ftCreationTimeField" FieldName="CreationTime" Header="Регистрация" Width="95" ReadOnly="True" VisibleIndex="10" >
+                                        <dxg:GridColumn.EditSettings>
+                                            <dxe:DateEditSettings DisplayFormat="dd.MM.yyyy HH:mm:ss" />
+                                        </dxg:GridColumn.EditSettings>
+                                    </dxg:GridColumn>
+                                    <dxg:GridColumn x:Name="ftCreatedByField" FieldName="CreatedBy" Header="Зарегистрировал" Width="95" ReadOnly="True" VisibleIndex="11" >
+                                        <dxg:GridColumn.EditSettings>
+                                            <dxe:ComboBoxEditSettings ItemsSource="{Binding Users}" 
+                                                                      DisplayMember="Value" ValueMember="Key"/>
+                                        </dxg:GridColumn.EditSettings>
+                                    </dxg:GridColumn>
+                                    <dxg:GridColumn x:Name="ftModificationTimeField" FieldName="ModificationTime" Header="Изменение" Width="95" ReadOnly="True" VisibleIndex="12" >
+                                        <dxg:GridColumn.EditSettings>
+                                            <dxe:DateEditSettings DisplayFormat="dd.MM.yyyy HH:mm:ss" />
+                                        </dxg:GridColumn.EditSettings>
+                                    </dxg:GridColumn>
+                                    <dxg:GridColumn x:Name="ftModifiedByField" FieldName="ModifiedBy" Header="Изменил" Width="95" ReadOnly="True" VisibleIndex="13" >
+                                        <dxg:GridColumn.EditSettings>
+                                            <dxe:ComboBoxEditSettings ItemsSource="{Binding Users}" 
+                                                                      DisplayMember="Value" ValueMember="Key"/>
+                                        </dxg:GridColumn.EditSettings>
+                                    </dxg:GridColumn>
+                                </dxg:GridControl.Columns>
+                                <dxg:GridControl.View>
+                                    <dxg:TableView ShowTotalSummary="True" AllowEditing="True"
+						                           ShowAutoFilterRow="True" ShowGroupedColumns="True" AllowHorizontalScrollingVirtualization="False" 
+            					                   ShowGroupPanel="False" />
+                                </dxg:GridControl.View>
+                            </dxg:GridControl>
                         </Grid>
                     </dx:DXTabItem>
                 </dx:DXTabControl>

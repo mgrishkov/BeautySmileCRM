@@ -115,7 +115,8 @@ namespace BeautySmileCRM.ViewModels.Base
 
         public MessageBoxResult ShowEditDialog()
         {
-            var saveCommand = new UICommand()
+            var commands = new List<UICommand>();
+            commands.Add(new UICommand()
             {
                 Id = MessageBoxResult.OK,
                 Caption = "Сохранить",
@@ -125,22 +126,23 @@ namespace BeautySmileCRM.ViewModels.Base
                     OnDialogApplyCommandtExecuting,
                     x => { return this.AllowSave; }
                 ),
-            };
-            var cancelCommand = new UICommand()
+            });
+            commands.Add(new UICommand()
             {
                 Id = MessageBoxResult.Cancel,
-                Caption = "Отменить",
+                Caption = "Закрыть",
                 IsCancel = true,
                 IsDefault = false,
                 Command = new DelegateCommand<CancelEventArgs>(OnDialogCancelCommandtExecuting)
-            };
+            });
+            ExtendDialogCommands(commands);
 
             var result = DialogService.ShowDialog(
-                dialogCommands: new List<UICommand>() { saveCommand, cancelCommand },
+                dialogCommands: commands,
                 title: this.FullTitle,
                 viewModel: this
             );
-            return (MessageBoxResult)result.Id;
+            return result != null ? (MessageBoxResult)result.Id : MessageBoxResult.None;
         }
 
         private void OnDialogApplyCommandtExecuting(CancelEventArgs parameter)
@@ -173,19 +175,23 @@ namespace BeautySmileCRM.ViewModels.Base
             Error = String.Empty;
             return String.IsNullOrWhiteSpace(Error);
         }
+        
         protected virtual void ApplyCommandExecuted()
         {
         }
         protected virtual void CancelCommandExecuted()
         {
         }
+        protected virtual void ExtendDialogCommands(List<UICommand> commands)
+        {
+        }
 
         public Models.User CurrentUser
         {
-            get { return ServiceContainer.GetService<Models.User>(); }
+            get { return Services.UserProfileService.CurrentUser; }
             set
             {
-                ServiceContainer.RegisterService(value);
+                Services.UserProfileService.CurrentUser = value;
             }
         }
     }

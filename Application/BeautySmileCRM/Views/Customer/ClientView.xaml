@@ -40,16 +40,16 @@
         <dxb:BarManager Grid.Row="0">
             <dxb:BarManager.Items>
                 <dxb:BarButtonItem x:Name="RefreshButton" Content="Обновить" 
-				               LargeGlyph="{StaticResource Refresh24}" Command="{Binding RefreshCommand}" />
+                                   Glyph="{StaticResource Refresh32}" Command="{Binding RefreshCommand}" />
                 <dxb:BarButtonItem x:Name="AddButton" Content="Добавить клиента..." 
-				               LargeGlyph="{StaticResource Add24}" Command="{Binding AddUserCommand}" />
+				               Glyph="{StaticResource Add24}" Command="{Binding AddUserCommand}" />
                 <dxb:BarButtonItem x:Name="EditButton" Content="Редактировать клиента..." 
-				               LargeGlyph="{StaticResource Edit24}" 
+				               Glyph="{StaticResource Edit24}" 
                                Command="{Binding EditUserCommand}" />
                 <dxb:BarButtonItem x:Name="DeleteButton" Content="Удалить клиента..." 
-				               LargeGlyph="{StaticResource Delete24}" Command="{Binding DeleteUserCommand}" />
+				               Glyph="{StaticResource Delete24}" Command="{Binding DeleteUserCommand}" />
                 <dxb:BarButtonItem x:Name="ExportButton" Content="Экспортировать..."
-				               LargeGlyph="{StaticResource Excel24}" Command="{Binding ExportCommand}" />
+				               Glyph="{StaticResource Excel24}" Command="{Binding ExportCommand}" />
             </dxb:BarManager.Items>
             <dxb:BarManager.Bars>
                 <dxb:Bar x:Name="mainMenuBar" Caption="Панель инструментов" 
@@ -124,7 +124,7 @@
 
                             <dxg:GridColumn FieldName="DiscountPercent" Header="Скидка" Width="50" ReadOnly="True" VisibleIndex="7" >
                                 <dxg:GridColumn.EditSettings>
-                                    <dxe:SpinEditSettings IsFloatValue="False" Mask="P" MaskType="Numeric" MaskUseAsDisplayFormat="True" />
+                                    <dxe:SpinEditSettings IsFloatValue="False" Mask="p00" MaskType="Numeric" MaskUseAsDisplayFormat="True" />
                                 </dxg:GridColumn.EditSettings>
                             </dxg:GridColumn>
                         </dxg:GridControlBand>

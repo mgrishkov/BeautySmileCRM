@@ -147,7 +147,7 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CustomerID" Type="int" Nullable="false" />
-          <Property Name="AppointmentID" Type="int" />
+          <Property Name="AppointmentID" Type="int" Nullable="false" />
           <Property Name="TransactionTypeID" Type="int" Nullable="false" />
           <Property Name="Amount" Type="decimal" Precision="13" Scale="2" Nullable="false" />
           <Property Name="Comment" Type="nvarchar" MaxLength="4000" />
@@ -344,7 +344,7 @@ warning 6002: The table/view 'CRM.CST.CustomerView' does not have a primary key 
           </ReferentialConstraint>
         </Association>
         <Association Name="FK#FinancialTransaction@AppointmentID#Appointment@iD">
-          <End Role="Appointment" Type="Self.Appointment" Multiplicity="0..1" />
+          <End Role="Appointment" Type="Self.Appointment" Multiplicity="1" />
           <End Role="FinancialTransaction" Type="Self.FinancialTransaction" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Appointment">
@@ -831,7 +831,7 @@ warning 6002: The table/view 'CRM.CST.CustomerView' does not have a primary key 
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CustomerID" Type="Int32" Nullable="false" />
-          <Property Name="AppointmentID" Type="Int32" />
+          <Property Name="AppointmentID" Type="Int32" Nullable="false" />
           <Property Name="TransactionTypeID" Type="Int32" Nullable="false" />
           <Property Name="Amount" Type="Decimal" Nullable="false" Precision="13" Scale="2" />
           <Property Name="Comment" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
@@ -1005,7 +1005,7 @@ warning 6002: The table/view 'CRM.CST.CustomerView' does not have a primary key 
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_FinancialTransaction_AppointmentID_Appointment_iD">
-          <End Type="CRMModel.Appointment" Role="Appointment" Multiplicity="0..1" />
+          <End Type="CRMModel.Appointment" Role="Appointment" Multiplicity="1" />
           <End Type="CRMModel.FinancialTransaction" Role="FinancialTransaction" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Appointment">

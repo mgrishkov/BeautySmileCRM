@@ -88,6 +88,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Converters\AuthorizationStageToVisibilityConverter.cs" />
+    <Compile Include="Converters\IntToVisibilityConverter.cs" />
     <Compile Include="Converters\ObjectToVisibilityConverter.cs" />
     <Compile Include="Converters\NotBoolConverter.cs" />
     <Compile Include="Converters\ObjectToBoolConverter.cs" />
@@ -121,6 +122,7 @@
     <Compile Include="Models\Appointment.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Appointment.Extended.cs" />
     <Compile Include="Models\AppointmentDashboardData.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
@@ -167,6 +169,7 @@
     <Compile Include="Models\FinancialTransaction.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\IUser.cs" />
     <Compile Include="Models\PrivelegeGroup.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
@@ -184,6 +187,8 @@
     <Compile Include="Models\User.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\User.Extended.cs" />
+    <Compile Include="Services\UserProfileService.cs" />
     <Compile Include="Utils\Notification.cs" />
     <Compile Include="ViewModels\Administration\AdminEdit.cs" />
     <Compile Include="ViewModels\Base\BaseDialogViewModel.cs" />

@@ -122,7 +122,7 @@
                             </dxg:GridColumn>
                             <dxg:GridColumn FieldName="DiscountPercent" Header="Процент скидки" Width="80" ReadOnly="True" VisibleIndex="8">
                                 <dxg:GridColumn.EditSettings>
-                                    <dxe:SpinEditSettings IsFloatValue="True"  MaskType="Numeric" Mask="P" MaskUseAsDisplayFormat="True" HorizontalContentAlignment="Right"/>
+                                    <dxe:SpinEditSettings IsFloatValue="True"  MaskType="Numeric" Mask="p00" MaskUseAsDisplayFormat="True" HorizontalContentAlignment="Right"/>
                                 </dxg:GridColumn.EditSettings>
                             </dxg:GridColumn>
                             <dxg:GridColumn FieldName="Discount" Header="Cкидка" Width="80" ReadOnly="True" VisibleIndex="9">

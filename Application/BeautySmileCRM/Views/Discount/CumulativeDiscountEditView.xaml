@@ -60,7 +60,7 @@
                    Style="{StaticResource GroupItem}"/>
         <dxe:SpinEdit Grid.Column="2" Grid.Row="2"
                       MinValue="0" MaxValue="100"
-                      DisplayFormatString="P">
+                      DisplayFormatString="p00">
             <dxe:SpinEdit.EditValue>
                 <Binding Path="Percent"
                          Mode="TwoWay"

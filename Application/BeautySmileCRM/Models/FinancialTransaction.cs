@@ -16,7 +16,7 @@ namespace BeautySmileCRM.Models
     {
         public int ID { get; set; }
         public int CustomerID { get; set; }
-        public Nullable<int> AppointmentID { get; set; }
+        public int AppointmentID { get; set; }
         public int TransactionTypeID { get; set; }
         public decimal Amount { get; set; }
         public string Comment { get; set; }

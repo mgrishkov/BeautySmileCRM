@@ -64,7 +64,7 @@ namespace BeautySmileCRM.ViewModels
             get { return _data.Customer.DiscountCard != null ? _data.Customer.DiscountCard.Code : String.Empty; }
         }
         
-        public int? AppointmentID
+        public int AppointmentID
         {
             get { return _data.AppointmentID; }
             set
@@ -132,7 +132,7 @@ namespace BeautySmileCRM.ViewModels
         {
             get
             {
-                return _dc.Appointments.ToDictionary(x => x.ID, y => String.Format("{0:dd.MM.yyyy} - {1}", y.StartTime, y.Purpose )); 
+                return _dc.Appointments.ToDictionary(x => x.ID, y => y.Title); 
             }
         }
 
@@ -140,7 +140,7 @@ namespace BeautySmileCRM.ViewModels
             : base(mode, dialogService, messageService)
         {
             SubTitle = "финансовой операции";
-            if (appointmentID.HasValue)
+            if (transactionID.HasValue)
             {
                 _data = _dc.FinancialTransactions.SingleOrDefault(x => x.ID == transactionID);
                 _data.ModifiedBy = CurrentUser.ID;
@@ -149,12 +149,15 @@ namespace BeautySmileCRM.ViewModels
             else
             {
                 var client = _dc.Customers.Single(x => x.ID == clientID);
-                var appointment = _dc.Appointments.SingleOrDefault(x => x.ID == appointmentID);
+                Models.Appointment appointment = null;
+                if(appointmentID.HasValue)
+                    appointment = _dc.Appointments.SingleOrDefault(x => x.ID == appointmentID);
+                
                 _data = new Models.FinancialTransaction()
                 {
                     Customer = client,
                     Appointment = appointment,
-                    TransactionTypeID = (int)Enums.TransactionType.Deposit,
+                    TransactionTypeID = (int)TransactionType.Deposit,
                     CreatedBy = CurrentUser.ID,
                     CreationTime = DateTime.Now,
                     Amount = 0m

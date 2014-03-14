@@ -8,7 +8,7 @@
         x:Class="BeautySmileCRM.Views.AppointmentEditView"
         SnapsToDevicePixels="True" UseLayoutRounding="True"
         dx:ThemeManager.ThemeName="MetropolisLight"
-        Width="480" Height="225"
+        Width="580" Height="225"
         x:Name="root" Background="White">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -64,11 +64,7 @@
                           IsReadOnly="True">
             <dxe:TextEdit.EditValue>
                 <Binding Path="DisountCardCode"
-                         Mode="TwoWay"
-                         UpdateSourceTrigger="PropertyChanged"
-                         ValidatesOnDataErrors="True"
-                         ValidatesOnExceptions="True"
-                         ValidatesOnNotifyDataErrors="True"/>
+                         Mode="OneWay"/>
             </dxe:TextEdit.EditValue>
         </dxe:TextEdit>
 
@@ -78,7 +74,7 @@
                    Text="Начало визита" 
                    Style="{StaticResource GroupItem}"/>
         <dxe:DateEdit Grid.Column="2" Grid.Row="2"
-                      HorizontalAlignment="Left" Width="105"
+                      HorizontalAlignment="Left" Width="155"
                       DisplayFormatString="dd.MM.yyyy HH:mm" Mask="dd.MM.yyyy HH:mm">
             <dxe:DateEdit.EditValue>
                 <Binding Path="StartTime"
@@ -94,7 +90,7 @@
                    Text="Окончание визита" 
                    Style="{StaticResource GroupItem}"/>
         <dxe:DateEdit Grid.Column="6" Grid.Row="2"
-                      HorizontalAlignment="Left" Width="105"
+                      HorizontalAlignment="Left" Width="155"
                       MinValue="{Binding StartTime}"
                       DisplayFormatString="dd.MM.yyyy HH:mm" Mask="dd.MM.yyyy HH:mm">
             <dxe:DateEdit.EditValue>
@@ -111,7 +107,7 @@
                    Text="Лечащий врач" 
                    Style="{StaticResource GroupItem}"/>
         <dxe:ComboBoxEdit Grid.Column="2" Grid.Row="4" Grid.ColumnSpan="5"
-                          ItemsSource="{Binding Stuff}"
+                          ItemsSource="{Binding Staff}"
                           DisplayMember="Value" ValueMember="Key">
             <dxe:ComboBoxEdit.EditValue>
                 <Binding Path="StaffID"
@@ -164,8 +160,8 @@
                    Text="Процент скидки" 
                    Style="{StaticResource GroupItem}"/>
         <dxe:SpinEdit Grid.Column="6" Grid.Row="7"
-                      DisplayFormatString="0 %" Mask="0 %"
-                      MinValue="0" MaxValue="100"
+                      DisplayFormatString="p00" Mask="p00" MaskType="Numeric" Increment="0.01"
+                      MinValue="0" MaxValue="1"
                       IsFloatValue="False" FontWeight="Bold" FontSize="14">
             <dxe:SpinEdit.EditValue>
                 <Binding Path="DiscountPercent"
