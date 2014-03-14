@@ -97,13 +97,6 @@
                                 <TextBlock Grid.Column="2" Grid.Row="1"
                                        Text="{Binding Completed}" 
                                        FontSize="22" Foreground="#FFFFFFFF" />
-
-                                <TextBlock Grid.Column="0" Grid.Row="2"
-                                       Text="Оплачено:" 
-                                       FontSize="20" Foreground="#FFFFFFFF" />
-                                <TextBlock Grid.Column="2" Grid.Row="2"
-                                       Text="{Binding Payed, StringFormat={}{0:0.00}%}" 
-                                       FontSize="22" Foreground="#FFFFFFFF" />
                             </Grid>
                         </StackPanel>
                     </DataTemplate>

@@ -126,13 +126,14 @@ namespace BeautySmileCRM.ViewModels
                 }
             }
         }
-        
 
-        public IDictionary<int, string> UnpayedVisits
+        public IDictionary<int, string> CustomerVisits
         {
             get
             {
-                return _dc.Appointments.ToDictionary(x => x.ID, y => y.Title); 
+                return _data.Customer.Appointments
+                    .OrderByDescending(x => x.StartTime)
+                    .ToDictionary(x => x.ID, y => y.Title); 
             }
         }
 
@@ -170,6 +171,12 @@ namespace BeautySmileCRM.ViewModels
             : this(mode, (int?)null, clientID, appointmentID, dialogService, messageService)
         {
 
+        }
+
+        protected override void ApplyCommandExecuted()
+        {
+            base.ApplyCommandExecuted();
+            _dc.SaveChanges();
         }
     }
 }

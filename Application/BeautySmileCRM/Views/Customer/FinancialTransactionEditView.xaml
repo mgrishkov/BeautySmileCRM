@@ -8,7 +8,7 @@
         x:Class="BeautySmileCRM.Views.FinancialTransactionEditView"
         SnapsToDevicePixels="True" UseLayoutRounding="True"
         dx:ThemeManager.ThemeName="MetropolisLight"
-        Width="515" Height="230"
+        Width="610" Height="230"
         x:Name="root" Background="White">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -40,9 +40,9 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="5" MaxWidth="5"/>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="10" MaxWidth="10"/>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="5" MaxWidth="5"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
@@ -54,7 +54,6 @@
                    Style="{StaticResource GroupItem}"/>
 
         <dxe:TextEdit Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="3"
-                      HorizontalAlignment="Left" Width="190"
                       IsReadOnly="True" FontSize="14" FontWeight="Bold" >
             <dxe:TextEdit.EditValue>
                 <Binding Path="ClientFullName"
@@ -62,7 +61,7 @@
             </dxe:TextEdit.EditValue>
         </dxe:TextEdit>
         <dxe:TextEdit Grid.Column="6" Grid.Row="1"
-                      HorizontalAlignment="Left" Width="110"
+                      HorizontalAlignment="Left" Width="140"
                       IsReadOnly="True">
             <dxe:TextEdit.EditValue>
                 <Binding Path="DisountCardCode"
@@ -74,9 +73,9 @@
                    Text="Визит" 
                    Style="{StaticResource GroupItem}"/>
         <dxe:ComboBoxEdit Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="5"
-                          ItemsSource="{Binding UnpayedVisits}"
-                          ValueMember="ID" DisplayMember="Title"
-                          AutoComplete="True" IncrementalFiltering="True" AllowNullInput="True"
+                          ItemsSource="{Binding CustomerVisits}"
+                          ValueMember="Key" DisplayMember="Value"
+                          AutoComplete="True" IncrementalFiltering="True"
                           IsReadOnly="{Binding AllowSelectVisit}">
             <dxe:ComboBoxEdit.EditValue>
                 <Binding Path="AppointmentID"
@@ -129,7 +128,7 @@
                    Text="Оплачиваемая сумма" 
                    Style="{StaticResource GroupItem}"/>
         <dxe:SpinEdit Grid.Column="2" Grid.Row="6"
-                      HorizontalAlignment="Left" Width="100"
+                      HorizontalAlignment="Left" Width="160"
                       DisplayFormatString="C" Mask="C" FontSize="14" FontWeight="Bold">
             <dxe:SpinEdit.EditValue>
                 <Binding Path="Amount"
@@ -148,8 +147,7 @@
         <dxe:TextEdit Grid.Column="2" Grid.Row="7" Grid.ColumnSpan="5"
                       HorizontalContentAlignment="Left"
                       VerticalContentAlignment="Top"
-                      Height="50"
-                      IsReadOnly="True">
+                      Height="50">
             <dxe:TextEdit.EditValue>
                 <Binding Path="Comment"
                          Mode="TwoWay"

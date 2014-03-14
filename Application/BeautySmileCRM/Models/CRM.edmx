@@ -112,7 +112,7 @@
           <Property Name="Phone" Type="varchar" MaxLength="18" />
           <Property Name="Email" Type="varchar" MaxLength="255" />
           <Property Name="Address" Type="nvarchar" MaxLength="4000" />
-          <Property Name="BirthDate" Type="datetime" />
+          <Property Name="BirthDate" Type="datetime2" Precision="7" />
           <Property Name="DiscountCardID" Type="int" />
           <Property Name="UserID" Type="int" />
           <Property Name="Photo" Type="image" />
@@ -126,8 +126,8 @@
           <Property Name="NotifyByEmail" Type="bit" Nullable="false" />
           <Property Name="NotifyBySms" Type="bit" Nullable="false" />
           <Property Name="NotifyByPost" Type="bit" Nullable="false" />
-          <Property Name="CreationTime" Type="datetime" Nullable="false" />
-          <Property Name="ModificationTime" Type="datetime" />
+          <Property Name="CreationTime" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="ModificationTime" Type="datetime2" Precision="7" />
         </EntityType>
         <EntityType Name="DiscountCard">
           <Key>
@@ -789,7 +789,7 @@ warning 6002: The table/view 'CRM.CST.CustomerView' does not have a primary key 
           <Property Name="Phone" Type="String" MaxLength="18" FixedLength="false" Unicode="false" />
           <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="Address" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-          <Property Name="BirthDate" Type="DateTime" Precision="3" />
+          <Property Name="BirthDate" Type="DateTime" Precision="7" />
           <Property Name="DiscountCardID" Type="Int32" />
           <Property Name="UserID" Type="Int32" />
           <Property Name="Photo" Type="Binary" MaxLength="Max" FixedLength="false" />
@@ -807,8 +807,8 @@ warning 6002: The table/view 'CRM.CST.CustomerView' does not have a primary key 
           <Property Name="NotifyByEmail" Type="Boolean" Nullable="false" />
           <Property Name="NotifyBySms" Type="Boolean" Nullable="false" />
           <Property Name="NotifyByPost" Type="Boolean" Nullable="false" />
-          <Property Name="CreationTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ModificationTime" Type="DateTime" Precision="3" />
+          <Property Name="CreationTime" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="ModificationTime" Type="DateTime" Precision="7" />
           <Property Name="FirstName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="DiscountCard">
@@ -1048,7 +1048,6 @@ warning 6002: The table/view 'CRM.CST.CustomerView' does not have a primary key 
           <Property Type="DateTime" Name="Date" Nullable="true" Precision="23" />
           <Property Type="Int32" Name="Planned" Nullable="true" />
           <Property Type="Int32" Name="Completed" Nullable="true" />
-          <Property Type="Decimal" Name="Payed" Nullable="true" Precision="5" Scale="2" />
         </ComplexType>
         <ComplexType Name="CustomerDashboardData">
           <Property Type="String" Name="FirstName" Nullable="false" MaxLength="255" />
@@ -1297,7 +1296,6 @@ warning 6002: The table/view 'CRM.CST.CustomerView' does not have a primary key 
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="Planned" ColumnName="Planned" />
                 <ScalarProperty Name="Completed" ColumnName="Completed" />
-                <ScalarProperty Name="Payed" ColumnName="Payed" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

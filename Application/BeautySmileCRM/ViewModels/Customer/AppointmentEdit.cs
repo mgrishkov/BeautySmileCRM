@@ -149,6 +149,7 @@ namespace BeautySmileCRM.ViewModels
                 }
             }
         }
+        [Validate()]
         public decimal Discount
         {
             get { return _data.Discount; }
@@ -174,6 +175,15 @@ namespace BeautySmileCRM.ViewModels
             }
         }
 
+        public bool AllowQuickPay 
+        {
+            get { return Mode == DialogMode.Create && AllowSave; }
+        }
+        public bool AllowCancelVisit
+        {
+            get { return Mode == DialogMode.Update; }
+        }
+
         public IDictionary<int, string> Staff
         {
             get
@@ -188,7 +198,11 @@ namespace BeautySmileCRM.ViewModels
             SubTitle = "визита";
             if (appointmentID.HasValue)
             {
-                _data = _dc.Appointments.SingleOrDefault(x => x.ID == appointmentID);
+                _data = _dc.Appointments
+                    .Where(x => x.ID == appointmentID)
+                    .Include(x => x.Customer)
+                    .Include(x => x.Customer.DiscountCard)
+                    .First();
                 _data.ModifiedBy = CurrentUser.ID;
                 _data.ModificationTime = DateTime.Now;
             }
@@ -233,7 +247,7 @@ namespace BeautySmileCRM.ViewModels
                 IsDefault = false,
                 Command = new DelegateCommand<CancelEventArgs>(
                     OnDialogPayCommandtExecuting,
-                    x => { return this.AllowSave; }
+                    x => { return this.AllowQuickPay; }
                 ),
             });
             commands.Insert(0, new UICommand()
@@ -242,22 +256,74 @@ namespace BeautySmileCRM.ViewModels
                 Caption = "Отменить визит",
                 IsCancel = false,
                 IsDefault = false,
-                Command = new DelegateCommand(OnDialogCancelCommandtExecuting),
+                Command = new DelegateCommand(
+                    OnDialogCancelCommandtExecuting,
+                    ()=> { return this.AllowCancelVisit; }
+                ),
             });
         }
 
         private void OnDialogPayCommandtExecuting(CancelEventArgs args)
         {
-
+            if (Validate())
+            {
+                if (MessageService.Show(String.Format("Провести операцию оплаты за визит в размере {0:c}?", ToPay), "Регистрация оплаты визита", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    var ft = new Models.FinancialTransaction()
+                    {
+                        Appointment = _data,
+                        Customer = _data.Customer,
+                        Amount = ToPay,
+                        CreatedBy = Services.UserProfileService.CurrentUser.ID,
+                        CreationTime = DateTime.Now,
+                        TransactionTypeID = (int)TransactionType.Deposit
+                    };
+                    _dc.FinancialTransactions.Add(ft);
+                    _dc.SaveChanges();
+                };
+            };
         }
         private void OnDialogCancelCommandtExecuting()
         {
+            if (MessageService.Show("Вы действительно хотите отменить визит?", "Отмена визита", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                _data.StateID = (int)AppointmentState.Canceled;
+            };
+        }
 
+        protected override void AllowSaveChanged()
+        {
+            base.AllowSaveChanged();
+            RaisePropertyChanged("AllowQuickPay");
+        }
+        protected override void ApplyCommandExecuted()
+        {
+            base.ApplyCommandExecuted();
+            _dc.SaveChanges();
         }
 
         private void recalcToPay()
         {
-            Discount = Math.Round(Price * DiscountPercent, 2);
+            var discount = Math.Round(Price * DiscountPercent, 2);
+
+            if(discount < _data.Customer.DiscountCard.MinDiscount)
+            {
+                Discount = _data.Customer.DiscountCard.MinDiscount;
+                DiscountPercent = Math.Round(Discount / Price, 2);
+            }
+            else if(discount > _data.Customer.DiscountCard.MaxDiscount)
+            {
+                discount = _data.Customer.DiscountCard.MaxDiscount;
+                DiscountPercent = Math.Round(Discount / Price, 2);
+            }
+            else
+            {
+                Discount = discount;
+            };
+
+            if (Discount != discount)
+                MessageService.Show(String.Format("Скидка была скорректирована, т.к расчитанный размер скидки [{0:c}] выходит за границы доступного размера скидки для данного клиента: [{1:c} - {2:c}].", discount, _data.Customer.DiscountCard.MinDiscount, _data.Customer.DiscountCard.MaxDiscount), "Внимание!", MessageBoxButton.OK, MessageBoxImage.Warning);
+
             ToPay = Price - Discount;
         }
     }

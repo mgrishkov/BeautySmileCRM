@@ -56,15 +56,15 @@
         <dxb:BarManager Grid.Row="0">
             <dxb:BarManager.Items>
                 <dxb:BarButtonItem x:Name="RefreshButton" Content="Обновить" 
-				               LargeGlyph="{StaticResource Refresh24}" Command="{Binding RefreshCommand}" />
+				               LargeGlyph="{StaticResource Refresh32}" Command="{Binding RefreshCommand}" />
                 <dxb:BarButtonItem x:Name="AddButton" Content="Создать дисконт..." 
-				               LargeGlyph="{StaticResource Add24}" Command="{Binding AddDiscountCommand}" />
+				               LargeGlyph="{StaticResource Add32}" Command="{Binding AddDiscountCommand}" />
                 <dxb:BarButtonItem x:Name="EditButton" Content="Редактировать дисконт..." 
-				               LargeGlyph="{StaticResource Edit24}" Command="{Binding EditDiscountCommand}" />
+				               LargeGlyph="{StaticResource Edit32}" Command="{Binding EditDiscountCommand}" />
                 <dxb:BarButtonItem x:Name="DeleteButton" Content="Удалить дисконт..." 
-				               LargeGlyph="{StaticResource Delete24}" Command="{Binding DeleteDiscountCommand}" />
+				               LargeGlyph="{StaticResource Delete32}" Command="{Binding DeleteDiscountCommand}" />
                 <dxb:BarButtonItem x:Name="ExportButton" Content="Экспортировать..."
-				               LargeGlyph="{StaticResource Excel24}" Command="{Binding ExportCommand}" />
+				               LargeGlyph="{StaticResource Excel32}" Command="{Binding ExportCommand}" />
             </dxb:BarManager.Items>
             <dxb:BarManager.Bars>
                 <dxb:Bar x:Name="mainMenuBar" Caption="Панель инструментов" 

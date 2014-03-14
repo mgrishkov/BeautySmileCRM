@@ -16,6 +16,5 @@ namespace BeautySmileCRM.Models
         public Nullable<System.DateTime> Date { get; set; }
         public Nullable<int> Planned { get; set; }
         public Nullable<int> Completed { get; set; }
-        public Nullable<decimal> Payed { get; set; }
     }
 }

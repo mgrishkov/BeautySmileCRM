@@ -57,7 +57,7 @@ namespace BeautySmileCRM.ViewModels
                     && _nameChanged && _dc.Customers.Any(x => x.ID != this._customer.ID && x.FirstName == this.FirstName && x.LastName == this.LastName && x.MiddleName == this.MiddleName))
                 {
                     errorMessage = "Клиент с таким ФИО уже существует!";
-                }
+                };
                 return errorMessage;
             }
         }
@@ -70,12 +70,12 @@ namespace BeautySmileCRM.ViewModels
             {
                 sb.Append(this[itm.Name]);
             };
-            Error = String.Empty;
+            Error = sb.ToString();
             return String.IsNullOrWhiteSpace(Error);
         }
         #endregion
 
-        private readonly Models.CRMContext _dc;
+        private Models.CRMContext _dc;
         private Models.Customer _customer;
         private Models.DiscountCard _discountCard;
         private IEnumerable<Models.CumulativeDiscount> _cumulativeDiscounts;
@@ -274,6 +274,9 @@ namespace BeautySmileCRM.ViewModels
                 {
                     _selectedTab = value;
                     RaisePropertyChanged("SelectedTab");
+
+                    var properties = BindGroupAttribute.GetPropertiesOfGroup(this.GetType(), "CommandCaption");
+                    RaisePropertiesChanged(properties.Select(x => x.Name).ToArray());
                 }
             }
         }
@@ -434,7 +437,7 @@ namespace BeautySmileCRM.ViewModels
             {
                 if(_customer != null && _customer.Region != value)
                 {
-                    _customer.Country = value;
+                    _customer.Region = value;
                     RaisePropertyChanged("Region");
                     AllowSave = true;
                 }
@@ -521,6 +524,15 @@ namespace BeautySmileCRM.ViewModels
                 {
                     _discountCard.Code = value;
                     RaisePropertyChanged("DiscountCardNumber");
+
+                    var card = _dc.DiscountCards.SingleOrDefault(x => x.Code == value);
+                    if (card != null)
+                    {
+                        _customer.DiscountCard = card;
+                        _discountCard = card;
+                        RaisePropertiesChanged("NamedDiscount", "MinDiscount", "MaxDiscount");
+                    };
+
                     AllowSave = true;
                 }
             }
@@ -533,8 +545,11 @@ namespace BeautySmileCRM.ViewModels
             {
                 if(_discountCard != null && value.HasValue)
                 {
-                    _discountCard.DiscountPercent = CumulativeDiscounts.First(x => x.ID == value).Percent;
+                    var discount = CumulativeDiscounts.First(x => x.ID == value);
+                    _discountCard.DiscountPercent = discount.Percent;
                     RaisePropertyChanged("NamedDiscount");
+                    MinDiscount = discount.MinDiscount;
+                    MaxDiscount = discount.MaxDiscount;
                     AllowSave = true;
                 }
             }
@@ -572,6 +587,31 @@ namespace BeautySmileCRM.ViewModels
         protected IDialogService FinancialTransactionDialogService { get { return GetService<IDialogService>("FinancialTransactionEditDialog"); } }
         protected IMessageBoxService MessageService { get { return GetService<IMessageBoxService>(); } }
 
+        [BindGroup("CommandCaption")]
+        public string AddCaption
+        {
+            get 
+            {
+                return SelectedTab == null ? String.Empty : SelectedTab.Name == "visitHistoryTab" ? "Зарегистрировать визит..." : "Зарегистрировать оплату...";
+            }
+        }
+        [BindGroup("CommandCaption")]
+        public string EditCaption
+        {
+            get
+            {
+                return SelectedTab == null ? String.Empty : SelectedTab.Name == "visitHistoryTab" ? "Редактировать визит..." : "Изменить данные по оплате...";
+            }
+        }
+        [BindGroup("CommandCaption")]
+        public string DeleteCaption
+        {
+            get
+            {
+                return SelectedTab == null ? String.Empty : SelectedTab.Name == "visitHistoryTab" ? "Удалить визит..." : "Удалить данные по оплате...";
+            }
+        }
+
         public ClientPage()
         {
             _dc = new Models.CRMContext();
@@ -584,6 +624,17 @@ namespace BeautySmileCRM.ViewModels
             EditCommand = new DelegateCommand(OnEditCommandExecuted);
             DeleteCommand = new DelegateCommand(OnDeleteCommandExecuted);
             ExportCommand = new DelegateCommand(OnExportCommandExecuted);
+
+            this.PropertyChanged += ClientPage_PropertyChanged;
+        }
+
+        private void ClientPage_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if(AllowSave && Validate())
+            {
+                _dc.SaveChanges();
+                AllowSave = false;
+            }
         }
         
         protected override void OnNavigatedTo()
@@ -591,47 +642,14 @@ namespace BeautySmileCRM.ViewModels
             var customerID = (int?)this.Parameter;
             if (customerID.HasValue)
             {
-                _customer = _dc.Customers
-                    .Where(x => x.ID == customerID)
-                    .Include(x => x.DiscountCard)
-                    .Include(x => x.Appointments)
-                    .Include(x => x.Appointments.Select(t => t.Staff))
-                    .Include(x => x.FinancialTransactions)
-                    .First();
-
-                _discountCard = _customer.DiscountCard;
-                DiscountCardEnabled = _discountCard != null;
-
-                VisitHistory = _customer.Appointments;
-                FinancialTransactions = _customer.FinancialTransactions;
+                refreshData(customerID.Value);
             }
             else
             {
-                _customer = new Models.Customer();
-                VisitHistory = new List<Models.Appointment>();
-                FinancialTransactions = new List<Models.FinancialTransaction>();
-                /*var initialDiscount = _dc.CumulativeDiscounts
-                    .OrderBy(x => x.Percent)
-                    .Take(1)
-                    .First();
-
-                var newCode = Models.DiscountCard.GenerateCode();
-
-                _discountCard = new Models.DiscountCard()
-                {
-                    Code = newCode,
-                    DiscountTypeID = (int)Enums.DiscountType.Cumulative,
-                    DiscountPercent = initialDiscount.Percent,
-                    MaxDiscount = initialDiscount.MaxDiscount,
-                    MinDiscount = initialDiscount.MinDiscount
-                };
-                _customer.DiscountCard = _discountCard;
-                 */
+                defaultCustomer();
             };
-            var properties = AttributeUtils.GetProperties<BindGroupAttribute>(this.GetType());
-            RaisePropertiesChanged(properties.Select(x => x.Name).ToArray());
         }
-        
+
         private void OnLinkDiscountCardCommandExecuted()
         {
             var firstDiscount = _dc.CumulativeDiscounts
@@ -680,19 +698,85 @@ namespace BeautySmileCRM.ViewModels
 
         }
 
+        private void refreshData(int customerID)
+        {
+            _dc.Dispose();
+            _dc = new Models.CRMContext();
+            _customer = _dc.Customers
+                    .Where(x => x.ID == customerID)
+                    .Include(x => x.DiscountCard)
+                    .Include(x => x.Appointments)
+                    .Include(x => x.Appointments.Select(t => t.Staff))
+                    .Include(x => x.FinancialTransactions)
+                    .First();
+
+            _discountCard = _customer.DiscountCard;
+            DiscountCardEnabled = _discountCard != null;
+
+            VisitHistory = _customer.Appointments;
+            FinancialTransactions = _customer.FinancialTransactions;
+
+            refreshProperties();
+        }
+
+        private void defaultCustomer()
+        {
+            _customer = new Models.Customer()
+            {
+                Appointments = new List<Models.Appointment>(),
+                FinancialTransactions = new List<Models.FinancialTransaction>()
+            };
+
+            _dc.Customers.Add(_customer);
+
+            var initialDiscount = _dc.CumulativeDiscounts
+                .OrderBy(x => x.Percent)
+                .Take(1)
+                .First();
+
+            var newCode = Models.DiscountCard.GenerateCode();
+
+            _customer.DiscountCard = new Models.DiscountCard()
+            {
+                Code = newCode,
+                DiscountTypeID = (int)Enums.DiscountType.Cumulative,
+                DiscountPercent = initialDiscount.Percent,
+                MaxDiscount = initialDiscount.MaxDiscount,
+                MinDiscount = initialDiscount.MinDiscount
+            };
+
+            _discountCard = _customer.DiscountCard;
+            DiscountCardEnabled = _discountCard != null;
+
+            VisitHistory = _customer.Appointments;
+            FinancialTransactions = _customer.FinancialTransactions;
+
+            refreshProperties();
+        }
+        private void refreshProperties()
+        {
+            var properties = AttributeUtils.GetProperties<BindGroupAttribute>(this.GetType());
+            RaisePropertiesChanged(properties.Select(x => x.Name).ToArray());
+        }
+
         private void ShowDialog(DialogMode mode)
-        { 
+        {
+            var result = MessageBoxResult.None;
             switch(SelectedTab.Name)
             {
                 case "visitHistoryTab":
-                    ShowAppointmentEditDialog(mode);
+                    result = ShowAppointmentEditDialog(mode);
                     break;
                 case "financialTransactionsTab":
-                    ShowFinancialTransactionEditDialog(mode);
+                    result = ShowFinancialTransactionEditDialog(mode);
                     break;
-            }
+            };
+            if (result == MessageBoxResult.Yes || result == MessageBoxResult.OK)
+            {
+                refreshData(_customer.ID);
+            };
         }
-        private void ShowAppointmentEditDialog(DialogMode mode)
+        private MessageBoxResult ShowAppointmentEditDialog(DialogMode mode)
         {
             AppointmentEdit viewModel = null;
             switch (mode)
@@ -705,9 +789,9 @@ namespace BeautySmileCRM.ViewModels
                     viewModel = new AppointmentEdit(mode, SelectedAppointment.ID, _customer.ID, AppointmentDialogService, MessageService);
                     break;
             }
-            viewModel.ShowEditDialog();
+            return viewModel.ShowEditDialog();
         }
-        private void ShowFinancialTransactionEditDialog(DialogMode mode, bool allowChangeAppointment = true)
+        private MessageBoxResult ShowFinancialTransactionEditDialog(DialogMode mode, bool allowChangeAppointment = true)
         {
             FinancialTransactionEdit viewModel = null;
             switch (mode)
@@ -722,7 +806,7 @@ namespace BeautySmileCRM.ViewModels
             };
             viewModel.AllowSelectVisit = allowChangeAppointment;
 
-            viewModel.ShowEditDialog();
+            return viewModel.ShowEditDialog();
         }
 
     }

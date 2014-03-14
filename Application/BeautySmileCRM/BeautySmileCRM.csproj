@@ -306,6 +306,7 @@
       <DependentUpon>CRM.edmx</DependentUpon>
       <LastGenOutput>CRM.cs</LastGenOutput>
     </None>
+    <Compile Include="Models\FinancialTransaction.Extended.cs" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -396,6 +397,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Content\Icons\24x24\" />
     <Folder Include="Content\Icons\48x48\" />
     <Folder Include="Content\Images\" />
     <Folder Include="Windows\" />
@@ -419,18 +421,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Content\Icons\24x24\add.png" />
-    <Resource Include="Content\Icons\24x24\delete.png" />
-    <Resource Include="Content\Icons\24x24\edit.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Content\Icons\24x24\excel.png" />
-    <Resource Include="Content\Icons\24x24\refresh.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Content\Icons\16x16\minus.png" />
     <Resource Include="Content\Icons\16x16\plus.png" />
     <Resource Include="Content\Icons\16x16\sign_warning1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Content\Icons\32x32\add.png" />
+    <Resource Include="Content\Icons\32x32\delete.png" />
+    <Resource Include="Content\Icons\32x32\edit.png" />
+    <Resource Include="Content\Icons\32x32\excel.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

@@ -49,7 +49,7 @@ namespace BeautySmileCRM.ViewModels.Base
                 if (_allowSave != value)
                 {
                     _allowSave = value;
-                    RaisePropertiesChanged("AllowSave");
+                    AllowSaveChanged();
                 };
             }
         }
@@ -181,6 +181,10 @@ namespace BeautySmileCRM.ViewModels.Base
         }
         protected virtual void CancelCommandExecuted()
         {
+        }
+        protected virtual void AllowSaveChanged()
+        {
+            RaisePropertiesChanged("AllowSave");
         }
         protected virtual void ExtendDialogCommands(List<UICommand> commands)
         {

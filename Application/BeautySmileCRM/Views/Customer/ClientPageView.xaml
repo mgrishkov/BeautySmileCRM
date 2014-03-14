@@ -57,7 +57,7 @@
             </dx:DialogService.ViewTemplate>
             <dx:DialogService.DialogStyle>
                 <Style TargetType="dx:DXDialogWindow">
-                    <Setter Property="Width" Value="620"/>
+                    <Setter Property="Width" Value="640"/>
                     <Setter Property="Height" Value="340"/>
                 </Style>
             </dx:DialogService.DialogStyle>
@@ -134,7 +134,7 @@
                         <dxe:TextEdit.EditValue>
                             <Binding Path="LastName"
                                     Mode="TwoWay"
-                                    UpdateSourceTrigger="PropertyChanged"
+                                    UpdateSourceTrigger="Default"
                                     ValidatesOnDataErrors="True"
                                     ValidatesOnExceptions="True"
                                     ValidatesOnNotifyDataErrors="True"/>
@@ -149,7 +149,7 @@
                         <dxe:TextEdit.EditValue>
                             <Binding Path="FirstName"
                                     Mode="TwoWay"
-                                    UpdateSourceTrigger="PropertyChanged"
+                                    UpdateSourceTrigger="Default"
                                     ValidatesOnDataErrors="True"
                                     ValidatesOnExceptions="True"
                                     ValidatesOnNotifyDataErrors="True"/>
@@ -164,7 +164,7 @@
                         <dxe:TextEdit.EditValue>
                             <Binding Path="MiddleName"
                                     Mode="TwoWay"
-                                    UpdateSourceTrigger="PropertyChanged"
+                                    UpdateSourceTrigger="Default"
                                     ValidatesOnDataErrors="True"
                                     ValidatesOnExceptions="True"
                                     ValidatesOnNotifyDataErrors="True"/>
@@ -182,7 +182,7 @@
                             <dxe:ComboBoxEdit.EditValue>
                                 <Binding Path="Gender"
                                     Mode="TwoWay"
-                                    UpdateSourceTrigger="PropertyChanged"
+                                    UpdateSourceTrigger="Default"
                                     ValidatesOnDataErrors="True"
                                     ValidatesOnExceptions="True"
                                     ValidatesOnNotifyDataErrors="True"/>
@@ -194,7 +194,7 @@
                             <dxe:DateEdit.EditValue>
                                 <Binding Path="BirthDate"
                                     Mode="TwoWay"
-                                    UpdateSourceTrigger="PropertyChanged"
+                                    UpdateSourceTrigger="Default"
                                     ValidatesOnDataErrors="True"
                                     ValidatesOnExceptions="True"
                                     ValidatesOnNotifyDataErrors="True"/>
@@ -212,7 +212,7 @@
                         <dxe:TextEdit.EditValue>
                             <Binding Path="MoneyBalance"
                                     Mode="OneWay"
-                                    UpdateSourceTrigger="PropertyChanged"/>
+                                    UpdateSourceTrigger="Default"/>
                         </dxe:TextEdit.EditValue>
                     </dxe:TextEdit>
 
@@ -250,7 +250,7 @@
                         <dxe:ComboBoxEdit.EditValue>
                             <Binding Path="DiscountCardNumber"
                                     Mode="TwoWay"
-                                    UpdateSourceTrigger="PropertyChanged"
+                                    UpdateSourceTrigger="Default"
                                     ValidatesOnDataErrors="True"
                                     ValidatesOnExceptions="True"
                                     ValidatesOnNotifyDataErrors="True"/>
@@ -269,7 +269,7 @@
                         <dxe:ComboBoxEdit.EditValue>
                             <Binding Path="NamedDiscount"
                                 Mode="TwoWay"
-                                UpdateSourceTrigger="PropertyChanged"
+                                UpdateSourceTrigger="Default"
                                 ValidatesOnDataErrors="True"
                                 ValidatesOnExceptions="True"
                                 ValidatesOnNotifyDataErrors="True"/>
@@ -290,7 +290,7 @@
                             <dxe:SpinEdit.EditValue>
                                 <Binding Path="MinDiscount"
                                     Mode="TwoWay"
-                                    UpdateSourceTrigger="PropertyChanged"
+                                    UpdateSourceTrigger="Default"
                                     ValidatesOnDataErrors="True"
                                     ValidatesOnExceptions="True"
                                     ValidatesOnNotifyDataErrors="True"/>
@@ -304,7 +304,7 @@
                             <dxe:SpinEdit.EditValue>
                                 <Binding Path="MaxDiscount"
                                     Mode="TwoWay"
-                                    UpdateSourceTrigger="PropertyChanged"
+                                    UpdateSourceTrigger="Default"
                                     ValidatesOnDataErrors="True"
                                     ValidatesOnExceptions="True"
                                     ValidatesOnNotifyDataErrors="True"/>
@@ -325,7 +325,7 @@
                         <dxe:TextEdit.EditValue>
                             <Binding Path="MobilePhone"
                                     Mode="TwoWay"
-                                    UpdateSourceTrigger="PropertyChanged"
+                                    UpdateSourceTrigger="Default"
                                     ValidatesOnDataErrors="True"
                                     ValidatesOnExceptions="True"
                                     ValidatesOnNotifyDataErrors="True"/>
@@ -340,7 +340,7 @@
                         <dxe:TextEdit.EditValue>
                             <Binding Path="Phone"
                                     Mode="TwoWay"
-                                    UpdateSourceTrigger="PropertyChanged"
+                                    UpdateSourceTrigger="Default"
                                     ValidatesOnDataErrors="True"
                                     ValidatesOnExceptions="True"
                                     ValidatesOnNotifyDataErrors="True"/>
@@ -355,7 +355,7 @@
                         <dxe:TextEdit.EditValue>
                             <Binding Path="Email"
                                     Mode="TwoWay"
-                                    UpdateSourceTrigger="PropertyChanged"
+                                    UpdateSourceTrigger="Default"
                                     ValidatesOnDataErrors="True"
                                     ValidatesOnExceptions="True"
                                     ValidatesOnNotifyDataErrors="True"/>
@@ -372,7 +372,7 @@
                         <dxe:ComboBoxEdit.EditValue>
                             <Binding Path="Country"
                                     Mode="TwoWay"
-                                    UpdateSourceTrigger="PropertyChanged"
+                                    UpdateSourceTrigger="Default"
                                     ValidatesOnDataErrors="True"
                                     ValidatesOnExceptions="True"
                                     ValidatesOnNotifyDataErrors="True"/>
@@ -389,7 +389,7 @@
                         <dxe:ComboBoxEdit.EditValue>
                             <Binding Path="Zip"
                                     Mode="TwoWay"
-                                    UpdateSourceTrigger="PropertyChanged"
+                                    UpdateSourceTrigger="Default"
                                     ValidatesOnDataErrors="True"
                                     ValidatesOnExceptions="True"
                                     ValidatesOnNotifyDataErrors="True"/>
@@ -406,7 +406,7 @@
                         <dxe:ComboBoxEdit.EditValue>
                             <Binding Path="Region"
                                     Mode="TwoWay"
-                                    UpdateSourceTrigger="PropertyChanged"
+                                    UpdateSourceTrigger="Default"
                                     ValidatesOnDataErrors="True"
                                     ValidatesOnExceptions="True"
                                     ValidatesOnNotifyDataErrors="True"/>
@@ -423,7 +423,7 @@
                         <dxe:ComboBoxEdit.EditValue>
                             <Binding Path="City"
                                     Mode="TwoWay"
-                                    UpdateSourceTrigger="PropertyChanged"
+                                    UpdateSourceTrigger="Default"
                                     ValidatesOnDataErrors="True"
                                     ValidatesOnExceptions="True"
                                     ValidatesOnNotifyDataErrors="True"/>
@@ -440,7 +440,7 @@
                         <dxe:TextEdit.EditValue>
                             <Binding Path="Address"
                                     Mode="TwoWay"
-                                    UpdateSourceTrigger="PropertyChanged"
+                                    UpdateSourceTrigger="Default"
                                     ValidatesOnDataErrors="True"
                                     ValidatesOnExceptions="True"
                                     ValidatesOnNotifyDataErrors="True"/>
@@ -457,7 +457,7 @@
                         <dxe:CheckEdit.EditValue>
                             <Binding Path="NotifyByEmail"
                                     Mode="TwoWay"
-                                    UpdateSourceTrigger="PropertyChanged"
+                                    UpdateSourceTrigger="Default"
                                     ValidatesOnDataErrors="True"
                                     ValidatesOnExceptions="True"
                                     ValidatesOnNotifyDataErrors="True"/>
@@ -471,7 +471,7 @@
                         <dxe:CheckEdit.EditValue>
                             <Binding Path="NotifyBySms"
                                     Mode="TwoWay"
-                                    UpdateSourceTrigger="PropertyChanged"
+                                    UpdateSourceTrigger="Default"
                                     ValidatesOnDataErrors="True"
                                     ValidatesOnExceptions="True"
                                     ValidatesOnNotifyDataErrors="True"/>
@@ -484,7 +484,7 @@
                         <dxe:CheckEdit.EditValue>
                             <Binding Path="NotifyByPost"
                                     Mode="TwoWay"
-                                    UpdateSourceTrigger="PropertyChanged"
+                                    UpdateSourceTrigger="Default"
                                     ValidatesOnDataErrors="True"
                                     ValidatesOnExceptions="True"
                                     ValidatesOnNotifyDataErrors="True"/>
@@ -496,13 +496,13 @@
             <dxb:BarManager Grid.Column="2" Margin="5, 0, 0, 0">
                 <dxb:BarManager.Items>
                     <dxb:BarButtonItem x:Name="AddButton" Content="{Binding AddCaption}" 
-				               LargeGlyph="{StaticResource Add24}" Command="{Binding AddCommand}" />
+				               LargeGlyph="{StaticResource Add32}" Command="{Binding AddCommand}" />
                     <dxb:BarButtonItem x:Name="EditButton" Content="{Binding EditCaption}" 
-				               LargeGlyph="{StaticResource Edit24}" Command="{Binding EditCommand}" />
+				               LargeGlyph="{StaticResource Edit32}" Command="{Binding EditCommand}" />
                     <dxb:BarButtonItem x:Name="DeleteButton" Content="{Binding DeleteCaption}" 
-				               LargeGlyph="{StaticResource Delete24}" Command="{Binding DeleteCommand}" />
+				               LargeGlyph="{StaticResource Delete32}" Command="{Binding DeleteCommand}" />
                     <dxb:BarButtonItem x:Name="ExportButton" Content="{Binding ExportCaption}"
-				               LargeGlyph="{StaticResource Excel24}" Command="{Binding ExportCommand}" />
+				               LargeGlyph="{StaticResource Excel32}" Command="{Binding ExportCommand}" />
                 </dxb:BarManager.Items>
                 <dxb:BarManager.Bars>
                     <dxb:Bar x:Name="mainMenuBar" Caption="Панель инструментов" 
@@ -530,7 +530,7 @@
                             <dxg:GridControl ItemsSource="{Binding VisitHistory}"
                                              SelectedItem="{Binding SelectedAppointment, Mode=TwoWay}">
                                 <dxg:GridControl.Columns>
-                                    <dxg:GridColumn x:Name="startTimeField" FieldName="StartTime" Header="Начало" Width="105" ReadOnly="True" VisibleIndex="0" >
+                                    <dxg:GridColumn x:Name="startTimeField" FieldName="StartTime" Header="Начало" Width="105" ReadOnly="True" VisibleIndex="0" SortIndex="0" SortOrder="Descending">
                                         <dxg:GridColumn.EditSettings>
                                             <dxe:DateEditSettings DisplayFormat="dd.MM.yyyy HH:mm" />
                                         </dxg:GridColumn.EditSettings>
@@ -614,7 +614,7 @@
                             <dxg:GridControl ItemsSource="{Binding FinancialTransactions}"
                                              SelectedItem="{Binding SelectedFinancialTransaction, Mode=TwoWay}">
                                 <dxg:GridControl.Columns>
-                                    <dxg:GridColumn x:Name="appointmentIDField" FieldName="AppointmentID" Header="Визит" Width="430" ReadOnly="True" VisibleIndex="0" >
+                                    <dxg:GridColumn x:Name="appointmentIDField" FieldName="AppointmentID" Header="Визит" Width="430" ReadOnly="True" VisibleIndex="0" GroupIndex="0">
                                         <dxg:GridColumn.EditSettings>
                                             <dxe:ComboBoxEditSettings ItemsSource="{Binding VisitHistory}"
                                                                       ValueMember="ID" DisplayMember="Title" />
@@ -632,7 +632,7 @@
                                         </dxg:GridColumn.EditSettings>
                                     </dxg:GridColumn>
                                     
-                                    <dxg:GridColumn x:Name="ftCreationTimeField" FieldName="CreationTime" Header="Регистрация" Width="95" ReadOnly="True" VisibleIndex="10" >
+                                    <dxg:GridColumn x:Name="ftCreationTimeField" FieldName="CreationTime" Header="Регистрация" Width="95" ReadOnly="True" VisibleIndex="10" SortIndex="1" >
                                         <dxg:GridColumn.EditSettings>
                                             <dxe:DateEditSettings DisplayFormat="dd.MM.yyyy HH:mm:ss" />
                                         </dxg:GridColumn.EditSettings>
@@ -643,7 +643,7 @@
                                                                       DisplayMember="Value" ValueMember="Key"/>
                                         </dxg:GridColumn.EditSettings>
                                     </dxg:GridColumn>
-                                    <dxg:GridColumn x:Name="ftModificationTimeField" FieldName="ModificationTime" Header="Изменение" Width="95" ReadOnly="True" VisibleIndex="12" >
+                                    <dxg:GridColumn x:Name="ftModificationTimeField" FieldName="ModificationTime" Header="Изменение" Width="95" ReadOnly="True" VisibleIndex="12" SortIndex="0">
                                         <dxg:GridColumn.EditSettings>
                                             <dxe:DateEditSettings DisplayFormat="dd.MM.yyyy HH:mm:ss" />
                                         </dxg:GridColumn.EditSettings>
@@ -655,6 +655,9 @@
                                         </dxg:GridColumn.EditSettings>
                                     </dxg:GridColumn>
                                 </dxg:GridControl.Columns>
+                                <dxg:GridControl.GroupSummary>
+                                    <dxg:GridSummaryItem Alignment="Right" DisplayFormat="Итого: {0:C}" FieldName="SignedAmount" SummaryType="Sum" />
+                                </dxg:GridControl.GroupSummary>
                                 <dxg:GridControl.View>
                                     <dxg:TableView ShowTotalSummary="True" AllowEditing="True"
 						                           ShowAutoFilterRow="True" ShowGroupedColumns="True" AllowHorizontalScrollingVirtualization="False" 

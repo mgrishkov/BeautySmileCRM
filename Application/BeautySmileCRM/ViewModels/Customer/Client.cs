@@ -79,7 +79,7 @@ namespace BeautySmileCRM.ViewModels
         }
         private void onAddUserCommandExecute()
         {
-
+            NavigationService.Navigate("ClientPageView", null, this);
         }
         private void onEditUserCommandExecute()
         {
@@ -95,7 +95,8 @@ namespace BeautySmileCRM.ViewModels
         }
         private void onClientDoubleClickCommandExecuted(RowDoubleClickEventArgs e)
         {
-            NavigationService.Navigate("ClientPageView", SelectedCustomer.CustomerID, this);
+            if (SelectedCustomer != null)
+                NavigationService.Navigate("ClientPageView", SelectedCustomer.CustomerID, this);
         }
     }
 }
