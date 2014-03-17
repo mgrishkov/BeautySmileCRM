@@ -217,8 +217,6 @@ warning 6002: The table/view 'CRM.CST.CustomerView' does not have a primary key 
             
             
             
-            
-            
           </Key>
           <Property Name="CustomerID" Type="int" Nullable="false" />
           <Property Name="FirstName" Type="nvarchar" MaxLength="255" Nullable="false" />
@@ -229,17 +227,17 @@ warning 6002: The table/view 'CRM.CST.CustomerView' does not have a primary key 
           <Property Name="City" Type="nvarchar" MaxLength="4000" />
           <Property Name="Region" Type="nvarchar" MaxLength="4000" />
           <Property Name="Zip" Type="int" />
-          <Property Name="Phone" Type="varchar" MaxLength="17" />
-          <Property Name="MobilePhone" Type="varchar" MaxLength="17" />
-          <Property Name="Email" Type="nvarchar" MaxLength="255" />
-          <Property Name="Address" Type="nvarchar" MaxLength="4000" Nullable="false" />
-          <Property Name="BirthDate" Type="datetime" Nullable="false" />
+          <Property Name="Phone" Type="varchar" MaxLength="18" />
+          <Property Name="MobilePhone" Type="varchar" MaxLength="18" />
+          <Property Name="Email" Type="varchar" MaxLength="255" />
+          <Property Name="Address" Type="nvarchar" MaxLength="4000" />
+          <Property Name="BirthDate" Type="datetime2" Precision="7" />
           <Property Name="MoneyBalance" Type="decimal" Precision="13" Scale="2" Nullable="false" />
           <Property Name="NotifyByEmail" Type="bit" Nullable="false" />
           <Property Name="NotifyBySms" Type="bit" Nullable="false" />
           <Property Name="NotifyByPost" Type="bit" Nullable="false" />
-          <Property Name="CreationTime" Type="datetime" Nullable="false" />
-          <Property Name="ModificationTime" Type="datetime" />
+          <Property Name="CreationTime" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="ModificationTime" Type="datetime2" Precision="7" />
           <Property Name="DiscountcardID" Type="int" />
           <Property Name="DiscountCardCode" Type="varchar" MaxLength="50" />
           <Property Name="DiscountPercent" Type="decimal" Precision="4" Scale="2" />
@@ -451,8 +449,29 @@ warning 6002: The table/view 'CRM.CST.CustomerView' does not have a primary key 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Function Name="GetAppointmentDashboardData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="APP" />
-        <Function Name="GetCustomerDashboardData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="APP" />
+        <Function Name="GetCustomerDashboardData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="APP">
+          <Parameter Name="date" Type="datetime2" Mode="In" />
+        </Function>
+        <Function Name="CreateFinancialTransaction" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="CST">
+          <Parameter Name="userID" Type="int" Mode="In" />
+          <Parameter Name="transactionTypeID" Type="int" Mode="In" />
+          <Parameter Name="customerID" Type="int" Mode="In" />
+          <Parameter Name="appointmentID" Type="int" Mode="In" />
+          <Parameter Name="amount" Type="decimal" Mode="In" />
+          <Parameter Name="comment" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="DeleteFinancialTransaction" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="CST">
+          <Parameter Name="id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="UpdateFinancialTransaction" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="CST">
+          <Parameter Name="id" Type="int" Mode="In" />
+          <Parameter Name="userID" Type="int" Mode="In" />
+          <Parameter Name="transactionTypeID" Type="int" Mode="In" />
+          <Parameter Name="customerID" Type="int" Mode="In" />
+          <Parameter Name="appointmentID" Type="int" Mode="In" />
+          <Parameter Name="amount" Type="decimal" Mode="In" />
+          <Parameter Name="comment" Type="nvarchar" Mode="In" />
+        </Function>
         <EntityContainer Name="CRMModelStoreContainer">
           <EntitySet Name="Privilege" EntityType="Self.Privilege" Schema="ADM" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="ADM" store:Type="Tables" />
@@ -667,10 +686,31 @@ warning 6002: The table/view 'CRM.CST.CustomerView' does not have a primary key 
             <End Role="Privilege" EntitySet="Privileges" />
             <End Role="User" EntitySet="Users" />
           </AssociationSet>
-          <FunctionImport Name="GetAppointmentDashboardData" ReturnType="Collection(CRMModel.AppointmentDashboardData)" />
-          <FunctionImport Name="GetCustomerDashboardData" ReturnType="Collection(CRMModel.CustomerDashboardData)" />
-          <EntitySet Name="CustomerView" EntityType="CRMModel.CustomerView" />
           <EntitySet Name="AppointmentView" EntityType="CRMModel.AppointmentView" />
+          <FunctionImport Name="CreateFinancialTransaction">
+            <Parameter Name="userID" Mode="In" Type="Int32" />
+            <Parameter Name="transactionTypeID" Mode="In" Type="Int32" />
+            <Parameter Name="customerID" Mode="In" Type="Int32" />
+            <Parameter Name="appointmentID" Mode="In" Type="Int32" />
+            <Parameter Name="amount" Mode="In" Type="Decimal" />
+            <Parameter Name="comment" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="CustomerView" EntityType="CRMModel.CustomerView" />
+          <FunctionImport Name="GetCustomerDashboardData" ReturnType="Collection(CRMModel.CustomerDashboardData)" >
+          <Parameter Name="date" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteFinancialTransaction">
+          <Parameter Name="id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateFinancialTransaction">
+            <Parameter Name="id" Mode="In" Type="Int32" />
+            <Parameter Name="userID" Mode="In" Type="Int32" />
+            <Parameter Name="transactionTypeID" Mode="In" Type="Int32" />
+            <Parameter Name="customerID" Mode="In" Type="Int32" />
+            <Parameter Name="appointmentID" Mode="In" Type="Int32" />
+            <Parameter Name="amount" Mode="In" Type="Decimal" />
+            <Parameter Name="comment" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="Privilege">
           <Key>
@@ -1044,49 +1084,6 @@ warning 6002: The table/view 'CRM.CST.CustomerView' does not have a primary key 
           <End Type="CRMModel.Privilege" Role="Privilege" Multiplicity="*" />
           <End Type="CRMModel.User" Role="User" Multiplicity="*" />
         </Association>
-        <ComplexType Name="AppointmentDashboardData">
-          <Property Type="DateTime" Name="Date" Nullable="true" Precision="23" />
-          <Property Type="Int32" Name="Planned" Nullable="true" />
-          <Property Type="Int32" Name="Completed" Nullable="true" />
-        </ComplexType>
-        <ComplexType Name="CustomerDashboardData">
-          <Property Type="String" Name="FirstName" Nullable="false" MaxLength="255" />
-          <Property Type="String" Name="LastName" Nullable="false" MaxLength="255" />
-          <Property Type="String" Name="MiddleName" Nullable="true" MaxLength="255" />
-          <Property Type="String" Name="MobilePhone" Nullable="true" MaxLength="17" />
-          <Property Type="Decimal" Name="Debt" Nullable="true" Precision="13" Scale="2" />
-        </ComplexType>
-        <EntityType Name="CustomerView">
-          <Key>
-            <PropertyRef Name="CustomerID" />
-          </Key>
-          <Property Name="CustomerID" Type="Int32" Nullable="false" />
-          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="LastName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="MiddleName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Gender" Type="Int32" Nullable="false" />
-          <Property Name="Country" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-          <Property Name="City" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-          <Property Name="Region" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-          <Property Name="Zip" Type="Int32" />
-          <Property Name="Phone" Type="String" MaxLength="17" FixedLength="false" Unicode="false" />
-          <Property Name="MobilePhone" Type="String" MaxLength="17" FixedLength="false" Unicode="false" />
-          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Address" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
-          <Property Name="BirthDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="MoneyBalance" Type="Decimal" Nullable="false" Precision="13" Scale="2" />
-          <Property Name="NotifyByEmail" Type="Boolean" Nullable="false" />
-          <Property Name="NotifyBySms" Type="Boolean" Nullable="false" />
-          <Property Name="NotifyByPost" Type="Boolean" Nullable="false" />
-          <Property Name="CreationTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ModificationTime" Type="DateTime" Precision="3" />
-          <Property Name="DiscountcardID" Type="Int32" />
-          <Property Name="DiscountCardCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="DiscountPercent" Type="Decimal" Precision="4" Scale="2" />
-          <Property Name="FirstVisit" Type="DateTime" Precision="3" />
-          <Property Name="LastVisit" Type="DateTime" Precision="3" />
-          <Property Name="NextVisit" Type="DateTime" Precision="3" />
-        </EntityType>
         <EntityType Name="AppointmentView">
           <Key>
             <PropertyRef Name="AppointmentID" />
@@ -1108,6 +1105,47 @@ warning 6002: The table/view 'CRM.CST.CustomerView' does not have a primary key 
           <Property Name="ModificationTime" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int32" />
         </EntityType>
+        <EntityType Name="CustomerView">
+          <Key>
+            <PropertyRef Name="CustomerID" />
+          </Key>
+          <Property Name="CustomerID" Type="Int32" Nullable="false" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MiddleName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Gender" Type="Int32" Nullable="false" />
+          <Property Name="Country" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="Region" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="Zip" Type="Int32" />
+          <Property Name="Phone" Type="String" MaxLength="18" FixedLength="false" Unicode="false" />
+          <Property Name="MobilePhone" Type="String" MaxLength="18" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="BirthDate" Type="DateTime" Precision="7" />
+          <Property Name="MoneyBalance" Type="Decimal" Nullable="false" Precision="13" Scale="2" />
+          <Property Name="NotifyByEmail" Type="Boolean" Nullable="false" />
+          <Property Name="NotifyBySms" Type="Boolean" Nullable="false" />
+          <Property Name="NotifyByPost" Type="Boolean" Nullable="false" />
+          <Property Name="CreationTime" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="ModificationTime" Type="DateTime" Precision="7" />
+          <Property Name="DiscountcardID" Type="Int32" />
+          <Property Name="DiscountCardCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DiscountPercent" Type="Decimal" Precision="4" Scale="2" />
+          <Property Name="FirstVisit" Type="DateTime" Precision="3" />
+          <Property Name="LastVisit" Type="DateTime" Precision="3" />
+          <Property Name="NextVisit" Type="DateTime" Precision="3" />
+        </EntityType>
+        <ComplexType Name="CustomerDashboardData">
+          <Property Type="Int32" Name="CustomerID" Nullable="false" />
+          <Property Type="String" Name="FirstName" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="LastName" Nullable="false" MaxLength="255" />
+          <Property Type="String" Name="MiddleName" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="MobilePhone" Nullable="true" MaxLength="18" />
+          <Property Type="DateTime" Name="NearestAppointmentDate" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="NewGroup" Nullable="false" />
+          <Property Type="String" Name="DiscountCardCode" Nullable="true" MaxLength="50" />
+        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1267,6 +1305,38 @@ warning 6002: The table/view 'CRM.CST.CustomerView' does not have a primary key 
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
+            <EntityTypeMapping TypeName="CRMModel.FinancialTransaction">
+              <ModificationFunctionMapping>
+                <InsertFunction FunctionName="CRMModel.Store.CreateFinancialTransaction" >
+                <ScalarProperty Name="Comment" ParameterName="comment" />
+                  <ScalarProperty Name="Amount" ParameterName="amount" />
+                  <ScalarProperty Name="AppointmentID" ParameterName="appointmentID" />
+                  <ScalarProperty Name="CustomerID" ParameterName="customerID" />
+                  <ScalarProperty Name="TransactionTypeID" ParameterName="transactionTypeID" />
+                  <ScalarProperty Name="CreatedBy" ParameterName="userID" />
+                  <ResultBinding Name="ID" ColumnName="ID" />
+                  <ResultBinding Name="Amount" ColumnName="Amount" />
+                  <ResultBinding Name="CreationTime" ColumnName="CreationTime" />
+                </InsertFunction>
+                <DeleteFunction FunctionName="CRMModel.Store.DeleteFinancialTransaction" >
+                  <ScalarProperty Name="ID" ParameterName="id" />
+                </DeleteFunction>
+                <UpdateFunction FunctionName="CRMModel.Store.UpdateFinancialTransaction" >
+                  <ScalarProperty Name="Comment" ParameterName="comment" Version="Current" />
+                  <ScalarProperty Name="Amount" ParameterName="amount" Version="Current" />
+                  <ScalarProperty Name="AppointmentID" ParameterName="appointmentID" Version="Current" />
+                  <ScalarProperty Name="CustomerID" ParameterName="customerID" Version="Current" />
+                  <ScalarProperty Name="TransactionTypeID" ParameterName="transactionTypeID" Version="Current" />
+                  <ScalarProperty Name="ModifiedBy" ParameterName="userID" Version="Current" />
+                  <ScalarProperty Name="ID" ParameterName="id" Version="Current" />
+                  <ResultBinding Name="ID" ColumnName="ID" />
+                  <ResultBinding Name="Amount" ColumnName="Amount" />
+                  <ResultBinding Name="Comment" ColumnName="Comment" />
+                  <ResultBinding Name="CreationTime" ColumnName="CreationTime" />
+                  <ResultBinding Name="ModificationTime" ColumnName="ModificationTime" />
+                </UpdateFunction>
+              </ModificationFunctionMapping>
+            </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Staffs">
             <EntityTypeMapping TypeName="CRMModel.Staff">
@@ -1290,26 +1360,29 @@ warning 6002: The table/view 'CRM.CST.CustomerView' does not have a primary key 
               <ScalarProperty Name="ID" ColumnName="PrivilegeID" />
             </EndProperty>
           </AssociationSetMapping>
-          <FunctionImportMapping FunctionImportName="GetAppointmentDashboardData" FunctionName="CRMModel.Store.GetAppointmentDashboardData">
-          <ResultMapping>
-              <ComplexTypeMapping TypeName="CRMModel.AppointmentDashboardData">
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="Planned" ColumnName="Planned" />
-                <ScalarProperty Name="Completed" ColumnName="Completed" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetCustomerDashboardData" FunctionName="CRMModel.Store.GetCustomerDashboardData">
-          <ResultMapping>
-              <ComplexTypeMapping TypeName="CRMModel.CustomerDashboardData">
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
-                <ScalarProperty Name="MobilePhone" ColumnName="MobilePhone" />
-                <ScalarProperty Name="Debt" ColumnName="Debt" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
+          <EntitySetMapping Name="AppointmentView">
+            <EntityTypeMapping TypeName="CRMModel.AppointmentView">
+              <MappingFragment StoreEntitySet="AppointmentView">
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModificationTime" ColumnName="ModificationTime" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatintTime" ColumnName="CreatintTime" />
+                <ScalarProperty Name="StateID" ColumnName="StateID" />
+                <ScalarProperty Name="Payed" ColumnName="Payed" />
+                <ScalarProperty Name="ToPay" ColumnName="ToPay" />
+                <ScalarProperty Name="Discount" ColumnName="Discount" />
+                <ScalarProperty Name="DiscountPercent" ColumnName="DiscountPercent" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Purpose" ColumnName="Purpose" />
+                <ScalarProperty Name="StaffID" ColumnName="StaffID" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="AppointmentID" ColumnName="AppointmentID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="CreateFinancialTransaction" FunctionName="CRMModel.Store.CreateFinancialTransaction" />
           <EntitySetMapping Name="CustomerView">
             <EntityTypeMapping TypeName="CRMModel.CustomerView">
               <MappingFragment StoreEntitySet="CustomerView">
@@ -1342,28 +1415,22 @@ warning 6002: The table/view 'CRM.CST.CustomerView' does not have a primary key 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="AppointmentView">
-            <EntityTypeMapping TypeName="CRMModel.AppointmentView">
-              <MappingFragment StoreEntitySet="AppointmentView">
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="ModificationTime" ColumnName="ModificationTime" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatintTime" ColumnName="CreatintTime" />
-                <ScalarProperty Name="StateID" ColumnName="StateID" />
-                <ScalarProperty Name="Payed" ColumnName="Payed" />
-                <ScalarProperty Name="ToPay" ColumnName="ToPay" />
-                <ScalarProperty Name="Discount" ColumnName="Discount" />
-                <ScalarProperty Name="DiscountPercent" ColumnName="DiscountPercent" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="Purpose" ColumnName="Purpose" />
-                <ScalarProperty Name="StaffID" ColumnName="StaffID" />
-                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
-                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+          <FunctionImportMapping FunctionImportName="GetCustomerDashboardData" FunctionName="CRMModel.Store.GetCustomerDashboardData">
+          <ResultMapping>
+              <ComplexTypeMapping TypeName="CRMModel.CustomerDashboardData">
                 <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
-                <ScalarProperty Name="AppointmentID" ColumnName="AppointmentID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="MobilePhone" ColumnName="MobilePhone" />
+                <ScalarProperty Name="NearestAppointmentDate" ColumnName="NearestAppointmentDate" />
+                <ScalarProperty Name="NewGroup" ColumnName="NewGroup" />
+                <ScalarProperty Name="DiscountCardCode" ColumnName="DiscountCardCode" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="DeleteFinancialTransaction" FunctionName="CRMModel.Store.DeleteFinancialTransaction" />
+          <FunctionImportMapping FunctionImportName="UpdateFinancialTransaction" FunctionName="CRMModel.Store.UpdateFinancialTransaction" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

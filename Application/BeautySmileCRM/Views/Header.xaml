@@ -6,6 +6,7 @@
              xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
              xmlns:dxwuii="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/internal"
              xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"
+             xmlns:dxwuin="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/navigation"
              xmlns:converters="clr-namespace:BeautySmileCRM.Converters" 
              xmlns:ViewModel="clr-namespace:BeautySmileCRM.ViewModels" 
              xmlns:Views="clr-namespace:BeautySmileCRM.Views" 
@@ -15,88 +16,126 @@
              dx:ThemeManager.ThemeName="MetropolisLight"
              x:Name="root">
     <UserControl.DataContext>
-        <ViewModel:Header/>
+        <ViewModel:Header />
     </UserControl.DataContext>
     <UserControl.Resources>
-        <ResourceDictionary Source="/Resources/TextBlockResourceDictionary.xaml" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/TextBlockResourceDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
     </UserControl.Resources>
-    <Grid>
-        <Grid.Resources>
-            <Style TargetType="dxwui:NavigationButton">
-                <Setter Property="Focusable" Value="False" />
-                <Setter Property="IsTabStop" Value="False" />
-                <Setter Property="VerticalContentAlignment" Value="Center" />
-                <Setter Property="Template">
+
+    <dxb:BarManager MenuAnimationType="Fade">
+        <dxb:BarManager.Resources>
+            <Style TargetType="dxb:BarButtonItem">
+                <Setter Property="ContentTemplate">
                     <Setter.Value>
-                        <ControlTemplate TargetType="dxwui:NavigationButton">
-                            <Grid Background="Transparent" Cursor="Hand">
-                                <VisualStateManager.VisualStateGroups>
-                                    <VisualStateGroup x:Name="CommonStates">
-                                        <VisualStateGroup.Transitions>
-                                            <VisualTransition GeneratedDuration="0" To="MouseOver">
-                                                <Storyboard>
-                                                    <DoubleAnimation Duration="0:0:0.15" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="TextBlock" />
-                                                </Storyboard>
-                                            </VisualTransition>
-                                            <VisualTransition From="MouseOver" GeneratedDuration="0">
-                                                <Storyboard>
-                                                    <DoubleAnimation Duration="0:0:0.3" To="0.7" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="TextBlock" />
-                                                </Storyboard>
-                                            </VisualTransition>
-                                            <VisualTransition From="Disabled" GeneratedDuration="0">
-                                                <Storyboard>
-                                                    <DoubleAnimation Duration="0:0:0.2" To="0.7" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="TextBlock" />
-                                                </Storyboard>
-                                            </VisualTransition>
-                                        </VisualStateGroup.Transitions>
-                                        <VisualState x:Name="Disabled" >
-                                            <Storyboard>
-                                                <DoubleAnimation To="1.0" Duration="0:0:0.5" Storyboard.TargetName="TextBlock" Storyboard.TargetProperty="(UIElement.Opacity)"/>
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="TextBlock" Storyboard.TargetProperty="Foreground">
-                                                    <DiscreteObjectKeyFrame KeyTime="0">
-                                                        <DiscreteObjectKeyFrame.Value>
-                                                            <SolidColorBrush>#f78a09</SolidColorBrush>
-                                                        </DiscreteObjectKeyFrame.Value>
-                                                    </DiscreteObjectKeyFrame>
-                                                </ObjectAnimationUsingKeyFrames>
-                                            </Storyboard>
-                                        </VisualState>
-                                        <VisualState x:Name="Normal" />
-                                        <VisualState x:Name="MouseOver" >
-                                            <Storyboard>
-                                                <DoubleAnimation To="1.0" Duration="0:0:0.15" Storyboard.TargetName="TextBlock" Storyboard.TargetProperty="(UIElement.Opacity)"/>
-                                            </Storyboard>
-                                        </VisualState>
-                                        <VisualState x:Name="Pressed" />
-                                    </VisualStateGroup>
-                                </VisualStateManager.VisualStateGroups>
-                                <dx:BackgroundPanel Background="Transparent">
-                                    <TextBlock x:Name="TextBlock" Text="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" FontSize="16" Opacity="0.7" />
-                                </dx:BackgroundPanel>
-                            </Grid>
-                        </ControlTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </DataTemplate>
                     </Setter.Value>
                 </Setter>
             </Style>
-        </Grid.Resources>
-        
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
+            <Style TargetType="dxb:BarSubItem">
+                <Setter Property="ContentTemplate">
+                    <Setter.Value>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </dxb:BarManager.Resources>
+        <dxb:BarManager.Categories>
+            <dxb:BarManagerCategory Name="Customer" />
+            <dxb:BarManagerCategory Name="Summary" />
+            <dxb:BarManagerCategory Name="Settings" />
+        </dxb:BarManager.Categories>
+        <dxb:BarManager.Items>
+            <dxb:BarButtonItem Name="addCustomerButtonItem" CategoryName="Customer" Content="Зарегистрировать клиента"
+                               Command="{Binding OnCreateNewCustomerCommand}"
+                               IsVisible="{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}}"/>
 
-        <TextBlock Grid.Column="0" Style="{StaticResource Title}"
+            <dxb:BarButtonItem Name="showCustomersButtonItem" CategoryName="Summary" Content="Спрвочник клиентов"
+                               Command="{Binding OnNavigateToCustomersCommand}"
+                               IsVisible="{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}}"/>
+            
+            <dxb:BarButtonItem Name="showAppointmentsButtonItem" CategoryName="Summary" Content="Визиты"
+                               Command="{Binding OnNavigateToAppointmentsCommand}"
+                               IsVisible="{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}}"/>
+            
+            <dxb:BarButtonItem Name="showFinancialTransactionsButtonItem" CategoryName="Summary" Content="Финансовые операции"
+                               Command="{Binding OnNavigateToFinancialTransactionsCommand}"
+                               IsVisible="{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}}"/>
+
+            <dxb:BarButtonItem Name="showAdministrationButtonItem" CategoryName="Settings" Content="Администрирование"
+                               Command="{Binding OnNavigateToAdministrationCommand}"
+                               IsVisible="{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}}"/>
+            
+            <dxb:BarButtonItem Name="showPositionsButtonItem" CategoryName="Settings" Content="Справочник персонала"
+                               Command="{Binding OnNavigateToStaffCommand}"
+                               IsVisible="{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}}"/>
+            
+            <dxb:BarButtonItem Name="showCumulativeDiscountButtonItem" CategoryName="Settings" Content="Справочник накопительных скидок"
+                               Command="{Binding OnNavigateToDiscountsCommand}"
+                               IsVisible="{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}}"/>
+
+            <dxb:BarSubItem Name="summarySubItem" CategoryName="Summary" Content="Сводные данные">
+                <dxb:BarSubItem.ItemLinks>
+                    <dxb:BarButtonItemLink BarItemName="showCustomersButtonItem"/>
+                    <dxb:BarButtonItemLink BarItemName="showAppointmentsButtonItem"/>
+                    <dxb:BarButtonItemLink BarItemName="showFinancialTransactionsButtonItem"/>
+                </dxb:BarSubItem.ItemLinks>
+            </dxb:BarSubItem>
+
+            <dxb:BarSubItem Name="settingsSubItem" CategoryName="Settings" Content="Настройки">
+                <dxb:BarSubItem.ItemLinks>
+                    <dxb:BarButtonItemLink BarItemName="showAdministrationButtonItem"/>
+                    <dxb:BarButtonItemLink BarItemName="showPositionsButtonItem"/>
+                    <dxb:BarButtonItemLink BarItemName="showCumulativeDiscountButtonItem"/>
+                </dxb:BarSubItem.ItemLinks>
+            </dxb:BarSubItem>
+        </dxb:BarManager.Items>
+        <dxb:BarManager.Bars>
+            <dxb:Bar Caption="MainMenu" x:Name="MainMenu" ShowSizeGrip="False" AllowHide="False" ShowDragWidget="False">
+                <dxb:Bar.DockInfo>
+                    <dxb:BarDockInfo ContainerType="None" Row="0" ContainerName="quickLinksContainer"/>
+                </dxb:Bar.DockInfo>
+                <dxb:Bar.ItemLinks>
+                    <dxb:BarButtonItemLink BarItemName="addCustomerButtonItem"/>
+                    <dxb:BarSubItemLink BarItemName="summarySubItem"/>
+                    <dxb:BarSubItemLink BarItemName="settingsSubItem"/>
+                </dxb:Bar.ItemLinks>
+
+
+            </dxb:Bar>
+        </dxb:BarManager.Bars>
+
+        <Grid>
+            <Grid.Resources>
+
+            </Grid.Resources>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Style="{StaticResource Title}"
                    Text="Beauty Smile CMS"/>
-        <TextBlock Grid.Column="1" Style="{StaticResource SubTitle}"
+            <TextBlock Grid.Column="1" Style="{StaticResource SubTitle}"
                    Text="{Binding Path='SubTitle',  ElementName='root'}"/>
-        <dxwuii:SplitPanel Grid.Column="2" Margin="0, 0, 10, 0"
-                           ItemSpacing="20" Orientation="Horizontal" ItemSizeMode="AutoSize"
-                           Visibility="{Binding Path='ShowNavigationPanel', ElementName='root', Converter={converters:BoolToVisibilityConverter}}">
-            <dxwui:NavigationButton NavigateTo="ClientView" Content="Добавить клиента" />
-            <dxwui:NavigationButton NavigateTo="ClientView" Content="Добавить визит" />
-            <dxwui:NavigationButton NavigateTo="VisitHistoryView" Content="История визитов" />
-        </dxwuii:SplitPanel>
+
+            <dxb:BarContainerControl x:Name="quickLinksContainer"
+                                     Grid.Column="2" 
+                                     VerticalAlignment="Bottom" Height="30" Margin="0,0,10,0"
+                                     Visibility="{Binding Path='ShowNavigationPanel', ElementName='root', Converter={converters:BoolToVisibilityConverter}}"/>
+
+        </Grid>
         
-    </Grid>
+    </dxb:BarManager>
+    
 </UserControl>

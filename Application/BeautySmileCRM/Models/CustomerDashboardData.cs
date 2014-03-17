@@ -13,10 +13,13 @@ namespace BeautySmileCRM.Models
     
     public partial class CustomerDashboardData
     {
+        public int CustomerID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string MiddleName { get; set; }
         public string MobilePhone { get; set; }
-        public Nullable<decimal> Debt { get; set; }
+        public Nullable<System.DateTime> NearestAppointmentDate { get; set; }
+        public int NewGroup { get; set; }
+        public string DiscountCardCode { get; set; }
     }
 }

@@ -66,13 +66,18 @@ namespace BeautySmileCRM.ViewModels
         
         public int AppointmentID
         {
-            get { return _data.AppointmentID; }
+            get { return (_data.Appointment != null) ? _data.Appointment.ID : -1; }
             set
             {
-                if (_data.AppointmentID != value)
+                if (_data.Appointment != null && _data.Appointment.ID != value)
                 {
-                    _data.AppointmentID = value;
+                    _data.Appointment = _data.Customer.Appointments.Single(x => x.ID == value);
+                    
                     RaisePropertyChanged("AppointmentID");
+                    RaisePropertyChanged("Amount");
+                    RaisePropertyChanged("ToPay");
+                    RaisePropertyChanged("Payed");
+                    RaisePropertyChanged("Residue");
                     AllowSave = true;
                 }
             }

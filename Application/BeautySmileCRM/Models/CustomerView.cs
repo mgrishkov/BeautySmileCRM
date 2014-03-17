@@ -27,7 +27,7 @@ namespace BeautySmileCRM.Models
         public string MobilePhone { get; set; }
         public string Email { get; set; }
         public string Address { get; set; }
-        public System.DateTime BirthDate { get; set; }
+        public Nullable<System.DateTime> BirthDate { get; set; }
         public decimal MoneyBalance { get; set; }
         public bool NotifyByEmail { get; set; }
         public bool NotifyBySms { get; set; }

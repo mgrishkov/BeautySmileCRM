@@ -16,6 +16,8 @@ using System.Windows.Input;
 using System.Windows;
 using BeautySmileCRM.Enums;
 using DevExpress.Xpf.Core;
+using DevExpress.Xpf.Grid;
+using Microsoft.Win32;
 
 namespace BeautySmileCRM.ViewModels
 {
@@ -275,7 +277,7 @@ namespace BeautySmileCRM.ViewModels
                     _selectedTab = value;
                     RaisePropertyChanged("SelectedTab");
 
-                    var properties = BindGroupAttribute.GetPropertiesOfGroup(this.GetType(), "CommandCaption");
+                    var properties = BindGroupAttribute.GetPropertiesOfGroup(this.GetType(), "Commands");
                     RaisePropertiesChanged(properties.Select(x => x.Name).ToArray());
                 }
             }
@@ -587,7 +589,7 @@ namespace BeautySmileCRM.ViewModels
         protected IDialogService FinancialTransactionDialogService { get { return GetService<IDialogService>("FinancialTransactionEditDialog"); } }
         protected IMessageBoxService MessageService { get { return GetService<IMessageBoxService>(); } }
 
-        [BindGroup("CommandCaption")]
+        [BindGroup("Commands")]
         public string AddCaption
         {
             get 
@@ -595,7 +597,7 @@ namespace BeautySmileCRM.ViewModels
                 return SelectedTab == null ? String.Empty : SelectedTab.Name == "visitHistoryTab" ? "Зарегистрировать визит..." : "Зарегистрировать оплату...";
             }
         }
-        [BindGroup("CommandCaption")]
+        [BindGroup("Commands")]
         public string EditCaption
         {
             get
@@ -603,12 +605,65 @@ namespace BeautySmileCRM.ViewModels
                 return SelectedTab == null ? String.Empty : SelectedTab.Name == "visitHistoryTab" ? "Редактировать визит..." : "Изменить данные по оплате...";
             }
         }
-        [BindGroup("CommandCaption")]
+        [BindGroup("Commands")]
         public string DeleteCaption
         {
             get
             {
                 return SelectedTab == null ? String.Empty : SelectedTab.Name == "visitHistoryTab" ? "Удалить визит..." : "Удалить данные по оплате...";
+            }
+        }
+        [BindGroup("Commands")]
+        public string ExportCaption
+        {
+            get
+            {
+                return SelectedTab == null ? String.Empty : SelectedTab.Name == "visitHistoryTab" ? "Экспортировать в MS Excel данные по визитам" : "Экспортировать в MS Excel данные по финансовым операциям...";
+            }
+        }
+
+        public bool AllowEditRow
+        {
+            get
+            {
+                if (SelectedTab == null)
+                    return false;
+
+                switch (SelectedTab.Name)
+                {
+                    case "visitHistoryTab":
+                        return SelectedAppointment != null;
+                        break;
+                    case "financialTransactionsTab":
+                        if (SelectedFinancialTransaction == null)
+                            return false;
+                        return SelectedFinancialTransaction.TransactionTypeID != (int)TransactionType.Withdrawal;
+                        break;
+                };
+
+                return false;
+            }
+        }
+        public bool AllowAddRow
+        {
+            get
+            {
+                if (SelectedTab == null)
+                    return false;
+
+                switch (SelectedTab.Name)
+                {
+                    case "visitHistoryTab":
+                        return _customer != null;
+                        break;
+                    case "financialTransactionsTab":
+                        if (_customer.Appointments == null)
+                            return false;
+                        return _customer.Appointments.Count > 0;
+                        break;
+                };
+
+                return false;
             }
         }
 
@@ -620,10 +675,14 @@ namespace BeautySmileCRM.ViewModels
             UnlinkDiscountCardCommand = new DelegateCommand(OnUnlinkDiscountCardCommandExecuted,
                 () => { return DiscountCardEnabled; });
 
-            AddCommand = new DelegateCommand(OnAddCommandExecuted);
-            EditCommand = new DelegateCommand(OnEditCommandExecuted);
-            DeleteCommand = new DelegateCommand(OnDeleteCommandExecuted);
-            ExportCommand = new DelegateCommand(OnExportCommandExecuted);
+            AddCommand = new DelegateCommand(OnAddCommandExecuted,
+                () => { return AllowAddRow; });
+            EditCommand = new DelegateCommand(OnEditCommandExecuted,
+                () => { return AllowEditRow; });
+            DeleteCommand = new DelegateCommand(OnDeleteCommandExecuted,
+                () => { return AllowEditRow; });
+            ExportCommand = new DelegateCommand<object>(OnExportCommandExecuted,
+                (x) => { return _customer != null; });
 
             this.PropertyChanged += ClientPage_PropertyChanged;
         }
@@ -685,18 +744,66 @@ namespace BeautySmileCRM.ViewModels
         }
         private void OnDeleteCommandExecuted()
         {
+            var result = false;
+            switch (SelectedTab.Name)
+            {
+                case "visitHistoryTab":
+                    if (MessageService.Show("Вы действительно хотите удалить выбранный визит, включая финансовые операции?", "Подтвердите удаление", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                    {
+                        _dc.FinancialTransactions.RemoveRange(SelectedAppointment.FinancialTransactions);
+                        _dc.Appointments.Remove(SelectedAppointment);
+                        result = true;
+                    };
+                    break;
+                case "financialTransactionsTab":
+                    if (MessageService.Show("Вы действительно хотите удалить выбранную финансовую операцию?", "Подтвердите удаление", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                    {
+                        _dc.FinancialTransactions.Remove(SelectedFinancialTransaction);
+                        result = true;
+                    };
+                    break;
+            };
+
+            if (result)
+            {
+                _dc.SaveChanges();
+                refreshData(_customer.ID);
+            }
         }
-        private void OnExportCommandExecuted()
+        private void OnExportCommandExecuted(object param)
         {
-        }
-        private void OnDialogApplyCommandtExecuting(CancelEventArgs args)
-        {
+            var args = (object[])param;
+
+            TableView table = null;
+
+            var dlg = new SaveFileDialog()
+            {
+                AddExtension = true,
+                CheckPathExists = true,
+                DefaultExt = "xlsx",
+                Filter = "Файлы MS Excel 2007-2013|*.xlsx",
+            };
+
+            switch (SelectedTab.Name)
+            {
+                case "visitHistoryTab":
+                    table = (TableView)args[0];
+                    dlg.FileName = String.Format("Визиты {0}.xlsx", _customer.ShortName);
+                    break;
+                case "financialTransactionsTab":
+                    table = (TableView)args[1];
+                    dlg.FileName = String.Format("Финансовые операции {0}.xlsx", _customer.ShortName);
+                    break;
+            };
+
+            
+            if (dlg.ShowDialog() == true)
+            {
+                table.ExportToXlsx(dlg.FileName);
+            };
 
         }
-        private void OnDialogCancelCommandtExecuting(CancelEventArgs args)
-        {
-
-        }
+        
 
         private void refreshData(int customerID)
         {
@@ -797,14 +904,20 @@ namespace BeautySmileCRM.ViewModels
             switch (mode)
             {
                 case DialogMode.Create:
-                    viewModel = new FinancialTransactionEdit(mode, _customer.ID, (SelectedAppointment != null) ? (int?)SelectedAppointment.ID : null, FinancialTransactionDialogService, MessageService);
+                    viewModel = new FinancialTransactionEdit(mode, _customer.ID, (SelectedAppointment != null) ? (int?)SelectedAppointment.ID : null, FinancialTransactionDialogService, MessageService)
+                    {
+                        AllowSelectVisit = false
+                    };
                     break;
                 case DialogMode.Update:
                 case DialogMode.View:
-                    viewModel = new FinancialTransactionEdit(mode, SelectedFinancialTransaction.ID, _customer.ID, (SelectedAppointment != null) ? (int?)SelectedAppointment.ID : null, FinancialTransactionDialogService, MessageService);
+                    viewModel = new FinancialTransactionEdit(mode, SelectedFinancialTransaction.ID, _customer.ID, (SelectedAppointment != null) ? (int?)SelectedAppointment.ID : null, FinancialTransactionDialogService, MessageService)
+                    {
+                        AllowSelectVisit = false
+                    };
                     break;
             };
-            viewModel.AllowSelectVisit = allowChangeAppointment;
+            
 
             return viewModel.ShowEditDialog();
         }

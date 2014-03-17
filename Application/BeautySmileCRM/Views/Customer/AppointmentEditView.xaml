@@ -74,7 +74,7 @@
                    Text="Начало визита" 
                    Style="{StaticResource GroupItem}"/>
         <dxe:DateEdit Grid.Column="2" Grid.Row="2"
-                      HorizontalAlignment="Left" Width="155"
+                      HorizontalAlignment="Left" Width="140"
                       DisplayFormatString="dd.MM.yyyy HH:mm" Mask="dd.MM.yyyy HH:mm">
             <dxe:DateEdit.EditValue>
                 <Binding Path="StartTime"
@@ -87,14 +87,16 @@
         </dxe:DateEdit>
 
         <TextBlock Grid.Column="4" Grid.Row="2"
-                   Text="Окончание визита" 
+                   Text="Продолжительность" 
                    Style="{StaticResource GroupItem}"/>
         <dxe:DateEdit Grid.Column="6" Grid.Row="2"
                       HorizontalAlignment="Left" Width="155"
-                      MinValue="{Binding StartTime}"
-                      DisplayFormatString="dd.MM.yyyy HH:mm" Mask="dd.MM.yyyy HH:mm">
+                      DisplayFormatString="HH:mm" Mask="HH:mm" MaskType="DateTimeAdvancingCaret">
+            <dxe:DateEdit.StyleSettings>
+                <dxe:DateEditPickerStyleSettings/>
+            </dxe:DateEdit.StyleSettings>
             <dxe:DateEdit.EditValue>
-                <Binding Path="EndTime"
+                <Binding Path="Duration"
                          Mode="TwoWay"
                          UpdateSourceTrigger="PropertyChanged"
                          ValidatesOnDataErrors="True"

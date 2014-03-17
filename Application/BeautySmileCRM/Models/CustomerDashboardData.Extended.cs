@@ -6,11 +6,14 @@ using System.Threading.Tasks;
 
 namespace BeautySmileCRM.Models
 {
-    public partial class User
+    public partial class CustomerDashboardData
     {
-        public bool HasPrivilege(Enums.Privilege privilege)
+        public bool IsNewGroup
         {
-            return Privileges.Any(x => x.ID == (int)privilege);
+            get
+            {
+                return Convert.ToBoolean(this.NewGroup);
+            }
         }
     }
 }

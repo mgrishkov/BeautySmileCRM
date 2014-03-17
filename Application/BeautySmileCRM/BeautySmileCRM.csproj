@@ -89,6 +89,7 @@
     </Compile>
     <Compile Include="Converters\AuthorizationStageToVisibilityConverter.cs" />
     <Compile Include="Converters\IntToVisibilityConverter.cs" />
+    <Compile Include="Converters\ObjectToTableViewConverter.cs" />
     <Compile Include="Converters\ObjectToVisibilityConverter.cs" />
     <Compile Include="Converters\NotBoolConverter.cs" />
     <Compile Include="Converters\ObjectToBoolConverter.cs" />
@@ -123,9 +124,6 @@
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Appointment.Extended.cs" />
-    <Compile Include="Models\AppointmentDashboardData.cs">
-      <DependentUpon>CRM.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\AppointmentState.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
@@ -156,6 +154,7 @@
     <Compile Include="Models\CustomerDashboardData.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CustomerDashboardData.Extended.cs" />
     <Compile Include="Models\CustomerView.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
@@ -169,7 +168,6 @@
     <Compile Include="Models\FinancialTransaction.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\IUser.cs" />
     <Compile Include="Models\PrivelegeGroup.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
@@ -188,6 +186,7 @@
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\User.Extended.cs" />
+    <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Services\UserProfileService.cs" />
     <Compile Include="Utils\Notification.cs" />
     <Compile Include="ViewModels\Administration\AdminEdit.cs" />
@@ -430,6 +429,9 @@
     <Resource Include="Content\Icons\32x32\delete.png" />
     <Resource Include="Content\Icons\32x32\edit.png" />
     <Resource Include="Content\Icons\32x32\excel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Content\Icons\16x16\search.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

@@ -502,7 +502,14 @@
                     <dxb:BarButtonItem x:Name="DeleteButton" Content="{Binding DeleteCaption}" 
 				               LargeGlyph="{StaticResource Delete32}" Command="{Binding DeleteCommand}" />
                     <dxb:BarButtonItem x:Name="ExportButton" Content="{Binding ExportCaption}"
-				               LargeGlyph="{StaticResource Excel32}" Command="{Binding ExportCommand}" />
+				               LargeGlyph="{StaticResource Excel32}" Command="{Binding ExportCommand}" >
+                        <dxb:BarButtonItem.CommandParameter>
+                            <MultiBinding Converter="{converters:ObjectToTableViewConverter}">
+                                <Binding ElementName="AppointmentsTableView"/>
+                                <Binding ElementName="FinancialTransactionsTableView"/>
+                            </MultiBinding>
+                        </dxb:BarButtonItem.CommandParameter>
+                    </dxb:BarButtonItem>
                 </dxb:BarManager.Items>
                 <dxb:BarManager.Bars>
                     <dxb:Bar x:Name="mainMenuBar" Caption="Панель инструментов" 
@@ -601,7 +608,8 @@
                                     </dxg:GridColumn>
                                 </dxg:GridControl.Columns>
                                 <dxg:GridControl.View>
-                                    <dxg:TableView ShowTotalSummary="True" AllowEditing="True"
+                                    <dxg:TableView x:Name="AppointmentsTableView"
+                                                   ShowTotalSummary="True" AllowEditing="True"
 						                           ShowAutoFilterRow="True" ShowGroupedColumns="True" AllowHorizontalScrollingVirtualization="False" 
             					                   ShowGroupPanel="False" />
                                 </dxg:GridControl.View>
@@ -659,9 +667,10 @@
                                     <dxg:GridSummaryItem Alignment="Right" DisplayFormat="Итого: {0:C}" FieldName="SignedAmount" SummaryType="Sum" />
                                 </dxg:GridControl.GroupSummary>
                                 <dxg:GridControl.View>
-                                    <dxg:TableView ShowTotalSummary="True" AllowEditing="True"
+                                    <dxg:TableView x:Name="FinancialTransactionsTableView"
+                                                   ShowTotalSummary="True" AllowEditing="True"
 						                           ShowAutoFilterRow="True" ShowGroupedColumns="True" AllowHorizontalScrollingVirtualization="False" 
-            					                   ShowGroupPanel="False" />
+            					                   ShowGroupPanel="False"/>
                                 </dxg:GridControl.View>
                             </dxg:GridControl>
                         </Grid>

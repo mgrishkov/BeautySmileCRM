@@ -39,17 +39,87 @@ namespace BeautySmileCRM.Models
         public virtual DbSet<DiscountCard> DiscountCards { get; set; }
         public virtual DbSet<FinancialTransaction> FinancialTransactions { get; set; }
         public virtual DbSet<Staff> Staffs { get; set; }
-        public virtual DbSet<CustomerView> CustomerView { get; set; }
         public virtual DbSet<AppointmentView> AppointmentView { get; set; }
+        public virtual DbSet<CustomerView> CustomerView { get; set; }
     
-        public virtual ObjectResult<AppointmentDashboardData> GetAppointmentDashboardData()
+        public virtual int CreateFinancialTransaction(Nullable<int> userID, Nullable<int> transactionTypeID, Nullable<int> customerID, Nullable<int> appointmentID, Nullable<decimal> amount, string comment)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<AppointmentDashboardData>("GetAppointmentDashboardData");
+            var userIDParameter = userID.HasValue ?
+                new ObjectParameter("userID", userID) :
+                new ObjectParameter("userID", typeof(int));
+    
+            var transactionTypeIDParameter = transactionTypeID.HasValue ?
+                new ObjectParameter("transactionTypeID", transactionTypeID) :
+                new ObjectParameter("transactionTypeID", typeof(int));
+    
+            var customerIDParameter = customerID.HasValue ?
+                new ObjectParameter("customerID", customerID) :
+                new ObjectParameter("customerID", typeof(int));
+    
+            var appointmentIDParameter = appointmentID.HasValue ?
+                new ObjectParameter("appointmentID", appointmentID) :
+                new ObjectParameter("appointmentID", typeof(int));
+    
+            var amountParameter = amount.HasValue ?
+                new ObjectParameter("amount", amount) :
+                new ObjectParameter("amount", typeof(decimal));
+    
+            var commentParameter = comment != null ?
+                new ObjectParameter("comment", comment) :
+                new ObjectParameter("comment", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("CreateFinancialTransaction", userIDParameter, transactionTypeIDParameter, customerIDParameter, appointmentIDParameter, amountParameter, commentParameter);
         }
     
-        public virtual ObjectResult<CustomerDashboardData> GetCustomerDashboardData()
+        public virtual ObjectResult<CustomerDashboardData> GetCustomerDashboardData(Nullable<System.DateTime> date)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CustomerDashboardData>("GetCustomerDashboardData");
+            var dateParameter = date.HasValue ?
+                new ObjectParameter("date", date) :
+                new ObjectParameter("date", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CustomerDashboardData>("GetCustomerDashboardData", dateParameter);
+        }
+    
+        public virtual int DeleteFinancialTransaction(Nullable<int> id)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("id", id) :
+                new ObjectParameter("id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteFinancialTransaction", idParameter);
+        }
+    
+        public virtual int UpdateFinancialTransaction(Nullable<int> id, Nullable<int> userID, Nullable<int> transactionTypeID, Nullable<int> customerID, Nullable<int> appointmentID, Nullable<decimal> amount, string comment)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("id", id) :
+                new ObjectParameter("id", typeof(int));
+    
+            var userIDParameter = userID.HasValue ?
+                new ObjectParameter("userID", userID) :
+                new ObjectParameter("userID", typeof(int));
+    
+            var transactionTypeIDParameter = transactionTypeID.HasValue ?
+                new ObjectParameter("transactionTypeID", transactionTypeID) :
+                new ObjectParameter("transactionTypeID", typeof(int));
+    
+            var customerIDParameter = customerID.HasValue ?
+                new ObjectParameter("customerID", customerID) :
+                new ObjectParameter("customerID", typeof(int));
+    
+            var appointmentIDParameter = appointmentID.HasValue ?
+                new ObjectParameter("appointmentID", appointmentID) :
+                new ObjectParameter("appointmentID", typeof(int));
+    
+            var amountParameter = amount.HasValue ?
+                new ObjectParameter("amount", amount) :
+                new ObjectParameter("amount", typeof(decimal));
+    
+            var commentParameter = comment != null ?
+                new ObjectParameter("comment", comment) :
+                new ObjectParameter("comment", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateFinancialTransaction", idParameter, userIDParameter, transactionTypeIDParameter, customerIDParameter, appointmentIDParameter, amountParameter, commentParameter);
         }
     }
 }

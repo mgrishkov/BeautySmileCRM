@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BeautySmileCRM.Models;
 using DevExpress.Xpf.Mvvm;
+using local = BeautySmileCRM.Services;
 
 namespace BeautySmileCRM.ViewModels.Base
 {
@@ -21,7 +22,7 @@ namespace BeautySmileCRM.ViewModels.Base
 
         public INavigationService NavigationService
         {
-            get { return ServiceContainer.GetService<INavigationService>(); }
+            get { return local.NavigationService.Service; }
         }
 
         public BaseNavigationViewModel()

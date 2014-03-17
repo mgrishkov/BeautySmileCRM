@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using DevExpress.Xpf.Mvvm;
 using DevExpress.Xpf.WindowsUI.Internal;
 
 namespace BeautySmileCRM.Views
@@ -35,8 +36,6 @@ namespace BeautySmileCRM.Views
         }
         public static readonly DependencyProperty SubTitleProperty =
             DependencyProperty.Register("SubTitle", typeof(string), typeof(Views.Header), new PropertyMetadata(String.Empty));
-
-
 
         public Header()
         {

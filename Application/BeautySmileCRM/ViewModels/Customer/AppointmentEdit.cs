@@ -54,6 +54,7 @@ namespace BeautySmileCRM.ViewModels
         #endregion
 
         private Models.Appointment _data;
+        private DateTime _duration;
 
         public string ClientFullName 
         {
@@ -89,6 +90,21 @@ namespace BeautySmileCRM.ViewModels
                     _data.EndTime = value;
                     RaisePropertyChanged("EndTime");
                     AllowSave = true;
+                }
+            }
+        }
+        [Validate()]
+        public DateTime Duration
+        {
+            get { return _duration; }
+            set
+            {
+                if (_duration != value)
+                {
+                    _duration = value;
+                    RaisePropertyChanged("Duration");
+                    AllowSave = true;
+                    EndTime = StartTime.AddHours(_duration.Hour).AddMinutes(_duration.Minute);
                 }
             }
         }
@@ -188,7 +204,7 @@ namespace BeautySmileCRM.ViewModels
         {
             get
             {
-                return _dc.Staffs.ToDictionary(x => x.ID, y => y.ShortName);
+                return _dc.Staffs.ToDictionary(x => x.ID, y => String.Format("{0} - {1}", y.ShortName, y.Position));
             }
         }
 
@@ -213,11 +229,12 @@ namespace BeautySmileCRM.ViewModels
                     .Include(x => x.DiscountCard)
                     .First();
 
+                var nextHour = DateTime.Now.AddHours(1).StartOfHour();
                 _data = new Models.Appointment()
                 {
                     Customer = client,
-                    StartTime = DateTime.Now.AddHours(1).StartOfHour(),
-                    EndTime = DateTime.Now.AddHours(1).StartOfHour().AddHours(1),
+                    StartTime = nextHour,
+                    EndTime = nextHour.AddHours(1),
                     CreatedBy = CurrentUser.ID,
                     CreationTime = DateTime.Now,
                     DiscountPercent = client.DiscountCard != null ? client.DiscountCard.DiscountPercent : 0m,
@@ -228,6 +245,7 @@ namespace BeautySmileCRM.ViewModels
                 };
                 _dc.Appointments.Add(_data);
             };
+            Duration = new DateTime(_data.StartTime.Year, _data.StartTime.Month, _data.StartTime.Day, (int)_data.EndTime.Subtract(_data.StartTime).TotalHours, 0, 0);
             
         }
         public AppointmentEdit(DialogMode mode, int clientID, IDialogService dialogService, IMessageBoxService messageService)

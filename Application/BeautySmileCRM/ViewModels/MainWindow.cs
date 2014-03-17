@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using DevExpress.Xpf.Mvvm;
 using BeautySmileCRM.ViewModels.Base;
+using local = BeautySmileCRM.Services;
 
 namespace BeautySmileCRM.ViewModels
 {
@@ -18,6 +19,7 @@ namespace BeautySmileCRM.ViewModels
         }
         private void OnNavigateLoginCommandExecute() 
         {
+            local.NavigationService.Service = ServiceContainer.GetService<INavigationService>();
             NavigationService.Navigate("LoginView", null, this);
         }
     }

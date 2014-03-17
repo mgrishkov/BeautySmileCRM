@@ -1,0 +1,77 @@
+﻿﻿<#@ template debug="true" hostSpecific="true" #>
+<#@ output extension=".cs" #>
+<#@ Assembly Name="EnvDTE" #>
+<#@ Assembly Name="System.Linq" #>
+<#@ Assembly Name="System.Data" #>
+<#@ import namespace="EnvDTE" #>
+<#@ import namespace="System.Data" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Data.SqlClient" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#
+    // Settings
+    string schemaName = "CONF";
+    string tableName = "AppointmentState";
+    string columnId = "ID";
+    string columnName = "Code";
+    string columnDescription = "Name";
+#>
+<#
+    string fileName= Path.GetFileNameWithoutExtension(Host.TemplateFile);
+    string path = Path.GetDirectoryName(Host.TemplateFile);
+    string connectionString = "data source=localhost;initial catalog=CRM;integrated security=SSPI";
+
+	// Get containing project
+	IServiceProvider serviceProvider = (IServiceProvider)Host;
+	DTE dte = (DTE)serviceProvider.GetService(typeof(DTE));
+	Project project = dte.Solution.FindProjectItem(Host.TemplateFile).ContainingProject;
+#>
+using System;
+using System.ComponentModel;
+
+namespace <#= project.Properties.Item("DefaultNamespace").Value #><#= Path.GetDirectoryName(Host.TemplateFile).Remove(0, Path.GetDirectoryName(project.FileName).Length).Replace("\\", ".") #>
+{
+    /// <summary>
+    /// <#= tableName #> auto generated enumeration
+    /// </summary>
+    public enum <#= fileName #>
+    {
+<#
+    SqlConnection conn = new SqlConnection(connectionString);
+
+    string command = string.Format("select {0}, {1}, {2} from {3}.{4} order by {0}", columnId, columnName, columnDescription, schemaName, tableName);
+    SqlCommand comm = new SqlCommand(command, conn);
+
+    conn.Open();
+
+    SqlDataReader reader = comm.ExecuteReader();
+    bool loop = reader.Read();
+    var list = new Dictionary<string, string>();
+    
+    while(loop)
+    {
+        list.Add(reader[columnId].ToString(), string.Format("{0}@{1}", reader[columnName].ToString(), reader[columnDescription].ToString()));
+        loop = reader.Read();
+    }
+    
+    var maxLength = 3;
+    foreach(string itm in list.Values)
+    {
+        if(itm.Length > maxLength)
+            maxLength = itm.Length;
+    };
+    
+    foreach(KeyValuePair<string, string> itm in list)
+    {
+        var val = itm.Value.ToString().Split('@');
+        var name = val[0];
+        var description = val[1];
+        WriteLine("\t\t[Description(\"{0}\")]", description);
+        WriteLine("\t\t{0}{1}= {2},", name, "".PadLeft(maxLength - name.Length + 1), itm.Key);
+    };    
+
+#>
+    }        
+}
