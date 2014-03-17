@@ -27,13 +27,13 @@
 
     </UserControl.Resources>
 
-    <dxb:BarManager MenuAnimationType="Fade">
+    <dxb:BarManager MenuAnimationType="Fade" AllowCustomization="False">
         <dxb:BarManager.Resources>
             <Style TargetType="dxb:BarButtonItem">
                 <Setter Property="ContentTemplate">
                     <Setter.Value>
                         <DataTemplate>
-                            <TextBlock Text="{Binding}" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding Name}" ToolTip="{Binding Tooltip}" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </DataTemplate>
                     </Setter.Value>
                 </Setter>
@@ -54,33 +54,33 @@
             <dxb:BarManagerCategory Name="Settings" />
         </dxb:BarManager.Categories>
         <dxb:BarManager.Items>
-            <dxb:BarButtonItem Name="addCustomerButtonItem" CategoryName="Customer" Content="Зарегистрировать клиента"
-                               Command="{Binding OnCreateNewCustomerCommand}"
-                               IsVisible="{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}}"/>
+            <dxb:BarButtonItem Name="addCustomerButtonItem" CategoryName="Customer" 
+                               Content="{Binding CreateNewCustomer}"
+                               Command="{Binding OnCreateNewCustomerCommand}"/>
 
-            <dxb:BarButtonItem Name="showCustomersButtonItem" CategoryName="Summary" Content="Спрвочник клиентов"
-                               Command="{Binding OnNavigateToCustomersCommand}"
-                               IsVisible="{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}}"/>
+            <dxb:BarButtonItem Name="showCustomersButtonItem" CategoryName="Summary" 
+                               Content="{Binding NavigateToCustomers}"
+                               Command="{Binding OnNavigateToCustomersCommand}"/>
             
-            <dxb:BarButtonItem Name="showAppointmentsButtonItem" CategoryName="Summary" Content="Визиты"
-                               Command="{Binding OnNavigateToAppointmentsCommand}"
-                               IsVisible="{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}}"/>
+            <dxb:BarButtonItem Name="showAppointmentsButtonItem" CategoryName="Summary" 
+                               Content="{Binding NavigateToAppointments}"
+                               Command="{Binding OnNavigateToAppointmentsCommand}"/>
             
-            <dxb:BarButtonItem Name="showFinancialTransactionsButtonItem" CategoryName="Summary" Content="Финансовые операции"
-                               Command="{Binding OnNavigateToFinancialTransactionsCommand}"
-                               IsVisible="{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}}"/>
+            <dxb:BarButtonItem Name="showFinancialTransactionsButtonItem" CategoryName="Summary" 
+                               Content="{Binding NavigateToFinancialTransactions}"
+                               Command="{Binding OnNavigateToFinancialTransactionsCommand}"/>
 
-            <dxb:BarButtonItem Name="showAdministrationButtonItem" CategoryName="Settings" Content="Администрирование"
-                               Command="{Binding OnNavigateToAdministrationCommand}"
-                               IsVisible="{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}}"/>
+            <dxb:BarButtonItem Name="showAdministrationButtonItem" CategoryName="Settings" 
+                               Content="{Binding NavigateToAdministration}"
+                               Command="{Binding OnNavigateToAdministrationCommand}"/>
             
-            <dxb:BarButtonItem Name="showPositionsButtonItem" CategoryName="Settings" Content="Справочник персонала"
-                               Command="{Binding OnNavigateToStaffCommand}"
-                               IsVisible="{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}}"/>
+            <dxb:BarButtonItem Name="showPositionsButtonItem" CategoryName="Settings" 
+                               Content="{Binding NavigateToStaff}"
+                               Command="{Binding OnNavigateToStaffCommand}"/>
             
-            <dxb:BarButtonItem Name="showCumulativeDiscountButtonItem" CategoryName="Settings" Content="Справочник накопительных скидок"
-                               Command="{Binding OnNavigateToDiscountsCommand}"
-                               IsVisible="{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}}"/>
+            <dxb:BarButtonItem Name="showCumulativeDiscountButtonItem" CategoryName="Settings"
+                               Content="{Binding NavigateToDiscounts}"
+                               Command="{Binding OnNavigateToDiscountsCommand}"/>
 
             <dxb:BarSubItem Name="summarySubItem" CategoryName="Summary" Content="Сводные данные">
                 <dxb:BarSubItem.ItemLinks>

@@ -186,6 +186,7 @@
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\User.Extended.cs" />
+    <Compile Include="Services\ApplicationService.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Services\UserProfileService.cs" />
     <Compile Include="Utils\Notification.cs" />

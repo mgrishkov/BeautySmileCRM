@@ -9,6 +9,8 @@ using BeautySmileCRM.ViewModels.Base;
 using System.Windows.Input;
 using DevExpress.Xpf.WindowsUI;
 using BeautySmileCRM.Enums;
+using DevExpress.Xpf.Bars;
+using BeautySmileCRM.Services;
 
 namespace BeautySmileCRM.ViewModels
 {
@@ -21,6 +23,85 @@ namespace BeautySmileCRM.ViewModels
         public ICommand OnNavigateToAdministrationCommand { get; private set; }
         public ICommand OnNavigateToStaffCommand { get; private set; }
         public ICommand OnNavigateToDiscountsCommand { get; private set; }
+
+        public dynamic CreateNewCustomer
+        {
+            get
+            {
+                return new 
+                {
+                    Name = "Добавить клиента",
+                    Tooltip = OnCreateNewCustomerCommand.CanExecute(null) ? "Перейти на форму создания новго клиента..." : ApplicationService.SufficientAuthority
+                };
+            }
+        }
+        public dynamic NavigateToCustomers
+        {
+            get
+            {
+                return new
+                {
+                    Name = "Справочник клиентов",
+                    Tooltip = OnNavigateToCustomersCommand.CanExecute(null) ? "Открыть форму справочника клиентов..." : ApplicationService.SufficientAuthority
+                };
+            }
+        }
+        public dynamic NavigateToAppointments
+        {
+            get
+            {
+                return new
+                {
+                    Name = "История визитов",
+                    Tooltip = OnNavigateToAppointmentsCommand.CanExecute(null) ? "Открыть форму истории визитов..." : ApplicationService.SufficientAuthority
+                };
+            }
+        }
+        public dynamic NavigateToFinancialTransactions
+        {
+            get
+            {
+                return new
+                {
+                    Name = "Финансовые операции",
+                    Tooltip = OnNavigateToFinancialTransactionsCommand.CanExecute(null) ? "Открыть форму финансовых операций..." : ApplicationService.SufficientAuthority
+                };
+            }
+        }
+        public dynamic NavigateToAdministration
+        {
+            get
+            {
+                return new
+                {
+                    Name = "Администрирование",
+                    Tooltip = OnNavigateToAdministrationCommand.CanExecute(null) ? "Открыть форму пользователей приложения и разграничения ролей..." : ApplicationService.SufficientAuthority
+                };
+            }
+        }
+        public dynamic NavigateToStaff
+        {
+            get
+            {
+                return new
+                {
+                    Name = "Справочник персонала",
+                    Tooltip = OnNavigateToStaffCommand.CanExecute(null) ? "Открыть форму справочника персонала..." : ApplicationService.SufficientAuthority
+                };
+            }
+        }
+        public dynamic NavigateToDiscounts
+        {
+            get
+            {
+                return new
+                {
+                    Name = "Справочник скидок",
+                    Tooltip = OnNavigateToDiscountsCommand.CanExecute(null) ? "Открыть форму справочника скидок..." : ApplicationService.SufficientAuthority
+                };
+            }
+        }
+        
 
         public Header()
         {
