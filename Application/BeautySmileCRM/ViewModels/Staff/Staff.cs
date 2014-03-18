@@ -12,6 +12,10 @@ using BeautySmileCRM.Enums;
 using Models = BeautySmileCRM.Models;
 using DevExpress.Xpf.Core.ServerMode;
 using BeautySmileCRM.ViewModels.Base;
+using System.Data.Entity.Infrastructure;
+using System.Windows;
+using Microsoft.Win32;
+using DevExpress.Xpf.Grid;
 
 namespace BeautySmileCRM.ViewModels
 {
@@ -22,6 +26,7 @@ namespace BeautySmileCRM.ViewModels
 
         private readonly Models.CRMContext _dc;
         private Models.Staff _selectedStaff;
+        private IEnumerable<Models.Staff> _staffs;
 
         public Models.Staff SelectedStaff
         {
@@ -35,7 +40,18 @@ namespace BeautySmileCRM.ViewModels
                 }
             }
         }
-        public LinqInstantFeedbackDataSource DataSource { get; private set; }
+        public IEnumerable<Models.Staff> Staffs
+        {
+            get { return _staffs; }
+            set
+            {
+                if(_staffs != value)
+                {
+                    _staffs = value;
+                    RaisePropertyChanged("Staffs");
+                }
+            }
+        }
 
         public ICommand RefreshCommand { get; private set; }
         public ICommand AddStaffCommand { get; private set; }
@@ -46,29 +62,39 @@ namespace BeautySmileCRM.ViewModels
         public Staff()
         {
             _dc = new Models.CRMContext();
-            RefreshCommand = new DelegateCommand(onRefreshCommandExecute);
-            AddStaffCommand = new DelegateCommand(onAddStaffCommandExecute);
-            EditStaffCommand = new DelegateCommand(onEditStaffCommandExecute,
-                () => { return SelectedStaff != null; });
-            DeleteStaffCommand = new DelegateCommand(onDeleteStaffCommandExecute,
-                () => { return SelectedStaff != null; });
-            ExportCommand = new DelegateCommand(onExportCommandExecute);
-            initDataSource();
 
+            RefreshCommand = new DelegateCommand(onRefreshCommandExecute);
+
+            AddStaffCommand = new DelegateCommand(onAddStaffCommandExecute,
+                () => { return CurrentUser.HasPrivilege(Privilege.CreateStaff); });
+
+            EditStaffCommand = new DelegateCommand(onEditStaffCommandExecute,
+                () => { return SelectedStaff != null && CurrentUser.HasPrivilege(Privilege.ModifyStaff); });
+
+            DeleteStaffCommand = new DelegateCommand(onDeleteStaffCommandExecute,
+                () => { return SelectedStaff != null && CurrentUser.HasPrivilege(Privilege.DeleteStaff); });
+
+            ExportCommand = new DelegateCommand<object>(onExportCommandExecute);
+
+            refresh();
         }
-        private void initDataSource()
+        private void refresh()
         {
-            DataSource = new LinqInstantFeedbackDataSource()
+            Task.Factory.StartNew(() =>
             {
-                QueryableSource = _dc.Staffs,
-                KeyExpression = "ID",
-                DefaultSorting = "LastName ASC"
-            };
-            RaisePropertyChanged("DataSource");
+                if (Staffs != null)
+                {
+                    var dc = ((IObjectContextAdapter)_dc).ObjectContext;
+                    dc.Refresh(System.Data.Entity.Core.Objects.RefreshMode.StoreWins, Staffs);
+                };
+
+                Staffs = _dc.Staffs.ToList();
+            });
         }
+        
         private void onRefreshCommandExecute()
         {
-            DataSource.Refresh();
+            refresh();
         }
         private void onAddStaffCommandExecute()
         {
@@ -80,11 +106,37 @@ namespace BeautySmileCRM.ViewModels
         }
         private void onDeleteStaffCommandExecute()
         {
-
+            if (MessageService.Show("Вы действительно хотите удалить выбранного сотрудника?", "Подтвердите удаление", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    _dc.Staffs.Remove(SelectedStaff);
+                    _dc.SaveChanges();
+                    refresh();
+                }
+                catch
+                {
+                    MessageService.Show(String.Format("Сотрудниу {0} не может быть удален, т.к. имеются связанные с ним визиты.\nДля запрета выбора данного сотрудника при создании или редактировнаии визита, установите дату его увольнентя в форме редактирования.", SelectedStaff.ShortName), "Ошибка удаления", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            };
         }
-        private void onExportCommandExecute()
+        private void onExportCommandExecute(object param)
         {
+            var table = param as TableView;
 
+            var dlg = new SaveFileDialog()
+            {
+                AddExtension = true,
+                CheckPathExists = true,
+                DefaultExt = "xlsx",
+                FileName = "Сотрудники",
+                Filter = "Файлы MS Excel 2007-2013|*.xlsx"
+            };
+
+            if (dlg.ShowDialog() == true)
+            {
+                table.ExportToXlsx(dlg.FileName);
+            };
         }
 
 
@@ -101,7 +153,10 @@ namespace BeautySmileCRM.ViewModels
                     viewModel = new StaffEdit(mode, SelectedStaff.ID, DialogService, MessageService);
                     break;
             }
-            viewModel.ShowEditDialog();
+            if(viewModel.ShowEditDialog() == MessageBoxResult.OK)
+            {
+                refresh();
+            }
         }
     }
 }

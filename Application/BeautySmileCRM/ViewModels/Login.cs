@@ -127,10 +127,23 @@ namespace BeautySmileCRM.ViewModels
                             .SingleOrDefault();
                         if(user != null)
                         {
-                            user.Password = "*".PadLeft(user.Password.Length, '*');
-                            CurrentUser = user;
-                            AuthorizationStage = Enums.AuthorizationStage.Authorized;
-                            NavigationService.Navigate("DashboardView", null, this);
+                            if (user.ExpirationDate.HasValue && user.ExpirationDate < DateTime.Now)
+                            {
+                                ErrorMessage = String.Format("Учетная запись заблокирована с {0:d}", user.ExpirationDate);
+                                AuthorizationStage = Enums.AuthorizationStage.Error;
+                            }
+                            else if (!user.Privileges.Any(x => x.ID == (int)Enums.Privilege.Login))
+                            {
+                                ErrorMessage = "Пользователь не имеет достаточно прав для запуска приложения";
+                                AuthorizationStage = Enums.AuthorizationStage.Error;
+                            }
+                            else
+                            {
+                                user.Password = "*".PadLeft(user.Password.Length, '*');
+                                CurrentUser = user;
+                                AuthorizationStage = Enums.AuthorizationStage.Authorized;
+                                NavigationService.Navigate("DashboardView", null, this);
+                            };
                         }
                         else
                         {

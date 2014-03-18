@@ -193,7 +193,7 @@ namespace BeautySmileCRM.ViewModels
 
         public bool AllowQuickPay 
         {
-            get { return Mode == DialogMode.Create && AllowSave; }
+            get { return Mode == DialogMode.Create && AllowSave && CurrentUser.HasPrivilege(Privilege.CreateFinancialTransaction); }
         }
         public bool AllowCancelVisit
         {
@@ -204,7 +204,7 @@ namespace BeautySmileCRM.ViewModels
         {
             get
             {
-                return _dc.Staffs.ToDictionary(x => x.ID, y => String.Format("{0} - {1}", y.ShortName, y.Position));
+                return _dc.Staffs.Where(x => !x.DismissalDate.HasValue || x.DismissalDate < _data.EndTime).ToDictionary(x => x.ID, y => String.Format("{0} - {1}", y.ShortName, y.Position));
             }
         }
 

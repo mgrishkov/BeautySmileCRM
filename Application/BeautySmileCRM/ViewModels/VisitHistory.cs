@@ -12,6 +12,8 @@ using BeautySmileCRM.Enums;
 using DevExpress.Xpf.Core.ServerMode;
 using Ext = SmartClasses;
 using BeautySmileCRM.ViewModels.Base;
+using Microsoft.Win32;
+using DevExpress.Xpf.Grid;
 
 namespace BeautySmileCRM.ViewModels
 {
@@ -80,9 +82,6 @@ namespace BeautySmileCRM.ViewModels
         
 
         public ICommand RefreshCommand { get; private set; }
-        public ICommand AddUserCommand { get; private set; }
-        public ICommand EditUserCommand { get; private set; }
-        public ICommand DeleteUserCommand { get; private set; }
         public ICommand ExportCommand { get; private set; }
 
 
@@ -90,12 +89,7 @@ namespace BeautySmileCRM.ViewModels
         {
             _dc = new Models.CRMContext();
             RefreshCommand = new DelegateCommand(onRefreshCommandExecute);
-            AddUserCommand = new DelegateCommand(onAddUserCommandExecute);
-            EditUserCommand = new DelegateCommand(onEditUserCommandExecute,
-                () => { return SelectedAppointment != null; });
-            DeleteUserCommand = new DelegateCommand(onDeleteUserCommandExecute,
-                () => { return SelectedAppointment != null; });
-            ExportCommand = new DelegateCommand(onExportCommandExecute);
+            ExportCommand = new DelegateCommand<object>(onExportCommandExecute);
             initDataSource();
         }
         private void initDataSource()
@@ -110,23 +104,25 @@ namespace BeautySmileCRM.ViewModels
         }
         private void onRefreshCommandExecute()
         {
-
+            DataSource.Refresh();
         }
-        private void onAddUserCommandExecute()
+        private void onExportCommandExecute(object param)
         {
+            var table = param as TableView;
 
-        }
-        private void onEditUserCommandExecute()
-        {
+            var dlg = new SaveFileDialog()
+            {
+                AddExtension = true,
+                CheckPathExists = true,
+                DefaultExt = "xlsx",
+                FileName = "История визитов",
+                Filter = "Файлы MS Excel 2007-2013|*.xlsx"
+            };
 
-        }
-        private void onDeleteUserCommandExecute()
-        {
-
-        }
-        private void onExportCommandExecute()
-        {
-
+            if (dlg.ShowDialog() == true)
+            {
+                table.ExportToXlsx(dlg.FileName);
+            };
         }
     }
 }

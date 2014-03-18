@@ -64,7 +64,8 @@
                 <dxb:BarButtonItem x:Name="DeleteButton" Content="Удалить сотрудника..." 
 				               LargeGlyph="{StaticResource Delete32}" Command="{Binding DeleteStaffCommand}" />
                 <dxb:BarButtonItem x:Name="ExportButton" Content="Экспортировать..."
-				               LargeGlyph="{StaticResource Excel32}" Command="{Binding ExportCommand}" />
+				               LargeGlyph="{StaticResource Excel32}" Command="{Binding ExportCommand}"
+                                   CommandParameter="{Binding ElementName='staffView'}"/>
             </dxb:BarManager.Items>
             <dxb:BarManager.Bars>
                 <dxb:Bar x:Name="mainMenuBar" Caption="Панель инструментов" 
@@ -96,7 +97,8 @@
 
                 <dxg:GridControl x:Name="mainGrid" 
 				                 Grid.Row="0" Grid.Column="0"
-				                 ItemsSource="{Binding DataSource.Data}">
+				                 ItemsSource="{Binding Staffs}"
+                                 SelectedItem="{Binding SelectedStaff}">
                     <dxg:GridControl.Columns>
                         <dxg:GridColumn x:Name="idField" FieldName="ID" Header="ИД" Width="40" ReadOnly="True" VisibleIndex="0" >
                             <dxg:GridColumn.EditSettings>
@@ -136,10 +138,9 @@
                     </dxg:GridControl.Columns>
 
                     <dxg:GridControl.View>
-                        <dxg:TableView x:Name="view" ShowTotalSummary="True" AllowEditing="True"
+                        <dxg:TableView x:Name="staffView" ShowTotalSummary="True" AllowEditing="True"
 						               ShowAutoFilterRow="True" ShowGroupedColumns="True" AllowHorizontalScrollingVirtualization="False" 
-            					       ShowGroupPanel="False" 
-                                       FocusedRow="{Binding SelectedStaff, Converter={converters:ReadonlyThreadSafeProxyForObjectFromAnotherThreadToOrigianlConverter}, Mode=TwoWay}"/>
+            					       ShowGroupPanel="False" />
                     </dxg:GridControl.View>
                 </dxg:GridControl>
             </Grid>

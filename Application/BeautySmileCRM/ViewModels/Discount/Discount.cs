@@ -11,6 +11,10 @@ using System.Windows.Threading;
 using BeautySmileCRM.Enums;
 using DevExpress.Xpf.Core.ServerMode;
 using BeautySmileCRM.ViewModels.Base;
+using System.Data.Entity.Infrastructure;
+using System.Windows;
+using Microsoft.Win32;
+using DevExpress.Xpf.Grid;
 
 namespace BeautySmileCRM.ViewModels
 {
@@ -19,8 +23,9 @@ namespace BeautySmileCRM.ViewModels
         protected IDialogService DialogService { get { return GetService<IDialogService>(); } }
         protected IMessageBoxService MessageService { get { return GetService<IMessageBoxService>(); } }
 
-        private readonly Models.CRMContext _dc;
+        private Models.CRMContext _dc;
         private Models.CumulativeDiscount _selectedDiscount;
+        private IEnumerable<Models.CumulativeDiscount> _discounts;
 
         public Models.CumulativeDiscount SelectedDiscount
         {
@@ -34,7 +39,18 @@ namespace BeautySmileCRM.ViewModels
                 }
             }
         }
-        public LinqInstantFeedbackDataSource DataSource { get; private set; }
+        public IEnumerable<Models.CumulativeDiscount> Discounts
+        {
+            get { return _discounts; }
+            set
+            {
+                if(_discounts != value)
+                {
+                    _discounts = value;
+                    RaisePropertyChanged("Discounts");
+                }
+            }
+        }
 
         public ICommand RefreshCommand { get; private set; }
         public ICommand AddDiscountCommand { get; private set; }
@@ -45,29 +61,39 @@ namespace BeautySmileCRM.ViewModels
         public Discount()
         {
             _dc = new Models.CRMContext();
-            RefreshCommand = new DelegateCommand(onRefreshCommandExecute);
-            AddDiscountCommand = new DelegateCommand(onAddDiscountCommandExecute);
-            EditDiscountCommand = new DelegateCommand(onEditDiscountCommandExecute,
-                () => { return SelectedDiscount != null; });
-            DeleteDiscountCommand = new DelegateCommand(onDeleteDiscountCommandExecute,
-                () => { return SelectedDiscount != null; });
-            ExportCommand = new DelegateCommand(onExportCommandExecute);
-            initDataSource();
 
+            RefreshCommand = new DelegateCommand(onRefreshCommandExecute);
+
+            AddDiscountCommand = new DelegateCommand(onAddDiscountCommandExecute,
+                () => { return CurrentUser.HasPrivilege(Privilege.CreateCumulativeDiscount); });
+
+            EditDiscountCommand = new DelegateCommand(onEditDiscountCommandExecute,
+                () => { return SelectedDiscount != null && CurrentUser.HasPrivilege(Privilege.ModifyCumulativeDiscount); });
+
+            DeleteDiscountCommand = new DelegateCommand(onDeleteDiscountCommandExecute,
+                () => { return SelectedDiscount != null && CurrentUser.HasPrivilege(Privilege.DeleteCumulativeDiscount); });
+
+            ExportCommand = new DelegateCommand<object>(onExportCommandExecute);
+
+            refresh();
         }
-        private void initDataSource()
+        private void refresh()
         {
-            DataSource = new LinqInstantFeedbackDataSource()
+            Task.Factory.StartNew(() =>
             {
-                QueryableSource = _dc.CumulativeDiscounts,
-                KeyExpression = "ID",
-                DefaultSorting = "Percent ASC"
-            };
-            RaisePropertyChanged("DataSource");
+                if (Discounts != null)
+                {
+                    var dc = ((IObjectContextAdapter)_dc).ObjectContext;
+                    dc.Refresh(System.Data.Entity.Core.Objects.RefreshMode.StoreWins, Discounts);
+                };
+
+                Discounts = _dc.CumulativeDiscounts.ToList();
+            });
         }
+
         private void onRefreshCommandExecute()
         {
-
+            refresh();
         }
         private void onAddDiscountCommandExecute()
         {
@@ -79,11 +105,37 @@ namespace BeautySmileCRM.ViewModels
         }
         private void onDeleteDiscountCommandExecute()
         {
-
+            if (MessageService.Show("Вы действительно хотите удалить выбранную скидку?", "Подтвердите удаление", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    _dc.CumulativeDiscounts.Remove(SelectedDiscount);
+                    _dc.SaveChanges();
+                    refresh();
+                }
+                catch
+                {
+                    MessageService.Show(String.Format("Скидка {0} не может быть удалена, т.к. на нее есть ссылки.", _selectedDiscount.Name), "Ошибка удаления", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            };
         }
-        private void onExportCommandExecute()
+        private void onExportCommandExecute(object param)
         {
+            var table = param as TableView;
 
+            var dlg = new SaveFileDialog()
+            {
+                AddExtension = true,
+                CheckPathExists = true,
+                DefaultExt = "xlsx",
+                FileName = "Скидки",
+                Filter = "Файлы MS Excel 2007-2013|*.xlsx"
+            };
+
+            if (dlg.ShowDialog() == true)
+            {
+                table.ExportToXlsx(dlg.FileName);
+            };
         }
 
         private void ShowDialog(DialogMode mode)
@@ -99,7 +151,10 @@ namespace BeautySmileCRM.ViewModels
                     viewModel = new CumulativeDiscountEdit(mode, SelectedDiscount.ID, DialogService, MessageService);
                     break;
             }
-            viewModel.ShowEditDialog();
+            if(viewModel.ShowEditDialog() == MessageBoxResult.OK)
+            {
+                refresh();
+            }
         }
     }
 }

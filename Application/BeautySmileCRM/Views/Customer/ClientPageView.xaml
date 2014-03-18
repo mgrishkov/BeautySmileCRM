@@ -78,7 +78,8 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <ScrollViewer  Grid.Column="0" 
-                           VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Hidden">
+                           VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Hidden"
+                           IsEnabled="{Binding AllowEditCustomer}">
                 <Grid x:Name="formGrid">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -246,6 +247,7 @@
                                       AutoComplete="True" IncrementalFiltering="True"
                                       ItemsSource="{Binding DiscountCards}"
                                       Visibility="{Binding DiscountCardEnabled, Converter={converters:BoolToVisibilityConverter}}"
+                                      IsEnabled="{Binding AllowEditDiscountCard}"
                                       TabIndex="6">
                         <dxe:ComboBoxEdit.EditValue>
                             <Binding Path="DiscountCardNumber"
@@ -265,6 +267,7 @@
                                       ValueMember="ID" DisplayMember="Name"
                                       ItemsSource="{Binding CumulativeDiscounts}"
                                       Visibility="{Binding DiscountCardEnabled, Converter={converters:BoolToVisibilityConverter}}"
+                                      IsEnabled="{Binding AllowEditDiscountCard}"
                                       TabIndex="7">
                         <dxe:ComboBoxEdit.EditValue>
                             <Binding Path="NamedDiscount"
@@ -286,6 +289,7 @@
                                       HorizontalAlignment="Left" Width="95"
                                       ToolTip="Минимальный размер скидки"
                                       DisplayFormatString="C"
+                                      IsEnabled="{Binding AllowEditDiscountCard}"
                                       TabIndex="8">
                             <dxe:SpinEdit.EditValue>
                                 <Binding Path="MinDiscount"
@@ -300,6 +304,7 @@
                                       HorizontalAlignment="Left" Width="95" Margin="4, 0, 0, 0"
                                       ToolTip="Максимальный размер скидки"
                                       DisplayFormatString="C"
+                                      IsEnabled="{Binding AllowEditDiscountCard}"
                                       TabIndex="9">
                             <dxe:SpinEdit.EditValue>
                                 <Binding Path="MaxDiscount"
@@ -532,7 +537,8 @@
 
                 <dx:DXTabControl SelectedItem="{Binding SelectedTab}">
                     <dx:DXTabItem Name="visitHistoryTab"
-                                  Header="История визитов">
+                                  Header="История визитов"
+                                  Visibility="{Binding ShowAppointmentsTab, Converter={converters:BoolToVisibilityConverter}}">
                         <Grid>
                             <dxg:GridControl ItemsSource="{Binding VisitHistory}"
                                              SelectedItem="{Binding SelectedAppointment, Mode=TwoWay}">
@@ -617,7 +623,8 @@
                         </Grid>
                     </dx:DXTabItem>
                     <dx:DXTabItem Name="financialTransactionsTab"
-                                  Header="Финансовые операции">
+                                  Header="Финансовые операции"
+                                  Visibility="{Binding ShowFinancialTransactionTab, Converter={converters:BoolToVisibilityConverter}}">
                         <Grid>
                             <dxg:GridControl ItemsSource="{Binding FinancialTransactions}"
                                              SelectedItem="{Binding SelectedFinancialTransaction, Mode=TwoWay}">

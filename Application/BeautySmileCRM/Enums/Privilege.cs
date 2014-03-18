@@ -49,23 +49,27 @@ namespace BeautySmileCRM.Enums
 		[Description("Удаление клиента")]
 		DeleteCustomer                                                              = 303,
 		[Description("Создание дисконтных карт")]
-		CreateDiscountCard                                                          = 310,
+		LinkDiscountCard                                                            = 310,
 		[Description("Изменение дисконтных карт")]
 		ModifyDiscontCard                                                           = 311,
+		[Description("Удаление дисконтной карты")]
+		UnlinkDiscountCard                                                          = 312,
 		[Description("Просмотр событий")]
 		ViewAppointment                                                             = 320,
 		[Description("Создание событий")]
 		CreateAppointment                                                           = 321,
 		[Description("Редактирование событий")]
 		ModifyAppointment                                                           = 322,
+		[Description("Удаление визитов")]
+		DeleteAppointment                                                           = 323,
 		[Description("Устанавливать произвольный дисконт")]
-		SetCustomDiscount                                                           = 323,
+		SetCustomDiscount                                                           = 350,
 		[Description("Просмотр финансовых операций")]
 		ViewFinancialTransaction                                                    = 400,
 		[Description("Создание финансовой операции")]
 		CreateFinancialTransaction                                                  = 401,
 		[Description("Изменение финансовой операции")]
-		ModifyFinancialOperation                                                    = 402,
+		ModifyFinancialTransaction                                                  = 402,
 		[Description("Удаление финансовой операции")]
 		DeleteFinancialTransaction                                                  = 403,
     }        

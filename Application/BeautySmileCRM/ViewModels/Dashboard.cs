@@ -119,17 +119,19 @@ namespace BeautySmileCRM.ViewModels
 
         private void FindData()
         {
-            if (String.IsNullOrWhiteSpace(SearchString))
+            if (CurrentUser.HasPrivilege(Privilege.ViewCustomer))
             {
-                Data = _customers;
-            }
-            else
-            {
-                Data = _customers.Where(x => x.LastName.ToUpper().Contains(SearchString.ToUpper())
-                        || x.FirstName.ToUpper().Contains(SearchString.ToUpper())
-                        || (x.DiscountCardCode != null && x.DiscountCardCode.ToUpper().StartsWith(SearchString.ToUpper())));
+                if (String.IsNullOrWhiteSpace(SearchString))
+                {
+                    Data = _customers;
+                }
+                else
+                {
+                    Data = _customers.Where(x => x.LastName.ToUpper().Contains(SearchString.ToUpper())
+                            || x.FirstName.ToUpper().Contains(SearchString.ToUpper())
+                            || (x.DiscountCardCode != null && x.DiscountCardCode.ToUpper().StartsWith(SearchString.ToUpper())));
+                };
             };
-            
         }
     }
 }

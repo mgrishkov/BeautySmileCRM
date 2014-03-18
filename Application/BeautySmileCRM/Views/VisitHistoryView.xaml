@@ -41,14 +41,10 @@
             <dxb:BarManager.Items>
                 <dxb:BarButtonItem x:Name="RefreshButton" Content="Обновить" 
 				               LargeGlyph="{StaticResource Refresh32}" Command="{Binding RefreshCommand}" />
-                <dxb:BarButtonItem x:Name="AddButton" Content="Создать дисконт..." 
-				               LargeGlyph="{StaticResource Add32}" Command="{Binding AddDiscountCommand}" />
-                <dxb:BarButtonItem x:Name="EditButton" Content="Редактировать дисконт..." 
-				               LargeGlyph="{StaticResource Edit32}" Command="{Binding EditDiscountCommand}" />
-                <dxb:BarButtonItem x:Name="DeleteButton" Content="Удалить дисконт..." 
-				               LargeGlyph="{StaticResource Delete32}" Command="{Binding DeleteDiscountCommand}" />
+                
                 <dxb:BarButtonItem x:Name="ExportButton" Content="Экспортировать..."
-				               LargeGlyph="{StaticResource Excel32}" Command="{Binding ExportCommand}" />
+				               LargeGlyph="{StaticResource Excel32}" Command="{Binding ExportCommand}" 
+                                   CommandParameter="{Binding ElementName='visitsView'}"/>
             </dxb:BarManager.Items>
             <dxb:BarManager.Bars>
                 <dxb:Bar x:Name="mainMenuBar" Caption="Панель инструментов" 
@@ -57,10 +53,6 @@
                         <dxb:BarDockInfo ContainerType="Top" />
                     </dxb:Bar.DockInfo>
                     <dxb:BarButtonItemLink BarItemName="RefreshButton" />
-                    <dxb:BarItemLinkSeparator />
-                    <dxb:BarButtonItemLink BarItemName="AddButton" />
-                    <dxb:BarButtonItemLink BarItemName="EditButton" />
-                    <dxb:BarButtonItemLink BarItemName="DeleteButton" />
                     <dxb:BarItemLinkSeparator />
                     <dxb:BarButtonItemLink BarItemName="ExportButton" />
                 </dxb:Bar>
@@ -166,10 +158,9 @@
                     </dxg:GridControl.Bands>
 
                     <dxg:GridControl.View>
-                        <dxg:TableView x:Name="view" ShowTotalSummary="True" AllowEditing="True"
+                        <dxg:TableView x:Name="visitsView" ShowTotalSummary="True" AllowEditing="True"
 						               ShowAutoFilterRow="True" ShowGroupedColumns="True" AllowHorizontalScrollingVirtualization="False" 
-            					       ShowGroupPanel="False" 
-                                       FocusedRow="{Binding SelectedAppointment, Converter={converters:ReadonlyThreadSafeProxyForObjectFromAnotherThreadToOrigianlConverter}, Mode=TwoWay}"/>
+            					       ShowGroupPanel="False" />
                     </dxg:GridControl.View>
                 </dxg:GridControl>
             </Grid>

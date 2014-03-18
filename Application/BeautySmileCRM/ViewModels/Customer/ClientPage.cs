@@ -632,13 +632,14 @@ namespace BeautySmileCRM.ViewModels
                 switch (SelectedTab.Name)
                 {
                     case "visitHistoryTab":
-                        return SelectedAppointment != null;
-                        break;
+                        return SelectedAppointment != null && CurrentUser.HasPrivilege(Privilege.ModifyAppointment);
+                        
                     case "financialTransactionsTab":
                         if (SelectedFinancialTransaction == null)
                             return false;
-                        return SelectedFinancialTransaction.TransactionTypeID != (int)TransactionType.Withdrawal;
-                        break;
+                        return SelectedFinancialTransaction.TransactionTypeID != (int)TransactionType.Withdrawal
+                            && CurrentUser.HasPrivilege(Privilege.ModifyFinancialTransaction);
+                        
                 };
 
                 return false;
@@ -654,33 +655,73 @@ namespace BeautySmileCRM.ViewModels
                 switch (SelectedTab.Name)
                 {
                     case "visitHistoryTab":
-                        return _customer != null;
-                        break;
+                        return _customer != null && CurrentUser.HasPrivilege(Privilege.CreateAppointment);
+
                     case "financialTransactionsTab":
                         if (_customer.Appointments == null)
                             return false;
-                        return _customer.Appointments.Count > 0;
-                        break;
+                        return _customer.Appointments.Count > 0 && CurrentUser.HasPrivilege(Privilege.CreateFinancialTransaction);
+                };
+
+                return false;
+            }
+        }
+        public bool AllowDeleteRow
+        {
+            get
+            {
+                if (SelectedTab == null)
+                    return false;
+
+                switch (SelectedTab.Name)
+                {
+                    case "visitHistoryTab":
+                        return SelectedAppointment != null && CurrentUser.HasPrivilege(Privilege.DeleteAppointment);
+
+                    case "financialTransactionsTab":
+                        if (SelectedFinancialTransaction == null)
+                            return false;
+                        return SelectedFinancialTransaction.TransactionTypeID != (int)TransactionType.Withdrawal
+                            && CurrentUser.HasPrivilege(Privilege.DeleteFinancialTransaction);
+
                 };
 
                 return false;
             }
         }
 
+        public bool AllowEditCustomer
+        {
+            get { return CurrentUser.HasPrivilege(Privilege.ModifyCustomer); }
+        }
+        public bool AllowEditDiscountCard
+        {
+            get { return CurrentUser.HasPrivilege(Privilege.ModifyDiscontCard); }
+        }
+
+        public bool ShowAppointmentsTab
+        {
+            get { return CurrentUser.HasPrivilege(Privilege.ViewAppointment); }
+        }
+        public bool ShowFinancialTransactionTab
+        {
+            get { return CurrentUser.HasPrivilege(Privilege.ViewFinancialTransaction); }
+        }
+
         public ClientPage()
         {
             _dc = new Models.CRMContext();
             LinkDiscountCardCommand = new DelegateCommand(OnLinkDiscountCardCommandExecuted,
-                () => { return !DiscountCardEnabled; });
+                () => { return !DiscountCardEnabled && CurrentUser.HasPrivilege(Privilege.LinkDiscountCard); });
             UnlinkDiscountCardCommand = new DelegateCommand(OnUnlinkDiscountCardCommandExecuted,
-                () => { return DiscountCardEnabled; });
+                () => { return DiscountCardEnabled && CurrentUser.HasPrivilege(Privilege.UnlinkDiscountCard); });
 
             AddCommand = new DelegateCommand(OnAddCommandExecuted,
                 () => { return AllowAddRow; });
             EditCommand = new DelegateCommand(OnEditCommandExecuted,
                 () => { return AllowEditRow; });
             DeleteCommand = new DelegateCommand(OnDeleteCommandExecuted,
-                () => { return AllowEditRow; });
+                () => { return AllowDeleteRow; });
             ExportCommand = new DelegateCommand<object>(OnExportCommandExecuted,
                 (x) => { return _customer != null; });
 
@@ -796,12 +837,10 @@ namespace BeautySmileCRM.ViewModels
                     break;
             };
 
-            
             if (dlg.ShowDialog() == true)
             {
                 table.ExportToXlsx(dlg.FileName);
             };
-
         }
         
 

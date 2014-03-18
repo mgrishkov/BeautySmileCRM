@@ -64,7 +64,8 @@
                 <dxb:BarButtonItem x:Name="DeleteButton" Content="Удалить пользователя..." 
 				               LargeGlyph="{StaticResource Delete32}" Command="{Binding DeleteUserCommand}" />
                 <dxb:BarButtonItem x:Name="ExportButton" Content="Экспортировать..."
-				               LargeGlyph="{StaticResource Excel32}" Command="{Binding ExportCommand}" />
+				               LargeGlyph="{StaticResource Excel32}" Command="{Binding ExportCommand}"
+                                   CommandParameter="{Binding ElementName='usersView'}"/>
             </dxb:BarManager.Items>
             <dxb:BarManager.Bars>
                 <dxb:Bar x:Name="mainMenuBar" Caption="Панель инструментов" 
@@ -96,7 +97,8 @@
 
                 <dxg:GridControl x:Name="mainGrid" 
 				                 Grid.Row="0" Grid.Column="0"
-				                 ItemsSource="{Binding DataSource.Data}">
+				                 ItemsSource="{Binding Users}"
+                                 SelectedItem="{Binding SelectedUser}">
                     <dxg:GridControl.Columns>
                         <dxg:GridColumn x:Name="idField" FieldName="ID" Header="ИД" Width="40" ReadOnly="True" VisibleIndex="0" >
                             <dxg:GridColumn.EditSettings>
@@ -113,7 +115,7 @@
                                 <dxe:TextEditSettings />
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
-                        <dxg:GridColumn x:Name="expirationDateField" FieldName="ExpirationDate" Header="Дата отключения" Width="180" ReadOnly="True" VisibleIndex="3" >
+                        <dxg:GridColumn x:Name="expirationDateField" FieldName="ExpirationDate" Header="Дата блокировки" Width="180" ReadOnly="True" VisibleIndex="3" >
                             <dxg:GridColumn.EditSettings>
                                 <dxe:TextEditSettings />
                             </dxg:GridColumn.EditSettings>
@@ -126,10 +128,9 @@
                     </dxg:GridControl.Columns>
 
                     <dxg:GridControl.View>
-                        <dxg:TableView x:Name="view" ShowTotalSummary="True" AllowEditing="True"
+                        <dxg:TableView x:Name="usersView" ShowTotalSummary="True" AllowEditing="True"
 						               ShowAutoFilterRow="True" ShowGroupedColumns="True" AllowHorizontalScrollingVirtualization="False" 
-            					       ShowGroupPanel="False" 
-                                       FocusedRow="{Binding SelectedUser, Converter={converters:ReadonlyThreadSafeProxyForObjectFromAnotherThreadToOrigianlConverter}, Mode=TwoWay}"/>
+            					       ShowGroupPanel="False" />
                     </dxg:GridControl.View>
                 </dxg:GridControl>
             </Grid>
