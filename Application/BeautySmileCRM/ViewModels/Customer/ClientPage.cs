@@ -100,6 +100,7 @@ namespace BeautySmileCRM.ViewModels
         public ICommand EditCommand { get; private set; }
         public ICommand DeleteCommand { get; private set; }
         public ICommand ExportCommand { get; private set; }
+        public ICommand DeleteCustomerCommand { get; private set; }
 
         public bool AllowSave
         {
@@ -725,6 +726,9 @@ namespace BeautySmileCRM.ViewModels
             ExportCommand = new DelegateCommand<object>(OnExportCommandExecuted,
                 (x) => { return _customer != null; });
 
+            DeleteCustomerCommand = new DelegateCommand(OnDeleteCustomerCommandExecuted,
+                () => { return _customer != null && _customer.ID > 0 && CurrentUser.HasPrivilege(Privilege.DeleteCustomer); });
+
             this.PropertyChanged += ClientPage_PropertyChanged;
         }
 
@@ -842,7 +846,32 @@ namespace BeautySmileCRM.ViewModels
                 table.ExportToXlsx(dlg.FileName);
             };
         }
-        
+        private void OnDeleteCustomerCommandExecuted()
+        {
+            if(MessageService.Show(String.Format("Вы деействительно хотите удалить клиента \"{0}\"?", _customer.ShortName), "Подтвердите удаление клиента", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                if(_customer.Appointments != null && _customer.Appointments.Count > 0)
+                {
+                    MessageService.Show("Нельзя удалить клиента, т.к. он имеет историю визитов.\nДля удаления клиента, необходимо удалить все его визиты и финансовые операции.", "Ошибка удаления", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else if (_customer.FinancialTransactions != null && _customer.FinancialTransactions.Count > 0)
+                {
+                    MessageService.Show("Нельзя удалить клиента, т.к. он имеет финансовые операции.\nДля удаления клиента, необходимо удалить все его визиты и финансовые операции.", "Ошибка удаления", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else
+                {
+                    var cardID = _customer.DiscountCardID;
+                    var customerID = _customer.ID;
+                    _dc.Customers.Remove(_customer);
+                    if (cardID.HasValue && !_dc.Customers.Any(x => x.DiscountCardID == cardID && x.ID != customerID))
+                    {
+                        _dc.DiscountCards.Remove(_dc.DiscountCards.Single(x => x.ID == cardID));
+                    };
+                    _dc.SaveChanges();
+                    NavigationService.GoBack();
+                };
+            }
+        }
 
         private void refreshData(int customerID)
         {

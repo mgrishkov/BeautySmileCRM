@@ -117,6 +117,5 @@
                          ValidatesOnNotifyDataErrors="True"/>
             </dxe:SpinEdit.EditValue>
         </dxe:SpinEdit>
-        
     </Grid>
 </UserControl>
