@@ -35,8 +35,9 @@
         <AssociationConnector Association="CRMModel.FK_Customer_DiscountCardID_DiscountCard_ID" />
         <AssociationConnector Association="CRMModel.FK_FinancialTransaction_CustomerID_Customer_ID" />
         <AssociationConnector Association="CRMModel.UserPrivilege" />
-        <EntityTypeShape EntityType="CRMModel.CustomerView" Width="1.5" PointX="8.75" PointY="10.875" />
-        <EntityTypeShape EntityType="CRMModel.AppointmentView" Width="1.5" PointX="11.375" PointY="9.75" />
+        <EntityTypeShape EntityType="CRMModel.CustomerView" Width="2" PointX="16.875" PointY="9.75" FillColor="0, 192, 0" />
+        <EntityTypeShape EntityType="CRMModel.AppointmentView" Width="2.25" PointX="11.375" PointY="9.75" FillColor="0, 192, 0" />
+        <EntityTypeShape EntityType="CRMModel.FinancialTransactionView" Width="2.375" PointX="14.125" PointY="9.75" FillColor="0, 192, 0" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

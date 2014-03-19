@@ -12,24 +12,10 @@ namespace BeautySmileCRM.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class AppointmentView
+    public partial class FinancialTransactionView
     {
-        public int AppointmentID { get; set; }
+        public int ID { get; set; }
         public int CustomerID { get; set; }
-        public System.DateTime StartTime { get; set; }
-        public System.DateTime EndTime { get; set; }
-        public int StaffID { get; set; }
-        public string Purpose { get; set; }
-        public decimal Price { get; set; }
-        public decimal DiscountPercent { get; set; }
-        public decimal Discount { get; set; }
-        public decimal ToPay { get; set; }
-        public Nullable<decimal> Payed { get; set; }
-        public int StateID { get; set; }
-        public int CreatedBy { get; set; }
-        public Nullable<System.DateTime> ModificationTime { get; set; }
-        public Nullable<int> ModifiedBy { get; set; }
-        public System.DateTime CreationTime { get; set; }
         public string CustomerFirstName { get; set; }
         public string CustomerLastName { get; set; }
         public string CustomerMiddleName { get; set; }
@@ -38,5 +24,21 @@ namespace BeautySmileCRM.Models
         public Nullable<decimal> DiscountCardTotalPurchaseValue { get; set; }
         public Nullable<decimal> DiscountCardMinDiscount { get; set; }
         public Nullable<decimal> DiscountCardMaxDiscount { get; set; }
+        public int AppointmentID { get; set; }
+        public string AppointmentPurpose { get; set; }
+        public System.DateTime AppointmentStartTime { get; set; }
+        public System.DateTime AppointmentEndTime { get; set; }
+        public int StaffID { get; set; }
+        public decimal ToPay { get; set; }
+        public decimal DiscountPercent { get; set; }
+        public decimal Discount { get; set; }
+        public int TransactionTypeID { get; set; }
+        public decimal Amount { get; set; }
+        public string Comment { get; set; }
+        public System.DateTime CreationTime { get; set; }
+        public int CreatedBy { get; set; }
+        public Nullable<System.DateTime> ModificationTime { get; set; }
+        public Nullable<int> ModifiedBy { get; set; }
+        public decimal Price { get; set; }
     }
 }

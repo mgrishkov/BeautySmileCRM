@@ -17,37 +17,12 @@ using DevExpress.Xpf.Grid;
 
 namespace BeautySmileCRM.ViewModels
 {
-    public class VisitHistory : BaseNavigationViewModel
+    public class FinancialTransaction : BaseNavigationViewModel
     {
         private readonly Models.CRMContext _dc;
-        private Models.AppointmentView _selectedAppointment;
 
-        public Models.AppointmentView SelectedAppointment
-        {
-            get { return _selectedAppointment; }
-            set
-            {
-                if(_selectedAppointment != value)
-                {
-                    _selectedAppointment = value;
-                    RaisePropertiesChanged("SelectedAppointment");
-                }
-            }
-        }
         public LinqInstantFeedbackDataSource DataSource { get; private set; }
         
-        public IDictionary<int, string> Clients
-        {
-            get
-            {
-                IDictionary<int, string> result = null;
-                using(var dc = new Models.CRMContext())
-                {
-                    result = _dc.Customers.ToDictionary(x => x.ID, y => y.ShortName);
-                };
-                return result;
-            }
-        }
         public IDictionary<int, string> Staff
         {
             get
@@ -72,20 +47,21 @@ namespace BeautySmileCRM.ViewModels
                 return result;
             }
         }
-        public IDictionary<int, string> States
+        public IDictionary<int, string> TransactionTypes
         {
             get
             {
-                return Ext.Utils.EnumUtils.ToDescriptionDictionary<Enums.AppointmentState>();
+                return Ext.Utils.EnumUtils.ToDescriptionDictionary<Enums.TransactionType>();
             }
-        }        
+        }
+
         
 
         public ICommand RefreshCommand { get; private set; }
         public ICommand ExportCommand { get; private set; }
 
 
-        public VisitHistory()
+        public FinancialTransaction()
         {
             _dc = new Models.CRMContext();
             RefreshCommand = new DelegateCommand(onRefreshCommandExecute);
@@ -96,9 +72,9 @@ namespace BeautySmileCRM.ViewModels
         {
             DataSource = new LinqInstantFeedbackDataSource()
             {
-                QueryableSource = _dc.AppointmentView,
-                KeyExpression = "AppointmentID",
-                DefaultSorting = "AppointmentID ASC"
+                QueryableSource = _dc.FinancialTransactionView,
+                KeyExpression = "ID",
+                DefaultSorting = "ID DESC"
             };
             RaisePropertyChanged("DataSource");
         }
@@ -115,7 +91,7 @@ namespace BeautySmileCRM.ViewModels
                 AddExtension = true,
                 CheckPathExists = true,
                 DefaultExt = "xlsx",
-                FileName = "История визитов",
+                FileName = "Финансовые операции",
                 Filter = "Файлы MS Excel 2007-2013|*.xlsx"
             };
 

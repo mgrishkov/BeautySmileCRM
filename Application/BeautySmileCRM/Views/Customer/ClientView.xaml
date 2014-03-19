@@ -33,7 +33,7 @@
     <dxwui:PageAdornerControl>
         <dxwui:PageAdornerControl.HeaderTemplate>
             <DataTemplate>
-                <Views:Header Grid.Row="0" SubTitle="База клиентов" />
+                <Views:Header Grid.Row="0" SubTitle="Справочник клиентов" />
             </DataTemplate>
         </dxwui:PageAdornerControl.HeaderTemplate>
 
@@ -41,15 +41,9 @@
             <dxb:BarManager.Items>
                 <dxb:BarButtonItem x:Name="RefreshButton" Content="Обновить" 
                                    LargeGlyph="{StaticResource Refresh32}" Command="{Binding RefreshCommand}" />
-                <dxb:BarButtonItem x:Name="AddButton" Content="Добавить клиента..." 
-				               LargeGlyph="{StaticResource Add32}" Command="{Binding AddUserCommand}" />
-                <dxb:BarButtonItem x:Name="EditButton" Content="Редактировать клиента..." 
-				               LargeGlyph="{StaticResource Edit32}" 
-                               Command="{Binding EditUserCommand}" />
-                <dxb:BarButtonItem x:Name="DeleteButton" Content="Удалить клиента..." 
-				               LargeGlyph="{StaticResource Delete32}" Command="{Binding DeleteUserCommand}" />
                 <dxb:BarButtonItem x:Name="ExportButton" Content="Экспортировать..."
-				               LargeGlyph="{StaticResource Excel32}" Command="{Binding ExportCommand}" />
+				               LargeGlyph="{StaticResource Excel32}" Command="{Binding ExportCommand}"
+                                   CommandParameter="{Binding ElementName=view}"/>
             </dxb:BarManager.Items>
             <dxb:BarManager.Bars>
                 <dxb:Bar x:Name="mainMenuBar" Caption="Панель инструментов" 
@@ -58,10 +52,6 @@
                         <dxb:BarDockInfo ContainerType="Top" />
                     </dxb:Bar.DockInfo>
                     <dxb:BarButtonItemLink BarItemName="RefreshButton" />
-                    <dxb:BarItemLinkSeparator />
-                    <dxb:BarButtonItemLink BarItemName="AddButton" />
-                    <dxb:BarButtonItemLink BarItemName="EditButton" />
-                    <dxb:BarButtonItemLink BarItemName="DeleteButton" />
                     <dxb:BarItemLinkSeparator />
                     <dxb:BarButtonItemLink BarItemName="ExportButton" />
                 </dxb:Bar>
@@ -212,7 +202,7 @@
                     <dxg:GridControl.View>
                         <dxg:TableView x:Name="view" ShowTotalSummary="True" AllowEditing="True"
 						               ShowAutoFilterRow="True" ShowGroupedColumns="True" AllowHorizontalScrollingVirtualization="False" 
-            					       ShowGroupPanel="False" NavigationStyle="Row"
+            					       NavigationStyle="Row" ShowGroupPanel="True" ShowFilterPanelMode="ShowAlways"
                                        FocusedRow="{Binding SelectedCustomer, Converter={converters:ReadonlyThreadSafeProxyForObjectFromAnotherThreadToOrigianlConverter}, Mode=TwoWay}">
                             <dxmvvm:Interaction.Triggers>
                                 <dxmvvm:EventToCommand EventName="RowDoubleClick" Command="{Binding OnClientDoubleClickCommand}" />

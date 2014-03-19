@@ -168,6 +168,9 @@
     <Compile Include="Models\FinancialTransaction.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\FinancialTransactionView.cs">
+      <DependentUpon>CRM.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\PrivelegeGroup.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
@@ -193,24 +196,25 @@
     <Compile Include="ViewModels\Administration\AdminEdit.cs" />
     <Compile Include="ViewModels\Base\BaseDialogViewModel.cs" />
     <Compile Include="ViewModels\Base\BaseNavigationViewModel.cs" />
-    <Compile Include="ViewModels\Customer\FinancialTransactionEdit.cs" />
-    <Compile Include="ViewModels\Customer\AppointmentEdit.cs" />
+    <Compile Include="ViewModels\FinancialTransaction\FinancialTransactionEdit.cs" />
+    <Compile Include="ViewModels\Appointments\AppointmentEdit.cs" />
     <Compile Include="ViewModels\Customer\ClientPage.cs" />
     <Compile Include="ViewModels\Discount\CumulativeDiscountEdit.cs" />
+    <Compile Include="ViewModels\FinancialTransaction\FinancialTransaction.cs" />
     <Compile Include="ViewModels\Staff\StaffEdit.cs" />
     <Compile Include="ViewModels\Staff\Staff.cs" />
     <Compile Include="ViewModels\Discount\Discount.cs" />
     <Compile Include="ViewModels\Administration\Administration.cs" />
-    <Compile Include="ViewModels\VisitHistory.cs" />
+    <Compile Include="ViewModels\Appointments\VisitHistory.cs" />
     <Compile Include="ViewModels\Customer\Client.cs" />
-    <Compile Include="ViewModels\Dashboard.cs" />
-    <Compile Include="ViewModels\Header.cs" />
-    <Compile Include="ViewModels\Login.cs" />
-    <Compile Include="ViewModels\MainWindow.cs" />
-    <Compile Include="Views\Customer\FinancialTransactionEditView.xaml.cs">
+    <Compile Include="ViewModels\Dashboard\Dashboard.cs" />
+    <Compile Include="ViewModels\Header\Header.cs" />
+    <Compile Include="ViewModels\Login\Login.cs" />
+    <Compile Include="ViewModels\MainWindow\MainWindow.cs" />
+    <Compile Include="Views\FinancialTransaction\FinancialTransactionEditView.xaml.cs">
       <DependentUpon>FinancialTransactionEditView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Customer\AppointmentEditView.xaml.cs">
+    <Compile Include="Views\Appointments\AppointmentEditView.xaml.cs">
       <DependentUpon>AppointmentEditView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Customer\ClientPageView.xaml.cs">
@@ -218,6 +222,9 @@
     </Compile>
     <Compile Include="Views\Discount\CumulativeDiscountEditView.xaml.cs">
       <DependentUpon>CumulativeDiscountEditView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FinancialTransaction\FinancialView.xaml.cs">
+      <DependentUpon>FinancialView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Staff\StaffEditView.xaml.cs">
       <DependentUpon>StaffEditView.xaml</DependentUpon>
@@ -231,19 +238,19 @@
     <Compile Include="Views\Administration\AdministrationView.xaml.cs">
       <DependentUpon>AdministrationView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\VisitHistoryView.xaml.cs">
+    <Compile Include="Views\Appointments\VisitHistoryView.xaml.cs">
       <DependentUpon>VisitHistoryView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DashboardView.xaml.cs">
+    <Compile Include="Views\Dashboard\DashboardView.xaml.cs">
       <DependentUpon>DashboardView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Customer\ClientView.xaml.cs">
       <DependentUpon>ClientView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\LoginView.xaml.cs">
+    <Compile Include="Views\Login\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Header.xaml.cs">
+    <Compile Include="Views\Header\Header.xaml.cs">
       <DependentUpon>Header.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Administration\AdminEditVIew.xaml.cs">
@@ -339,11 +346,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Customer\FinancialTransactionEditView.xaml">
+    <Page Include="Views\FinancialTransaction\FinancialTransactionEditView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Customer\AppointmentEditView.xaml">
+    <Page Include="Views\Appointments\AppointmentEditView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -352,6 +359,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Discount\CumulativeDiscountEditView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\FinancialTransaction\FinancialView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -371,11 +382,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\VisitHistoryView.xaml">
+    <Page Include="Views\Appointments\VisitHistoryView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\DashboardView.xaml">
+    <Page Include="Views\Dashboard\DashboardView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -383,11 +394,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\LoginView.xaml">
+    <Page Include="Views\Login\LoginView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Header.xaml">
+    <Page Include="Views\Header\Header.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

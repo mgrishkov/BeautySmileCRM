@@ -103,12 +103,12 @@
                                         <TextBlock Grid.Column="2" Grid.Row="0" 
                                                Text="{Binding NearestAppointmentDate, StringFormat={}{0:HH:mm}}" 
                                                FontSize="18" Foreground="#FFFFFFFF" Margin="5,0,0,0" 
-                                               Visibility="{Binding NextVisit, Converter={converters:ObjectToVisibilityConverter}}"/>
+                                               Visibility="{Binding NearestAppointmentDate, Converter={converters:ObjectToVisibilityConverter}}"/>
 
                                         <TextBlock Grid.Column="2" Grid.Row="1" 
                                                Text="{Binding NearestAppointmentDate, StringFormat={}{0:dd.MM.yyyy}}" 
                                                FontSize="14" Foreground="#FFFFFFFF" Margin="5,0,0,0" 
-                                               Visibility="{Binding NextVisit, Converter={converters:ObjectToVisibilityConverter}}"/>
+                                               Visibility="{Binding NearestAppointmentDate, Converter={converters:ObjectToVisibilityConverter}}"/>
 
                                     </Grid>
                                 </DataTemplate>

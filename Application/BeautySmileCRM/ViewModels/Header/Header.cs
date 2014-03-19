@@ -111,10 +111,10 @@ namespace BeautySmileCRM.ViewModels
             OnNavigateToCustomersCommand = new DelegateCommand(() => NavigationService.Navigate("ClientView", null, this),
                 () => { return CurrentUser != null && CurrentUser.HasPrivilege(Privilege.ViewCustomer); });
 
-            OnNavigateToAppointmentsCommand = new DelegateCommand(() => NavigationService.Navigate("VisitHistory", null, this),
+            OnNavigateToAppointmentsCommand = new DelegateCommand(() => NavigationService.Navigate("VisitHistoryView", null, this),
                 () => { return CurrentUser != null && CurrentUser.HasPrivilege(Privilege.ViewAppointment); });
 
-            OnNavigateToFinancialTransactionsCommand = new DelegateCommand(() => { throw new NotImplementedException(); },
+            OnNavigateToFinancialTransactionsCommand = new DelegateCommand(() => NavigationService.Navigate("FinancialView", null, this),
                 () => { return CurrentUser != null && CurrentUser.HasPrivilege(Privilege.ViewFinancialTransaction); });
 
             OnNavigateToAdministrationCommand = new DelegateCommand(() => NavigationService.Navigate("AdministrationView", null, this),

@@ -175,6 +175,8 @@ warning 6002: The table/view 'CRM.CST.AppointmentView' does not have a primary k
           <Key>
             <PropertyRef Name="AppointmentID" />
             
+            <PropertyRef Name="CustomerFirstName" />
+            <PropertyRef Name="CustomerLastName" />
             
             
             
@@ -187,8 +189,16 @@ warning 6002: The table/view 'CRM.CST.AppointmentView' does not have a primary k
             
             
           </Key>
-          <Property Name="AppointmentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AppointmentID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="CustomerID" Type="int" Nullable="false" />
+          <Property Name="CustomerFirstName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="CustomerLastName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="CustomerMiddleName" Type="nvarchar" MaxLength="255" />
+          <Property Name="DiscountCardCode" Type="varchar" MaxLength="50" />
+          <Property Name="DiscountCardPercent" Type="decimal" Precision="4" Scale="2" />
+          <Property Name="DiscountCardTotalPurchaseValue" Type="decimal" Precision="13" Scale="2" />
+          <Property Name="DiscountCardMinDiscount" Type="decimal" Precision="13" Scale="2" />
+          <Property Name="DiscountCardMaxDiscount" Type="decimal" Precision="13" Scale="2" />
           <Property Name="StartTime" Type="datetime" Nullable="false" />
           <Property Name="EndTime" Type="datetime" Nullable="false" />
           <Property Name="StaffID" Type="int" Nullable="false" />
@@ -199,7 +209,7 @@ warning 6002: The table/view 'CRM.CST.AppointmentView' does not have a primary k
           <Property Name="ToPay" Type="decimal" Precision="13" Scale="2" Nullable="false" />
           <Property Name="Payed" Type="decimal" Precision="13" Scale="2" />
           <Property Name="StateID" Type="int" Nullable="false" />
-          <Property Name="CreatintTime" Type="datetime" Nullable="false" />
+          <Property Name="CreationTime" Type="datetime" Nullable="false" />
           <Property Name="CreatedBy" Type="int" Nullable="false" />
           <Property Name="ModificationTime" Type="datetime" />
           <Property Name="ModifiedBy" Type="int" />
@@ -244,6 +254,55 @@ warning 6002: The table/view 'CRM.CST.CustomerView' does not have a primary key 
           <Property Name="FirstVisit" Type="datetime" />
           <Property Name="LastVisit" Type="datetime" />
           <Property Name="NextVisit" Type="datetime" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="FinancialTransactionView">
+          <Key>
+            <PropertyRef Name="ID" />
+            
+            
+            
+            
+            
+            
+            
+            
+            <PropertyRef Name="Price" />
+            
+            
+            
+            
+            
+            
+            
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="CustomerID" Type="int" Nullable="false" />
+          <Property Name="CustomerFirstName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="CustomerLastName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="CustomerMiddleName" Type="nvarchar" MaxLength="255" />
+          <Property Name="DiscountCardCode" Type="varchar" MaxLength="50" />
+          <Property Name="DiscountCardPercent" Type="decimal" Precision="4" Scale="2" />
+          <Property Name="DiscountCardTotalPurchaseValue" Type="decimal" Precision="13" Scale="2" />
+          <Property Name="DiscountCardMinDiscount" Type="decimal" Precision="13" Scale="2" />
+          <Property Name="DiscountCardMaxDiscount" Type="decimal" Precision="13" Scale="2" />
+          <Property Name="AppointmentID" Type="int" Nullable="false" />
+          <Property Name="AppointmentPurpose" Type="nvarchar" MaxLength="4000" Nullable="false" />
+          <Property Name="AppointmentStartTime" Type="datetime" Nullable="false" />
+          <Property Name="AppointmentEndTime" Type="datetime" Nullable="false" />
+          <Property Name="StaffID" Type="int" Nullable="false" />
+          <Property Name="Price" Type="decimal" Precision="13" Scale="2" Nullable="false" />
+          <Property Name="ToPay" Type="decimal" Precision="13" Scale="2" Nullable="false" />
+          <Property Name="DiscountPercent" Type="decimal" Precision="4" Scale="2" Nullable="false" />
+          <Property Name="Discount" Type="decimal" Precision="13" Scale="2" Nullable="false" />
+          <Property Name="TransactionTypeID" Type="int" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="13" Scale="2" Nullable="false" />
+          <Property Name="Comment" Type="nvarchar" MaxLength="4000" />
+          <Property Name="CreationTime" Type="datetime" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="ModificationTime" Type="datetime" />
+          <Property Name="ModifiedBy" Type="int" />
         </EntityType>
         <Association Name="FK#Appointment@CreatedBy#User@ID">
           <End Role="User" Type="Self.User" Multiplicity="1" />
@@ -438,7 +497,9 @@ warning 6002: The table/view 'CRM.CST.CustomerView' does not have a primary key 
           </ReferentialConstraint>
         </Association>
         <Association Name="FK#UserPrivilege@UserID#User@ID">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="UserPrivilege" Type="Self.UserPrivilege" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
@@ -490,6 +551,14 @@ warning 6002: The table/view 'CRM.CST.CustomerView' does not have a primary key 
             <DefiningQuery>SELECT 
     [AppointmentView].[AppointmentID] AS [AppointmentID], 
     [AppointmentView].[CustomerID] AS [CustomerID], 
+    [AppointmentView].[CustomerFirstName] AS [CustomerFirstName], 
+    [AppointmentView].[CustomerLastName] AS [CustomerLastName], 
+    [AppointmentView].[CustomerMiddleName] AS [CustomerMiddleName], 
+    [AppointmentView].[DiscountCardCode] AS [DiscountCardCode], 
+    [AppointmentView].[DiscountCardPercent] AS [DiscountCardPercent], 
+    [AppointmentView].[DiscountCardTotalPurchaseValue] AS [DiscountCardTotalPurchaseValue], 
+    [AppointmentView].[DiscountCardMinDiscount] AS [DiscountCardMinDiscount], 
+    [AppointmentView].[DiscountCardMaxDiscount] AS [DiscountCardMaxDiscount], 
     [AppointmentView].[StartTime] AS [StartTime], 
     [AppointmentView].[EndTime] AS [EndTime], 
     [AppointmentView].[StaffID] AS [StaffID], 
@@ -500,7 +569,7 @@ warning 6002: The table/view 'CRM.CST.CustomerView' does not have a primary key 
     [AppointmentView].[ToPay] AS [ToPay], 
     [AppointmentView].[Payed] AS [Payed], 
     [AppointmentView].[StateID] AS [StateID], 
-    [AppointmentView].[CreatintTime] AS [CreatintTime], 
+    [AppointmentView].[CreationTime] AS [CreationTime], 
     [AppointmentView].[CreatedBy] AS [CreatedBy], 
     [AppointmentView].[ModificationTime] AS [ModificationTime], 
     [AppointmentView].[ModifiedBy] AS [ModifiedBy]
@@ -535,6 +604,36 @@ warning 6002: The table/view 'CRM.CST.CustomerView' does not have a primary key 
     [CustomerView].[LastVisit] AS [LastVisit], 
     [CustomerView].[NextVisit] AS [NextVisit]
     FROM [CST].[CustomerView] AS [CustomerView]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="FinancialTransactionView" EntityType="Self.FinancialTransactionView" store:Type="Views" store:Schema="CST">
+            <DefiningQuery>SELECT 
+    [FinancialTransactionView].[ID] AS [ID], 
+    [FinancialTransactionView].[CustomerID] AS [CustomerID], 
+    [FinancialTransactionView].[CustomerFirstName] AS [CustomerFirstName], 
+    [FinancialTransactionView].[CustomerLastName] AS [CustomerLastName], 
+    [FinancialTransactionView].[CustomerMiddleName] AS [CustomerMiddleName], 
+    [FinancialTransactionView].[DiscountCardCode] AS [DiscountCardCode], 
+    [FinancialTransactionView].[DiscountCardPercent] AS [DiscountCardPercent], 
+    [FinancialTransactionView].[DiscountCardTotalPurchaseValue] AS [DiscountCardTotalPurchaseValue], 
+    [FinancialTransactionView].[DiscountCardMinDiscount] AS [DiscountCardMinDiscount], 
+    [FinancialTransactionView].[DiscountCardMaxDiscount] AS [DiscountCardMaxDiscount], 
+    [FinancialTransactionView].[AppointmentID] AS [AppointmentID], 
+    [FinancialTransactionView].[AppointmentPurpose] AS [AppointmentPurpose], 
+    [FinancialTransactionView].[AppointmentStartTime] AS [AppointmentStartTime], 
+    [FinancialTransactionView].[AppointmentEndTime] AS [AppointmentEndTime], 
+    [FinancialTransactionView].[StaffID] AS [StaffID], 
+    [FinancialTransactionView].[Price] AS [Price], 
+    [FinancialTransactionView].[ToPay] AS [ToPay], 
+    [FinancialTransactionView].[DiscountPercent] AS [DiscountPercent], 
+    [FinancialTransactionView].[Discount] AS [Discount], 
+    [FinancialTransactionView].[TransactionTypeID] AS [TransactionTypeID], 
+    [FinancialTransactionView].[Amount] AS [Amount], 
+    [FinancialTransactionView].[Comment] AS [Comment], 
+    [FinancialTransactionView].[CreationTime] AS [CreationTime], 
+    [FinancialTransactionView].[CreatedBy] AS [CreatedBy], 
+    [FinancialTransactionView].[ModificationTime] AS [ModificationTime], 
+    [FinancialTransactionView].[ModifiedBy] AS [ModifiedBy]
+    FROM [CST].[FinancialTransactionView] AS [FinancialTransactionView]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK#Appointment@CreatedBy#User@ID" Association="Self.FK#Appointment@CreatedBy#User@ID">
             <End Role="User" EntitySet="User" />
@@ -711,6 +810,7 @@ warning 6002: The table/view 'CRM.CST.CustomerView' does not have a primary key 
             <Parameter Name="amount" Mode="In" Type="Decimal" />
             <Parameter Name="comment" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="FinancialTransactionView" EntityType="CRMModel.FinancialTransactionView" />
         </EntityContainer>
         <EntityType Name="Privilege">
           <Key>
@@ -1087,6 +1187,8 @@ warning 6002: The table/view 'CRM.CST.CustomerView' does not have a primary key 
         <EntityType Name="AppointmentView">
           <Key>
             <PropertyRef Name="AppointmentID" />
+            <PropertyRef Name="CustomerFirstName" />
+            <PropertyRef Name="CustomerLastName" />
           </Key>
           <Property Name="AppointmentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CustomerID" Type="Int32" Nullable="false" />
@@ -1100,10 +1202,18 @@ warning 6002: The table/view 'CRM.CST.CustomerView' does not have a primary key 
           <Property Name="ToPay" Type="Decimal" Nullable="false" Precision="13" Scale="2" />
           <Property Name="Payed" Type="Decimal" Precision="13" Scale="2" />
           <Property Name="StateID" Type="Int32" Nullable="false" />
-          <Property Name="CreatintTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="CreatedBy" Type="Int32" Nullable="false" />
           <Property Name="ModificationTime" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="CreationTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CustomerFirstName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerLastName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerMiddleName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DiscountCardCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DiscountCardPercent" Type="Decimal" Precision="4" Scale="2" />
+          <Property Name="DiscountCardTotalPurchaseValue" Type="Decimal" Precision="13" Scale="2" />
+          <Property Name="DiscountCardMinDiscount" Type="Decimal" Precision="13" Scale="2" />
+          <Property Name="DiscountCardMaxDiscount" Type="Decimal" Precision="13" Scale="2" />
         </EntityType>
         <EntityType Name="CustomerView">
           <Key>
@@ -1146,6 +1256,38 @@ warning 6002: The table/view 'CRM.CST.CustomerView' does not have a primary key 
           <Property Type="Int32" Name="NewGroup" Nullable="false" />
           <Property Type="String" Name="DiscountCardCode" Nullable="true" MaxLength="50" />
         </ComplexType>
+        <EntityType Name="FinancialTransactionView">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Price" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="CustomerID" Type="Int32" Nullable="false" />
+          <Property Name="CustomerFirstName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerLastName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerMiddleName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DiscountCardCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DiscountCardPercent" Type="Decimal" Precision="4" Scale="2" />
+          <Property Name="DiscountCardTotalPurchaseValue" Type="Decimal" Precision="13" Scale="2" />
+          <Property Name="DiscountCardMinDiscount" Type="Decimal" Precision="13" Scale="2" />
+          <Property Name="DiscountCardMaxDiscount" Type="Decimal" Precision="13" Scale="2" />
+          <Property Name="AppointmentID" Type="Int32" Nullable="false" />
+          <Property Name="AppointmentPurpose" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="AppointmentStartTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AppointmentEndTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="StaffID" Type="Int32" Nullable="false" />
+          <Property Name="ToPay" Type="Decimal" Nullable="false" Precision="13" Scale="2" />
+          <Property Name="DiscountPercent" Type="Decimal" Nullable="false" Precision="4" Scale="2" />
+          <Property Name="Discount" Type="Decimal" Nullable="false" Precision="13" Scale="2" />
+          <Property Name="TransactionTypeID" Type="Int32" Nullable="false" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="13" Scale="2" />
+          <Property Name="Comment" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="CreationTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="ModificationTime" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="Price" Type="Decimal" Nullable="false" Precision="13" Scale="2" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1363,10 +1505,18 @@ warning 6002: The table/view 'CRM.CST.CustomerView' does not have a primary key 
           <EntitySetMapping Name="AppointmentView">
             <EntityTypeMapping TypeName="CRMModel.AppointmentView">
               <MappingFragment StoreEntitySet="AppointmentView">
+                <ScalarProperty Name="DiscountCardMaxDiscount" ColumnName="DiscountCardMaxDiscount" />
+                <ScalarProperty Name="DiscountCardMinDiscount" ColumnName="DiscountCardMinDiscount" />
+                <ScalarProperty Name="DiscountCardTotalPurchaseValue" ColumnName="DiscountCardTotalPurchaseValue" />
+                <ScalarProperty Name="DiscountCardPercent" ColumnName="DiscountCardPercent" />
+                <ScalarProperty Name="DiscountCardCode" ColumnName="DiscountCardCode" />
+                <ScalarProperty Name="CustomerMiddleName" ColumnName="CustomerMiddleName" />
+                <ScalarProperty Name="CustomerLastName" ColumnName="CustomerLastName" />
+                <ScalarProperty Name="CustomerFirstName" ColumnName="CustomerFirstName" />
+                <ScalarProperty Name="CreationTime" ColumnName="CreationTime" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="ModificationTime" ColumnName="ModificationTime" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatintTime" ColumnName="CreatintTime" />
                 <ScalarProperty Name="StateID" ColumnName="StateID" />
                 <ScalarProperty Name="Payed" ColumnName="Payed" />
                 <ScalarProperty Name="ToPay" ColumnName="ToPay" />
@@ -1431,6 +1581,38 @@ warning 6002: The table/view 'CRM.CST.CustomerView' does not have a primary key 
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="DeleteFinancialTransaction" FunctionName="CRMModel.Store.DeleteFinancialTransaction" />
           <FunctionImportMapping FunctionImportName="UpdateFinancialTransaction" FunctionName="CRMModel.Store.UpdateFinancialTransaction" />
+          <EntitySetMapping Name="FinancialTransactionView">
+            <EntityTypeMapping TypeName="CRMModel.FinancialTransactionView">
+              <MappingFragment StoreEntitySet="FinancialTransactionView">
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModificationTime" ColumnName="ModificationTime" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreationTime" ColumnName="CreationTime" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="TransactionTypeID" ColumnName="TransactionTypeID" />
+                <ScalarProperty Name="Discount" ColumnName="Discount" />
+                <ScalarProperty Name="DiscountPercent" ColumnName="DiscountPercent" />
+                <ScalarProperty Name="ToPay" ColumnName="ToPay" />
+                <ScalarProperty Name="StaffID" ColumnName="StaffID" />
+                <ScalarProperty Name="AppointmentEndTime" ColumnName="AppointmentEndTime" />
+                <ScalarProperty Name="AppointmentStartTime" ColumnName="AppointmentStartTime" />
+                <ScalarProperty Name="AppointmentPurpose" ColumnName="AppointmentPurpose" />
+                <ScalarProperty Name="AppointmentID" ColumnName="AppointmentID" />
+                <ScalarProperty Name="DiscountCardMaxDiscount" ColumnName="DiscountCardMaxDiscount" />
+                <ScalarProperty Name="DiscountCardMinDiscount" ColumnName="DiscountCardMinDiscount" />
+                <ScalarProperty Name="DiscountCardTotalPurchaseValue" ColumnName="DiscountCardTotalPurchaseValue" />
+                <ScalarProperty Name="DiscountCardPercent" ColumnName="DiscountCardPercent" />
+                <ScalarProperty Name="DiscountCardCode" ColumnName="DiscountCardCode" />
+                <ScalarProperty Name="CustomerMiddleName" ColumnName="CustomerMiddleName" />
+                <ScalarProperty Name="CustomerLastName" ColumnName="CustomerLastName" />
+                <ScalarProperty Name="CustomerFirstName" ColumnName="CustomerFirstName" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
