@@ -24,7 +24,7 @@ namespace BeautySmileCRM.ViewModels
         protected IDialogService DialogService { get { return GetService<IDialogService>(); } }
         protected IMessageBoxService MessageService { get { return GetService<IMessageBoxService>(); } }
 
-        private readonly Models.CRMContext _dc;
+        private Models.CRMContext _dc;
         private Models.Staff _selectedStaff;
         private IEnumerable<Models.Staff> _staffs;
 
@@ -61,8 +61,6 @@ namespace BeautySmileCRM.ViewModels
 
         public Staff()
         {
-            _dc = new Models.CRMContext();
-
             RefreshCommand = new DelegateCommand(onRefreshCommandExecute);
 
             AddStaffCommand = new DelegateCommand(onAddStaffCommandExecute,
@@ -76,20 +74,15 @@ namespace BeautySmileCRM.ViewModels
 
             ExportCommand = new DelegateCommand<object>(onExportCommandExecute);
 
-            refresh();
+            Task.Factory.StartNew(() => refresh());
         }
         private void refresh()
         {
-            Task.Factory.StartNew(() =>
-            {
-                if (Staffs != null)
-                {
-                    var dc = ((IObjectContextAdapter)_dc).ObjectContext;
-                    dc.Refresh(System.Data.Entity.Core.Objects.RefreshMode.StoreWins, Staffs);
-                };
+            if (_dc != null)
+                _dc.Dispose();
 
-                Staffs = _dc.Staffs.ToList();
-            });
+            _dc = new Models.CRMContext();
+            Staffs = _dc.Staffs.ToList();
         }
         
         private void onRefreshCommandExecute()

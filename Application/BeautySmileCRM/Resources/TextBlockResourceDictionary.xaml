@@ -3,7 +3,7 @@
     <Style x:Key="Title" TargetType="{x:Type TextBlock}">
         <Setter Property="Foreground" Value="#FFF78A09"/>
         <Setter Property="FontSize" Value="36"/>
-        <Setter Property="FontFamily" Value="Segoe UI Light"/>
+        <Setter Property="FontFamily" Value="Segoe UI"/>
         <Setter Property="Margin" Value="10, 0, 0, 5"/>
     </Style>
     <Style x:Key="SubTitle" TargetType="{x:Type TextBlock}">

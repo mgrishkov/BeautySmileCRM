@@ -1,0 +1,135 @@
+﻿SET DATEFORMAT ymd
+SET ARITHABORT, ANSI_PADDING, ANSI_WARNINGS, CONCAT_NULL_YIELDS_NULL, QUOTED_IDENTIFIER, ANSI_NULLS, NOCOUNT ON
+SET NUMERIC_ROUNDABORT, IMPLICIT_TRANSACTIONS, XACT_ABORT OFF
+GO
+
+SET IDENTITY_INSERT CRM.CONF.TransactionType ON
+GO
+INSERT CRM.CONF.TransactionType(ID, Code, Name, Description, OperationSign) VALUES (1, N'Deposit', N'Пополнение', NULL, 1)
+INSERT CRM.CONF.TransactionType(ID, Code, Name, Description, OperationSign) VALUES (2, N'Withdrawal', N'Списание', NULL, -1)
+GO
+SET IDENTITY_INSERT CRM.CONF.TransactionType OFF
+GO
+
+INSERT CRM.CONF.DiscountType(ID, Code, Name, Description) VALUES (1, N'Cumulative', N'Накопительная скидка', NULL)
+GO
+
+INSERT CRM.CONF.AppointmentState(ID, Code, Name, Description) VALUES (2, N'Active', N'Активный', NULL)
+INSERT CRM.CONF.AppointmentState(ID, Code, Name, Description) VALUES (3, N'Canceled', N'Отмененный', NULL)
+INSERT CRM.CONF.AppointmentState(ID, Code, Name, Description) VALUES (4, N'Completed', N'Выполнен', NULL)
+GO
+
+INSERT CRM.CONF.PrivelegeGroup(ID, Code, Name, Description) VALUES (1, N'Base', N'Базовые привелегии', N'1-19')
+INSERT CRM.CONF.PrivelegeGroup(ID, Code, Name, Description) VALUES (2, N'Configuration', N'Конфигурация', N'20-99')
+INSERT CRM.CONF.PrivelegeGroup(ID, Code, Name, Description) VALUES (3, N'Administration', N'Администрирование', N'100-199')
+INSERT CRM.CONF.PrivelegeGroup(ID, Code, Name, Description) VALUES (4, N'Staff', N'Персонал', N'200-299')
+INSERT CRM.CONF.PrivelegeGroup(ID, Code, Name, Description) VALUES (5, N'Customer', N'Клиенты', N'300-399')
+INSERT CRM.CONF.PrivelegeGroup(ID, Code, Name, Description) VALUES (6, N'FinancialTransaction', N'Финансовые операции', N'400-499')
+GO
+
+INSERT CRM.ADM.Privilege(ID, Name, Description, GroupID) VALUES (1, N'Login', N'Запуск консоли', 1)
+INSERT CRM.ADM.Privilege(ID, Name, Description, GroupID) VALUES (20, N'ViewConfiguration', N'Просмотр конфигурационных таблиц и справочников', 2)
+INSERT CRM.ADM.Privilege(ID, Name, Description, GroupID) VALUES (21, N'ModifyConfiguration', N'Изменение данных конфигурационных таблиц и справочников', 2)
+INSERT CRM.ADM.Privilege(ID, Name, Description, GroupID) VALUES (31, N'CreateCumulativeDiscount', N'Создание накопительных дисконтов', 2)
+INSERT CRM.ADM.Privilege(ID, Name, Description, GroupID) VALUES (32, N'ModifyCumulativeDiscount', N'Изменение накопительных дисконтов', 2)
+INSERT CRM.ADM.Privilege(ID, Name, Description, GroupID) VALUES (33, N'DeleteCumulativeDiscount', N'Удаление накопительных скидок', 1)
+INSERT CRM.ADM.Privilege(ID, Name, Description, GroupID) VALUES (100, N'ViewUser', N'Просмотр данных пользователей системы', 3)
+INSERT CRM.ADM.Privilege(ID, Name, Description, GroupID) VALUES (101, N'CreateUser', N'Создание новых пользователей системы', 3)
+INSERT CRM.ADM.Privilege(ID, Name, Description, GroupID) VALUES (102, N'ModifyUser', N'Изменение личных данных пользователей системы', 3)
+INSERT CRM.ADM.Privilege(ID, Name, Description, GroupID) VALUES (103, N'DeleteUser', N'Удаление пользователя', 2)
+INSERT CRM.ADM.Privilege(ID, Name, Description, GroupID) VALUES (111, N'ModifySystemUser', N'Редактирование системных пользователей', 3)
+INSERT CRM.ADM.Privilege(ID, Name, Description, GroupID) VALUES (150, N'GrantPrivelege', N'Управление правами пользователей', 3)
+INSERT CRM.ADM.Privilege(ID, Name, Description, GroupID) VALUES (200, N'VIewStaff', N'Просмотр личных карточек сотрудников', 4)
+INSERT CRM.ADM.Privilege(ID, Name, Description, GroupID) VALUES (201, N'CreateStaff', N'Создание личных карточек персонала', 4)
+INSERT CRM.ADM.Privilege(ID, Name, Description, GroupID) VALUES (202, N'ModifyStaff', N'Редактирование личных карточек персонала', 4)
+INSERT CRM.ADM.Privilege(ID, Name, Description, GroupID) VALUES (203, N'DeleteStaff', N'Удаление сотрудника', 3)
+INSERT CRM.ADM.Privilege(ID, Name, Description, GroupID) VALUES (300, N'ViewCustomer', N'Просмотр клиентов', 5)
+INSERT CRM.ADM.Privilege(ID, Name, Description, GroupID) VALUES (301, N'CreateCustomer', N'Создание клиентов', 5)
+INSERT CRM.ADM.Privilege(ID, Name, Description, GroupID) VALUES (302, N'ModifyCustomer', N'Изменение клиентов', 5)
+INSERT CRM.ADM.Privilege(ID, Name, Description, GroupID) VALUES (303, N'DeleteCustomer', N'Удаление клиента', 4)
+INSERT CRM.ADM.Privilege(ID, Name, Description, GroupID) VALUES (310, N'LinkDiscountCard', N'Создание дисконтных карт', 5)
+INSERT CRM.ADM.Privilege(ID, Name, Description, GroupID) VALUES (311, N'ModifyDiscontCard', N'Изменение дисконтных карт', 5)
+INSERT CRM.ADM.Privilege(ID, Name, Description, GroupID) VALUES (312, N'UnlinkDiscountCard', N'Удаление дисконтной карты', 5)
+INSERT CRM.ADM.Privilege(ID, Name, Description, GroupID) VALUES (320, N'ViewAppointment', N'Просмотр событий', 5)
+INSERT CRM.ADM.Privilege(ID, Name, Description, GroupID) VALUES (321, N'CreateAppointment', N'Создание событий', 5)
+INSERT CRM.ADM.Privilege(ID, Name, Description, GroupID) VALUES (322, N'ModifyAppointment', N'Редактирование событий', 5)
+INSERT CRM.ADM.Privilege(ID, Name, Description, GroupID) VALUES (323, N'DeleteAppointment', N'Удаление визитов', 5)
+INSERT CRM.ADM.Privilege(ID, Name, Description, GroupID) VALUES (350, N'SetCustomDiscount', N'Устанавливать произвольный дисконт', 5)
+INSERT CRM.ADM.Privilege(ID, Name, Description, GroupID) VALUES (400, N'ViewFinancialTransaction', N'Просмотр финансовых операций', 6)
+INSERT CRM.ADM.Privilege(ID, Name, Description, GroupID) VALUES (401, N'CreateFinancialTransaction', N'Создание финансовой операции', 6)
+INSERT CRM.ADM.Privilege(ID, Name, Description, GroupID) VALUES (402, N'ModifyFinancialTransaction', N'Изменение финансовой операции', 6)
+INSERT CRM.ADM.Privilege(ID, Name, Description, GroupID) VALUES (403, N'DeleteFinancialTransaction', N'Удаление финансовой операции', 6)
+GO
+
+SET IDENTITY_INSERT CRM.ADM.[User] ON
+GO
+INSERT CRM.ADM.[User](ID, Login, Password, Email, ExpirationDate, IsSystem) VALUES (5, N'sysdba', N'2B23880480BCC13E69C0FAC5CF09832C', NULL, NULL, CONVERT(bit, 'True'))
+INSERT CRM.ADM.[User](ID, Login, Password, Email, ExpirationDate, IsSystem) VALUES (8, N'administrator', N'200CEB26807D6BF99FD6F4F0D1CA54D4', NULL, NULL, CONVERT(bit, 'False'))
+GO
+SET IDENTITY_INSERT CRM.ADM.[User] OFF
+GO
+
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (5, 1)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (8, 1)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (5, 20)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (8, 20)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (5, 21)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (8, 21)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (5, 31)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (8, 31)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (5, 32)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (8, 32)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (5, 33)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (8, 33)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (5, 100)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (8, 100)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (5, 101)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (8, 101)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (5, 102)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (8, 102)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (5, 103)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (8, 103)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (5, 111)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (5, 150)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (8, 150)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (5, 200)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (8, 200)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (5, 201)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (8, 201)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (5, 202)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (8, 202)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (5, 203)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (8, 203)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (5, 300)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (8, 300)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (5, 301)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (8, 301)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (5, 302)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (8, 302)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (5, 303)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (8, 303)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (5, 310)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (8, 310)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (5, 311)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (8, 311)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (5, 312)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (8, 312)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (5, 320)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (8, 320)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (5, 321)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (8, 321)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (5, 322)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (8, 322)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (5, 323)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (8, 323)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (5, 350)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (8, 350)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (5, 400)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (8, 400)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (5, 401)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (8, 401)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (5, 402)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (8, 402)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (5, 403)
+INSERT CRM.ADM.UserPrivilege(UserID, PrivilegeID) VALUES (8, 403)
+GO

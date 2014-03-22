@@ -63,8 +63,6 @@ namespace BeautySmileCRM.ViewModels
 
         public Administration()
         {
-            _dc = new Models.CRMContext();
-
             RefreshCommand = new DelegateCommand(onRefreshCommandExecute);
 
             AddUserCommand = new DelegateCommand(onAddUserCommandExecute,
@@ -82,20 +80,15 @@ namespace BeautySmileCRM.ViewModels
             
             ExportCommand = new DelegateCommand<object>(onExportCommandExecute);
 
-            refresh();
+            Task.Factory.StartNew(() => refresh());
         }
         private void refresh()
         {
-            Task.Factory.StartNew(() =>
-            {
-                if (Users != null)
-                {
-                    var dc = ((IObjectContextAdapter)_dc).ObjectContext;
-                    dc.Refresh(System.Data.Entity.Core.Objects.RefreshMode.StoreWins, Users);
-                };
+            if(_dc != null)
+                _dc.Dispose();
 
-                Users = _dc.Users.ToList();
-            });
+            _dc = new Models.CRMContext();
+            Users = _dc.Users.ToList();
         }
 
         private void onRefreshCommandExecute()

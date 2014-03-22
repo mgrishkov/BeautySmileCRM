@@ -85,6 +85,11 @@ namespace BeautySmileCRM.ViewModels
             }
         }
 
+        public IEnumerable<string> Logins
+        {
+            get { return Services.UserProfileService.GetLogins(); }
+        }
+
         public ICommand RetryLoginCommand { get; private set; }
         public ICommand LoginCommand { get; private set; }
 
@@ -93,8 +98,10 @@ namespace BeautySmileCRM.ViewModels
             initialize();
             RetryLoginCommand = new DelegateCommand(onRetryLoginCommandExecute);
             LoginCommand = new DelegateCommand(onLoginCommandExecute);
+
+            Account = Logins.Any() ? Logins.First() : null;
+
 #if(DEBUG)
-            Account = "sysdba";
             Password = "qwerty~123";
 #endif
         }
@@ -143,6 +150,7 @@ namespace BeautySmileCRM.ViewModels
                                 CurrentUser = user;
                                 AuthorizationStage = Enums.AuthorizationStage.Authorized;
                                 NavigationService.Navigate("DashboardView", null, this);
+                                Services.UserProfileService.SetLogins(user.Login);
                             };
                         }
                         else

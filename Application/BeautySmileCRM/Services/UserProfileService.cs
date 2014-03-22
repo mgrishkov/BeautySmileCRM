@@ -22,5 +22,21 @@ namespace BeautySmileCRM.Services
             }
         }
 
+        public static List<string> GetLogins()
+        {
+            var logins = Properties.Settings.Default.Logins;
+            return (!String.IsNullOrWhiteSpace(logins)) ? logins.ToLower().Split(',').ToList() : new List<string>();
+        }
+        public static void SetLogins(string login)
+        {
+            var logins = GetLogins();
+            if (logins.Any(x => x == login.ToLower()))
+            {
+                logins.Remove(login);
+            };
+            logins.Insert(0, login);
+            Properties.Settings.Default.Logins = String.Join(",", logins);
+            Properties.Settings.Default.Save();
+        }
     }
 }

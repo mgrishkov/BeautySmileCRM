@@ -60,8 +60,6 @@ namespace BeautySmileCRM.ViewModels
 
         public Discount()
         {
-            _dc = new Models.CRMContext();
-
             RefreshCommand = new DelegateCommand(onRefreshCommandExecute);
 
             AddDiscountCommand = new DelegateCommand(onAddDiscountCommandExecute,
@@ -75,20 +73,15 @@ namespace BeautySmileCRM.ViewModels
 
             ExportCommand = new DelegateCommand<object>(onExportCommandExecute);
 
-            refresh();
+            Task.Factory.StartNew(() => refresh());
         }
         private void refresh()
         {
-            Task.Factory.StartNew(() =>
-            {
-                if (Discounts != null)
-                {
-                    var dc = ((IObjectContextAdapter)_dc).ObjectContext;
-                    dc.Refresh(System.Data.Entity.Core.Objects.RefreshMode.StoreWins, Discounts);
-                };
+            if (_dc != null)
+                _dc.Dispose();
 
-                Discounts = _dc.CumulativeDiscounts.ToList();
-            });
+            _dc = new Models.CRMContext();
+            Discounts = _dc.CumulativeDiscounts.ToList();
         }
 
         private void onRefreshCommandExecute()

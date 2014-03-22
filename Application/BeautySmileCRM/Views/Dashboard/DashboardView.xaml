@@ -73,6 +73,7 @@
                                     TileClickCommand="{Binding OnTileClick}">
                 <dxlc:TileLayoutControl.Resources>
                     <Style TargetType="dxlc:Tile">
+                        <Setter Property="Background" Value="#25854C"/>
                         <Setter Property="ContentTemplate">
                             <Setter.Value>
                                 <DataTemplate>
