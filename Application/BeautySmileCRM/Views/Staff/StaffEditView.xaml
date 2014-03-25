@@ -47,7 +47,7 @@
         <dxe:TextEdit Grid.Column="2" Grid.Row="1"                      
                       HorizontalAlignment="Left" Width="180">
             <dxe:TextEdit.EditValue>
-                <Binding Path="LatName"
+                <Binding Path="LastName"
                          Mode="TwoWay"
                          UpdateSourceTrigger="PropertyChanged"
                          ValidatesOnDataErrors="True"

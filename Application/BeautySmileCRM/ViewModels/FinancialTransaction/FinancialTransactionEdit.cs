@@ -93,7 +93,7 @@ namespace BeautySmileCRM.ViewModels
             { 
                 return _data.Appointment
                     .FinancialTransactions
-                    .Where(x => x.TransactionTypeID == (int)Enums.TransactionType.Deposit)
+                    .Where(x => x.TransactionTypeID == (int)TransactionType.Deposit)
                     .Sum(x => x.Amount); 
             }
         }
@@ -137,6 +137,7 @@ namespace BeautySmileCRM.ViewModels
             get
             {
                 return _data.Customer.Appointments
+                    .Where(x => x.StateID != (int)AppointmentState.Canceled || x.StateID != (int)AppointmentState.Completed)
                     .OrderByDescending(x => x.StartTime)
                     .ToDictionary(x => x.ID, y => y.Title); 
             }
@@ -182,6 +183,13 @@ namespace BeautySmileCRM.ViewModels
         {
             base.ApplyCommandExecuted();
             _dc.SaveChanges();
+
+            if(Payed >= ToPay)
+            {
+                _data.Appointment.StateID = (int)AppointmentState.Completed;
+                _dc.SaveChanges();
+            };
+                
         }
     }
 }

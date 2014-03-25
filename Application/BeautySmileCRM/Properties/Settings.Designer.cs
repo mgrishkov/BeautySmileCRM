@@ -25,22 +25,6 @@ namespace BeautySmileCRM.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
-<SerializableConnectionString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
-  <ConnectionString>Data Source=localhost;Initial Catalog=CRM;User ID=AppUser;Password=qwerty~123</ConnectionString>
-  <ProviderName>System.Data.SqlClient</ProviderName>
-</SerializableConnectionString>")]
-        public string DBLogin {
-            get {
-                return ((string)(this["DBLogin"]));
-            }
-            set {
-                this["DBLogin"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string Logins {
             get {
@@ -48,6 +32,18 @@ namespace BeautySmileCRM.Properties {
             }
             set {
                 this["Logins"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Servers {
+            get {
+                return ((string)(this["Servers"]));
+            }
+            set {
+                this["Servers"] = value;
             }
         }
     }

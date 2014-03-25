@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
              xmlns:converters="clr-namespace:BeautySmileCRM.Converters"
              xmlns:preloader="clr-namespace:PreloaderControll;assembly=PreloaderControll"
              xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"  
@@ -15,6 +16,24 @@
              mc:Ignorable="d" 
              d:DesignWidth="600" d:DesignHeight="600"
              dx:ThemeManager.ThemeName="MetropolisLight">
+    <UserControl.Style>
+        <Style TargetType="{x:Type UserControl}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding FocuseTo}" Value="Login">
+                    <Setter Property="FocusManager.FocusedElement" Value="{Binding ElementName=LoginButton}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding FocuseTo}" Value="Password">
+                    <Setter Property="FocusManager.FocusedElement" Value="{Binding ElementName=PasswordEdit}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding FocuseTo}" Value="Server">
+                    <Setter Property="FocusManager.FocusedElement" Value="{Binding ElementName=ServerEdit}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding FocuseTo}" Value="Account">
+                    <Setter Property="FocusManager.FocusedElement" Value="{Binding ElementName=AccountEdit}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Style>
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -56,18 +75,27 @@
             <StackPanel Grid.Row="2" Grid.Column="1" 
 			            Visibility="{Binding AuthorizationStage, ConverterParameter=Pending, Converter={converters:AuthorizationStageToVisibilityConverter}}"
 			            Style="{StaticResource Fadeable}">
-                <dxe:ComboBoxEdit x:Name="LoginEdit"
+                <dxe:ComboBoxEdit x:Name="AccountEdit"
 				                  NullText="Логин"
 				                  EditValue="{Binding Account}"
 				                  ItemsSource="{Binding Logins}"/>
+                <dxe:ComboBoxEdit x:Name="ServerEdit"
+                                  NullText="Сервер" Margin="0,5,0,0"
+				                  EditValue="{Binding Server}"
+				                  ItemsSource="{Binding Servers}"/>
                 <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
                     <dxe:PasswordBoxEdit x:Name="PasswordEdit"
 					                     NullText="Пароль"
-					                     EditValue="{Binding Password}"
-					                     Width="185"/>
-                    <Button Width="60" Margin="5,0,0,0"
+					                     EditValue="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
+					                     Width="185">
+                        <dxmvvm:Interaction.Triggers>
+                            <dxmvvm:EventToCommand EventName="KeyUp" Command="{Binding OnPasswordKeyUpCommand}" PassEventArgsToCommand="True" />
+                        </dxmvvm:Interaction.Triggers>
+                    </dxe:PasswordBoxEdit>
+                    <Button x:Name="LoginButton" 
+                            Width="60" Margin="5,0,0,0"
 					        Content="Войти"
-					        Command="{Binding LoginCommand}" />
+					        Command="{Binding OnLoginCommand}" />
                 </StackPanel>
             </StackPanel>
             <StackPanel Grid.Row="2" Grid.Column="1" 
@@ -89,7 +117,7 @@
                 <Button x:Name="RetryButton"
 				        Width="100" Margin="0,5,0,0" HorizontalAlignment="Right"
 				        Content="Повторить"
-				        Command="{Binding RetryLoginCommand}"/>
+				        Command="{Binding OnRetryLoginCommand}"/>
             </StackPanel>
         </Grid>
     </dxwui:PageAdornerControl>

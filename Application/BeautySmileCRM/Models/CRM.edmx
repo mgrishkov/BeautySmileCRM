@@ -155,6 +155,7 @@
           <Property Name="CreatedBy" Type="int" Nullable="false" />
           <Property Name="ModificationTime" Type="datetime" />
           <Property Name="ModifiedBy" Type="int" />
+          <Property Name="IsCanceled" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Staff">
           <Key>
@@ -276,6 +277,7 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
             
             
             
+            <PropertyRef Name="IsCanceled" />
           </Key>
           <Property Name="ID" Type="int" Nullable="false" />
           <Property Name="CustomerID" Type="int" Nullable="false" />
@@ -303,6 +305,7 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
           <Property Name="CreatedBy" Type="int" Nullable="false" />
           <Property Name="ModificationTime" Type="datetime" />
           <Property Name="ModifiedBy" Type="int" />
+          <Property Name="IsCanceled" Type="bit" Nullable="false" />
         </EntityType>
         <Association Name="FK#Appointment@CreatedBy#User@ID">
           <End Role="User" Type="Self.User" Multiplicity="1" />
@@ -632,7 +635,8 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
     [FinancialTransactionView].[CreationTime] AS [CreationTime], 
     [FinancialTransactionView].[CreatedBy] AS [CreatedBy], 
     [FinancialTransactionView].[ModificationTime] AS [ModificationTime], 
-    [FinancialTransactionView].[ModifiedBy] AS [ModifiedBy]
+    [FinancialTransactionView].[ModifiedBy] AS [ModifiedBy], 
+    [FinancialTransactionView].[IsCanceled] AS [IsCanceled]
     FROM [CST].[FinancialTransactionView] AS [FinancialTransactionView]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK#Appointment@CreatedBy#User@ID" Association="Self.FK#Appointment@CreatedBy#User@ID">
@@ -984,6 +988,7 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
           <NavigationProperty Name="Appointment" Relationship="CRMModel.FK_FinancialTransaction_AppointmentID_Appointment_iD" FromRole="FinancialTransaction" ToRole="Appointment" />
           <NavigationProperty Name="Customer" Relationship="CRMModel.FK_FinancialTransaction_CustomerID_Customer_ID" FromRole="FinancialTransaction" ToRole="Customer" />
           <Property Name="CreationTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsCanceled" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Staff">
           <Key>
@@ -1260,6 +1265,7 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
           <Key>
             <PropertyRef Name="ID" />
             <PropertyRef Name="Price" />
+            <PropertyRef Name="IsCanceled" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="CustomerID" Type="Int32" Nullable="false" />
@@ -1287,6 +1293,7 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
           <Property Name="ModificationTime" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int32" />
           <Property Name="Price" Type="Decimal" Nullable="false" Precision="13" Scale="2" />
+          <Property Name="IsCanceled" Type="Boolean" Nullable="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -1435,6 +1442,7 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
           <EntitySetMapping Name="FinancialTransactions">
             <EntityTypeMapping TypeName="CRMModel.FinancialTransaction">
               <MappingFragment StoreEntitySet="FinancialTransaction">
+                <ScalarProperty Name="IsCanceled" ColumnName="IsCanceled" />
                 <ScalarProperty Name="CreationTime" ColumnName="CreationTime" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="ModificationTime" ColumnName="ModificationTime" />
@@ -1584,6 +1592,7 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
           <EntitySetMapping Name="FinancialTransactionView">
             <EntityTypeMapping TypeName="CRMModel.FinancialTransactionView">
               <MappingFragment StoreEntitySet="FinancialTransactionView">
+                <ScalarProperty Name="IsCanceled" ColumnName="IsCanceled" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="ModificationTime" ColumnName="ModificationTime" />

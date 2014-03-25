@@ -172,29 +172,34 @@
                                     <dxe:SpinEditSettings IsFloatValue="True"  MaskType="Numeric" Mask="C" MaskUseAsDisplayFormat="True" HorizontalContentAlignment="Right"/>
                                 </dxg:GridColumn.EditSettings>
                             </dxg:GridColumn>
-                            <dxg:GridColumn FieldName="Comment" Header="Примечание" Width="140" ReadOnly="True" VisibleIndex="18" >
+                            <dxg:GridColumn FieldName="IsCanceled" Header="Отменен" Width="60" ReadOnly="True" VisibleIndex="18">
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:CheckEditSettings />
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="Comment" Header="Примечание" Width="140" ReadOnly="True" VisibleIndex="19" >
                                 <dxg:GridColumn.EditSettings>
                                     <dxe:TextEditSettings />
                                 </dxg:GridColumn.EditSettings>
                             </dxg:GridColumn>
                         </dxg:GridControlBand>
                         <dxg:GridControlBand Header="Прочее" HorizontalHeaderContentAlignment="Center" VisibleIndex="4">
-                            <dxg:GridColumn FieldName="CreationTime" Header="Дата зарегистрации визита" Width="120" ReadOnly="True" VisibleIndex="19" >
+                            <dxg:GridColumn FieldName="CreationTime" Header="Дата зарегистрации визита" Width="120" ReadOnly="True" VisibleIndex="20" >
                                 <dxg:GridColumn.EditSettings>
                                     <dxe:DateEditSettings Mask="g" MaskType="DateTime" MaskUseAsDisplayFormat="True" />
                                 </dxg:GridColumn.EditSettings>
                             </dxg:GridColumn>
-                            <dxg:GridColumn FieldName="CreatedBy" Header="Создал" Width="160" ReadOnly="True" VisibleIndex="20">
+                            <dxg:GridColumn FieldName="CreatedBy" Header="Создал" Width="160" ReadOnly="True" VisibleIndex="21">
                                 <dxg:GridColumn.EditSettings>
                                     <dxe:ComboBoxEditSettings ItemsSource="{Binding Users}" DisplayMember="Value" ValueMember="Key" />
                                 </dxg:GridColumn.EditSettings>
                             </dxg:GridColumn>
-                            <dxg:GridColumn FieldName="ModificationTime" Header="Дата изменения визита" Width="120" ReadOnly="True" VisibleIndex="21" >
+                            <dxg:GridColumn FieldName="ModificationTime" Header="Дата изменения визита" Width="120" ReadOnly="True" VisibleIndex="22" >
                                 <dxg:GridColumn.EditSettings>
                                     <dxe:DateEditSettings Mask="g" MaskType="DateTime" MaskUseAsDisplayFormat="True" />
                                 </dxg:GridColumn.EditSettings>
                             </dxg:GridColumn>
-                            <dxg:GridColumn FieldName="ModifiedBy" Header="Изменил" Width="160" ReadOnly="True" VisibleIndex="22">
+                            <dxg:GridColumn FieldName="ModifiedBy" Header="Изменил" Width="160" ReadOnly="True" VisibleIndex="23">
                                 <dxg:GridColumn.EditSettings>
                                     <dxe:ComboBoxEditSettings ItemsSource="{Binding Users}" DisplayMember="Value" ValueMember="Key" />
                                 </dxg:GridColumn.EditSettings>

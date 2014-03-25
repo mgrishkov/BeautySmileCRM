@@ -49,14 +49,16 @@ if (container.FunctionImports.Any())
 #>
 using System.Data.Entity.Core.Objects;
 using System.Linq;
+using BeautySmileCRM.Services;
 <#
 }
 #>
 
 <#=Accessibility.ForType(container)#> partial class <#=code.Escape(container)#> : DbContext
 {
+
 	public <#=code.Escape(container)#>()
-        : base("name=<#=code.Escape(container)#>")
+        : base(UserProfileService.ConnectionString)
     {		
 <#
 if (!loader.IsLazyLoadingEnabled(container))

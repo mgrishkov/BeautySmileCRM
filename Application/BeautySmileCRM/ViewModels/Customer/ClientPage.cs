@@ -525,17 +525,19 @@ namespace BeautySmileCRM.ViewModels
             {
                 if(_discountCard != null && _discountCard.Code != value)
                 {
-                    _discountCard.Code = value;
-                    RaisePropertyChanged("DiscountCardNumber");
-
                     var card = _dc.DiscountCards.SingleOrDefault(x => x.Code == value);
                     if (card != null)
                     {
                         _customer.DiscountCard = card;
                         _discountCard = card;
                         RaisePropertiesChanged("NamedDiscount", "MinDiscount", "MaxDiscount");
+                    }
+                    else
+                    {
+                        _discountCard.Code = value;
                     };
 
+                    RaisePropertyChanged("DiscountCardNumber");
                     AllowSave = true;
                 }
             }
@@ -584,6 +586,11 @@ namespace BeautySmileCRM.ViewModels
                     AllowSave = true;
                 }
             }
+        }
+        [BindGroup("DiscountCard")]
+        public decimal TotalPurchaseValue
+        {
+            get { return _discountCard != null ? _discountCard.TotalPurchaseValue : 0m; } 
         }
 
         protected IDialogService AppointmentDialogService { get { return GetService<IDialogService>("AppointmentEditDialog"); } }
@@ -661,7 +668,9 @@ namespace BeautySmileCRM.ViewModels
                     case "financialTransactionsTab":
                         if (_customer.Appointments == null)
                             return false;
-                        return _customer.Appointments.Count > 0 && CurrentUser.HasPrivilege(Privilege.CreateFinancialTransaction);
+                        return _customer.Appointments.Count > 0 
+                            && SelectedAppointment.StateID != (int)AppointmentState.Canceled && SelectedAppointment.StateID != (int)AppointmentState.Completed 
+                            && CurrentUser.HasPrivilege(Privilege.CreateFinancialTransaction);
                 };
 
                 return false;
@@ -758,19 +767,28 @@ namespace BeautySmileCRM.ViewModels
         {
             var firstDiscount = _dc.CumulativeDiscounts
                 .OrderBy(x => x.Percent)
-                .First();
-            _discountCard = new Models.DiscountCard()
+                .FirstOrDefault();
+
+            if (firstDiscount != null)
             {
-                Code = Models.DiscountCard.GenerateCode(),
-                DiscountPercent = firstDiscount.Percent,
-                MaxDiscount = firstDiscount.MaxDiscount,
-                MinDiscount = firstDiscount.MinDiscount,
-                DiscountTypeID = (int)Enums.DiscountType.Cumulative,
-                TotalPurchaseValue = 0
+
+                _discountCard = new Models.DiscountCard()
+                {
+                    Code = Models.DiscountCard.GenerateCode(),
+                    DiscountPercent = firstDiscount.Percent,
+                    MaxDiscount = firstDiscount.MaxDiscount,
+                    MinDiscount = firstDiscount.MinDiscount,
+                    DiscountTypeID = (int)Enums.DiscountType.Cumulative,
+                    TotalPurchaseValue = 0
+                };
+                _customer.DiscountCard = _discountCard;
+                DiscountCardEnabled = true;
+                RaisePropertiesChanged(BindGroupAttribute.GetPropertiesOfGroup(this.GetType(), "DiscountCard").Select(x => x.Name).ToArray());
+            }
+            else
+            {
+                MessageService.Show("Нельзя выполнить данную операцию, т.к. не заполнен справочник скидок!\nЗаполните справочник скидок и повторите попытку.", "Отсутствуют данные в справочнике", MessageBoxButton.OK, MessageBoxImage.Error);
             };
-            _customer.DiscountCard = _discountCard;
-            DiscountCardEnabled = true;
-            RaisePropertiesChanged(BindGroupAttribute.GetPropertiesOfGroup(this.GetType(), "DiscountCard").Select(x => x.Name).ToArray());
         }
         private void OnUnlinkDiscountCardCommandExecuted()
         {
@@ -903,25 +921,7 @@ namespace BeautySmileCRM.ViewModels
             };
 
             _dc.Customers.Add(_customer);
-
-            var initialDiscount = _dc.CumulativeDiscounts
-                .OrderBy(x => x.Percent)
-                .Take(1)
-                .First();
-
-            var newCode = Models.DiscountCard.GenerateCode();
-
-            _customer.DiscountCard = new Models.DiscountCard()
-            {
-                Code = newCode,
-                DiscountTypeID = (int)Enums.DiscountType.Cumulative,
-                DiscountPercent = initialDiscount.Percent,
-                MaxDiscount = initialDiscount.MaxDiscount,
-                MinDiscount = initialDiscount.MinDiscount
-            };
-
-            _discountCard = _customer.DiscountCard;
-            DiscountCardEnabled = _discountCard != null;
+            DiscountCardEnabled = false;
 
             VisitHistory = _customer.Appointments;
             FinancialTransactions = _customer.FinancialTransactions;

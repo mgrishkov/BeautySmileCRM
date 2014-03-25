@@ -1,4 +1,4 @@
-﻿CREATE VIEW CST.FinancialTransactionView
+﻿CREATE VIEW CST.FinancialTransactionView 
 AS
  select  ft.ID,
          ft.CustomerID,
@@ -25,7 +25,8 @@ AS
          ft.CreationTime,
          ft.CreatedBy,
          ft.ModificationTime,
-         ft.ModifiedBy
+         ft.ModifiedBy,
+         ft.IsCanceled
    from CST.FinancialTransaction ft
         inner join CST.Appointment a
      on ft.AppointmentID = a.ID

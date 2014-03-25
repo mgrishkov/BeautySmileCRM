@@ -14,11 +14,13 @@ namespace BeautySmileCRM.Models
     using System.Data.Entity.Infrastructure;
     using System.Data.Entity.Core.Objects;
     using System.Linq;
+    using BeautySmileCRM.Services;
     
     public partial class CRMContext : DbContext
     {
+    
     	public CRMContext()
-            : base("name=CRMContext")
+            : base(UserProfileService.ConnectionString)
         {		
         }
     

@@ -23,6 +23,8 @@
 );
 
 
+
+
 GO
 CREATE NONCLUSTERED INDEX [I#Appointment@StaffID@StateID]
     ON [CST].[Appointment]([StaffID] ASC, [StateID] ASC);
@@ -39,13 +41,12 @@ CREATE NONCLUSTERED INDEX [I#Appointment@CustomerID@StateID]
 
 
 GO
-CREATE TRIGGER [CST].TIU#Appointment
+CREATE TRIGGER CST.TIU#Appointment
     on CST.Appointment
     after insert, update as
 begin
     if(update(ToPay))
     begin
-        
         /* создаю операции списания по событиям, если их еще не было */
         insert into CST.FinancialTransaction 
             (CustomerID, AppointmentID, TransactionTypeID, Amount, CreationTime, CreatedBy, Comment)
@@ -65,6 +66,15 @@ begin
             on ft.AppointmentID = i.ID
          where ft.TransactionTypeID = 2 /* списание со счета */;
     end;
+    if(update(StateID))
+    begin
+        update ft
+           set ft.IsCanceled = 1 
+          from CST.FinancialTransaction ft
+               inner join INSERTED i
+            on (i.ID = ft.AppointmentID)
+         where i.StateID = 3; /* canceled */
+    end;                
 end
 
 GO

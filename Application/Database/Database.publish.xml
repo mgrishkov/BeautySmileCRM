@@ -4,8 +4,9 @@
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
     <TargetDatabaseName>CRM</TargetDatabaseName>
     <DeployScriptFileName>Database.sql</DeployScriptFileName>
+    <TargetConnectionString>Data Source=localhost;Integrated Security=True;Pooling=False</TargetConnectionString>
+    <BlockWhenDriftDetected>False</BlockWhenDriftDetected>
+    <RegisterDataTierApplication>False</RegisterDataTierApplication>
     <ProfileVersionNumber>1</ProfileVersionNumber>
-    <BlockWhenDriftDetected>True</BlockWhenDriftDetected>
-    <RegisterDataTierApplication>True</RegisterDataTierApplication>
   </PropertyGroup>
 </Project>

@@ -40,5 +40,6 @@ namespace BeautySmileCRM.Models
         public Nullable<System.DateTime> ModificationTime { get; set; }
         public Nullable<int> ModifiedBy { get; set; }
         public decimal Price { get; set; }
+        public bool IsCanceled { get; set; }
     }
 }

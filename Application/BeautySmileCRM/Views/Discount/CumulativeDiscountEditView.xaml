@@ -59,8 +59,9 @@
                    Text="Процент скидки" 
                    Style="{StaticResource GroupItem}"/>
         <dxe:SpinEdit Grid.Column="2" Grid.Row="2"
-                      MinValue="0" MaxValue="100"
-                      DisplayFormatString="p00">
+                      DisplayFormatString="p00" Mask="p00" MaskType="Numeric" Increment="0.01"
+                      MinValue="0" MaxValue="1"
+                      IsFloatValue="False">
             <dxe:SpinEdit.EditValue>
                 <Binding Path="Percent"
                          Mode="TwoWay"

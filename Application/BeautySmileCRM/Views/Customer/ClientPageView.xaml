@@ -111,6 +111,8 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
@@ -281,10 +283,18 @@
                     </dxe:ComboBoxEdit>
 
                     <TextBlock Grid.Column="0" Grid.Row="9"
+                               Text="Сумма платежей" 
+                               Style="{StaticResource GroupItem}"
+                               Visibility="{Binding DiscountCardEnabled, Converter={converters:BoolToVisibilityConverter}}"/>
+                    <dxe:SpinEdit Grid.Column="2" Grid.Row="9"
+                                  EditValue="{Binding TotalPurchaseValue, Mode=OneWay}"
+                                  IsReadOnly="True" DisplayFormatString="C" Mask="C" MaskType="Numeric"/>
+                    
+                    <TextBlock Grid.Column="0" Grid.Row="10"
                                Text="Лимиты скидки" 
                                Style="{StaticResource GroupItem}"
                                Visibility="{Binding DiscountCardEnabled, Converter={converters:BoolToVisibilityConverter}}"/>
-                    <StackPanel Grid.Column="2" Grid.Row="9" Orientation="Horizontal"
+                    <StackPanel Grid.Column="2" Grid.Row="10" Orientation="Horizontal"
                                 Visibility="{Binding DiscountCardEnabled, Converter={converters:BoolToVisibilityConverter}}">
                         <dxe:SpinEdit MinValue="0"
                                       HorizontalAlignment="Left" Width="95"
@@ -319,13 +329,13 @@
                     </StackPanel>
 
 
-                    <TextBlock Grid.Column="0" Grid.Row="10" Grid.ColumnSpan="7"
+                    <TextBlock Grid.Column="0" Grid.Row="11" Grid.ColumnSpan="7"
                             Text="Контактные данные" 
                             Style="{StaticResource GroupHeader}"/>
-                    <TextBlock Grid.Column="0" Grid.Row="11"
+                    <TextBlock Grid.Column="0" Grid.Row="12"
                                Text="Моб. телефон" 
                                Style="{StaticResource GroupItem}"/>
-                    <dxe:TextEdit Grid.Column="2" Grid.Row="11"
+                    <dxe:TextEdit Grid.Column="2" Grid.Row="12"
                                   MaskType="Simple" Mask="+7 (999) 999-99-99"
                                   TabIndex="10">
                         <dxe:TextEdit.EditValue>
@@ -338,10 +348,10 @@
                         </dxe:TextEdit.EditValue>
                     </dxe:TextEdit>
 
-                    <TextBlock Grid.Column="0" Grid.Row="12"
+                    <TextBlock Grid.Column="0" Grid.Row="13"
                             Text="Дом. телефон" 
                             Style="{StaticResource GroupItem}"/>
-                    <dxe:TextEdit Grid.Column="2" Grid.Row="12"
+                    <dxe:TextEdit Grid.Column="2" Grid.Row="13"
                                   TabIndex="11">
                         <dxe:TextEdit.EditValue>
                             <Binding Path="Phone"
@@ -353,10 +363,10 @@
                         </dxe:TextEdit.EditValue>
                     </dxe:TextEdit>
 
-                    <TextBlock Grid.Column="0" Grid.Row="13"
+                    <TextBlock Grid.Column="0" Grid.Row="14"
                             Text="Эл.почта" 
                             Style="{StaticResource GroupItem}"/>
-                    <dxe:TextEdit Grid.Column="2" Grid.Row="13"
+                    <dxe:TextEdit Grid.Column="2" Grid.Row="14"
                                   TabIndex="12">
                         <dxe:TextEdit.EditValue>
                             <Binding Path="Email"
@@ -368,10 +378,10 @@
                         </dxe:TextEdit.EditValue>
                     </dxe:TextEdit>
 
-                    <TextBlock Grid.Column="0" Grid.Row="14"
+                    <TextBlock Grid.Column="0" Grid.Row="15"
                             Text="Страна" 
                             Style="{StaticResource GroupItem}"/>
-                    <dxe:ComboBoxEdit Grid.Column="2" Grid.Row="14"
+                    <dxe:ComboBoxEdit Grid.Column="2" Grid.Row="15"
                                       AutoComplete="True" IncrementalFiltering="True"
                                       ItemsSource="{Binding Countries}"
                                       TabIndex="13">
@@ -385,10 +395,10 @@
                         </dxe:ComboBoxEdit.EditValue>
                     </dxe:ComboBoxEdit>
 
-                    <TextBlock Grid.Column="0" Grid.Row="15"
+                    <TextBlock Grid.Column="0" Grid.Row="16"
                                Text="Индекс" 
                                Style="{StaticResource GroupItem}"/>
-                    <dxe:ComboBoxEdit Grid.Column="2" Grid.Row="15"
+                    <dxe:ComboBoxEdit Grid.Column="2" Grid.Row="16"
                                       AutoComplete="True" IncrementalFiltering="True"
                                       ItemsSource="{Binding Zipes}"
                                       TabIndex="14">
@@ -402,10 +412,10 @@
                         </dxe:ComboBoxEdit.EditValue>
                     </dxe:ComboBoxEdit>
 
-                    <TextBlock Grid.Column="0" Grid.Row="16"
+                    <TextBlock Grid.Column="0" Grid.Row="17"
                                Text="Область" 
                                Style="{StaticResource GroupItem}"/>
-                    <dxe:ComboBoxEdit Grid.Column="2" Grid.Row="16"
+                    <dxe:ComboBoxEdit Grid.Column="2" Grid.Row="17"
                                       AutoComplete="True" IncrementalFiltering="True"
                                       ItemsSource="{Binding Regions}"
                                       TabIndex="15">
@@ -419,10 +429,10 @@
                         </dxe:ComboBoxEdit.EditValue>
                     </dxe:ComboBoxEdit>
 
-                    <TextBlock Grid.Column="0" Grid.Row="17"
+                    <TextBlock Grid.Column="0" Grid.Row="18"
                             Text="Город" 
                             Style="{StaticResource GroupItem}"/>
-                    <dxe:ComboBoxEdit Grid.Column="2" Grid.Row="17"
+                    <dxe:ComboBoxEdit Grid.Column="2" Grid.Row="18"
                                       AutoComplete="True" IncrementalFiltering="True"
                                       ItemsSource="{Binding Cities}"
                                       TabIndex="16">
@@ -436,10 +446,10 @@
                         </dxe:ComboBoxEdit.EditValue>
                     </dxe:ComboBoxEdit>
 
-                    <TextBlock Grid.Column="0" Grid.Row="18"
+                    <TextBlock Grid.Column="0" Grid.Row="19"
                             Text="Адрес" 
                             Style="{StaticResource GroupItem}"/>
-                    <dxe:TextEdit Grid.Column="2" Grid.Row="18"
+                    <dxe:TextEdit Grid.Column="2" Grid.Row="19"
                                   HorizontalContentAlignment="Left" VerticalContentAlignment="Top"
                                   Height="50"
                                   TabIndex="17">
@@ -453,10 +463,10 @@
                         </dxe:TextEdit.EditValue>
                     </dxe:TextEdit>
 
-                    <TextBlock Grid.Column="0" Grid.Row="19" Grid.ColumnSpan="3"
+                    <TextBlock Grid.Column="0" Grid.Row="20" Grid.ColumnSpan="3"
                             Text="Оповещения" 
                             Style="{StaticResource GroupHeader}"/>
-                    <dxe:CheckEdit Grid.Column="2" Grid.Row="20"
+                    <dxe:CheckEdit Grid.Column="2" Grid.Row="21"
                                    Content="По электронной почте"
                                    AllowNullInput="False"
                                    TabIndex="18">
@@ -470,7 +480,7 @@
                         </dxe:CheckEdit.EditValue>
                     </dxe:CheckEdit>
 
-                    <dxe:CheckEdit Grid.Column="2" Grid.Row="21"
+                    <dxe:CheckEdit Grid.Column="2" Grid.Row="22"
                                    Content="По СМС"
                                    AllowNullInput="False"
                                    TabIndex="19">
@@ -483,7 +493,7 @@
                                     ValidatesOnNotifyDataErrors="True"/>
                         </dxe:CheckEdit.EditValue>
                     </dxe:CheckEdit>
-                    <dxe:CheckEdit Grid.Column="2" Grid.Row="22"
+                    <dxe:CheckEdit Grid.Column="2" Grid.Row="23"
                                    Content="По почте"
                                    AllowNullInput="False"
                                    TabIndex="20">
@@ -496,7 +506,7 @@
                                     ValidatesOnNotifyDataErrors="True"/>
                         </dxe:CheckEdit.EditValue>
                     </dxe:CheckEdit>
-                    <Border Grid.Row="23" Grid.Column="0" Grid.ColumnSpan="3"
+                    <Border Grid.Row="24" Grid.Column="0" Grid.ColumnSpan="3"
                             Margin="0, 25, 0, 0"
                             BorderThickness="1">
                         <Border.BorderBrush>
@@ -508,7 +518,7 @@
                         </Border.BorderBrush>
                     </Border>
 
-                    <Button Grid.Row="24" Grid.Column="0" Grid.ColumnSpan="3" Width="140"
+                    <Button Grid.Row="25" Grid.Column="0" Grid.ColumnSpan="3" Width="140"
                             HorizontalAlignment="Right" Margin="0, 10, 0, 0"
 					        Content="Удалить клиента"
 					        Command="{Binding DeleteCustomerCommand}" />
@@ -662,7 +672,11 @@
                                             <dxe:SpinEditSettings DisplayFormat="C" />
                                         </dxg:GridColumn.EditSettings>
                                     </dxg:GridColumn>
-                                    
+                                    <dxg:GridColumn x:Name="isCanceledField" FieldName="IsCanceled" Header="Отменен" Width="60" ReadOnly="True" VisibleIndex="13" >
+                                        <dxg:GridColumn.EditSettings>
+                                            <dxe:CheckEditSettings/>
+                                        </dxg:GridColumn.EditSettings>
+                                    </dxg:GridColumn>
                                     <dxg:GridColumn x:Name="ftCreationTimeField" FieldName="CreationTime" Header="Регистрация" Width="95" ReadOnly="True" VisibleIndex="10" SortIndex="1" >
                                         <dxg:GridColumn.EditSettings>
                                             <dxe:DateEditSettings DisplayFormat="dd.MM.yyyy HH:mm:ss" />

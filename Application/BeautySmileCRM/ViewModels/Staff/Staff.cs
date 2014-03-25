@@ -91,7 +91,7 @@ namespace BeautySmileCRM.ViewModels
         }
         private void onAddStaffCommandExecute()
         {
-            ShowDialog(DialogMode.Update);
+            ShowDialog(DialogMode.Create);
         }
         private void onEditStaffCommandExecute()
         {

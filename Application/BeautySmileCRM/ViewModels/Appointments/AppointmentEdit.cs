@@ -207,6 +207,17 @@ namespace BeautySmileCRM.ViewModels
                 return _dc.Staffs.Where(x => !x.DismissalDate.HasValue || x.DismissalDate < _data.EndTime).ToDictionary(x => x.ID, y => String.Format("{0} - {1}", y.ShortName, y.Position));
             }
         }
+        public IEnumerable<string> Purposes
+        {
+            get
+            {
+                return _dc.Appointments
+                    .Select(x => x.Purpose)
+                    .Distinct()
+                    .Take(100)
+                    .ToList();
+            }
+        }
 
         public AppointmentEdit(DialogMode mode, int? appointmentID, int clientID, IDialogService dialogService, IMessageBoxService messageService)
             : base(mode, dialogService, messageService)
@@ -296,6 +307,7 @@ namespace BeautySmileCRM.ViewModels
                         CreationTime = DateTime.Now,
                         TransactionTypeID = (int)TransactionType.Deposit
                     };
+                    _data.StateID = (int)AppointmentState.Completed;
                     _dc.FinancialTransactions.Add(ft);
                     _dc.SaveChanges();
                 };
@@ -303,10 +315,14 @@ namespace BeautySmileCRM.ViewModels
         }
         private void OnDialogCancelCommandtExecuting()
         {
-            if (MessageService.Show("Вы действительно хотите отменить визит?", "Отмена визита", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            if (Validate())
             {
-                _data.StateID = (int)AppointmentState.Canceled;
-            };
+                if (MessageService.Show("Вы действительно хотите отменить визит?", "Отмена визита", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    _data.StateID = (int)AppointmentState.Canceled;
+                    _dc.SaveChanges();
+                };
+            }
         }
 
         protected override void AllowSaveChanged()

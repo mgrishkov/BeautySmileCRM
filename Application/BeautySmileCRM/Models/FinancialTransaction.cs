@@ -24,6 +24,7 @@ namespace BeautySmileCRM.Models
         public Nullable<System.DateTime> ModificationTime { get; set; }
         public Nullable<int> ModifiedBy { get; set; }
         public System.DateTime CreationTime { get; set; }
+        public bool IsCanceled { get; set; }
     
         public virtual User CreatedByUser { get; set; }
         public virtual User ModifiedByUser { get; set; }

@@ -101,7 +101,6 @@ namespace BeautySmileCRM.ViewModels
                 };
             }
         }
-        
 
         public Header()
         {

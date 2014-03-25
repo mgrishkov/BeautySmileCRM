@@ -9,6 +9,7 @@
     [CreatedBy]         INT             NOT NULL,
     [ModificationTime]  DATETIME        NULL,
     [ModifiedBy]        INT             NULL,
+    [IsCanceled]        BIT             DEFAULT ((0)) NOT NULL,
     CONSTRAINT [PK#FinancialTransaction] PRIMARY KEY NONCLUSTERED ([ID] ASC),
     CONSTRAINT [FK#FinancialTransaction@AppointmentID#Appointment@iD] FOREIGN KEY ([AppointmentID]) REFERENCES [CST].[Appointment] ([ID]),
     CONSTRAINT [FK#FinancialTransaction@CreatedBy#User@ID] FOREIGN KEY ([CreatedBy]) REFERENCES [ADM].[User] ([ID]),
@@ -16,6 +17,8 @@
     CONSTRAINT [FK#FinancialTransaction@ModifiedBy#User@ID] FOREIGN KEY ([ModifiedBy]) REFERENCES [ADM].[User] ([ID]),
     CONSTRAINT [FK#FinancialTransaction@TransactionTypeID#TransactionType@ID] FOREIGN KEY ([TransactionTypeID]) REFERENCES [CONF].[TransactionType] ([ID])
 );
+
+
 
 
 GO
@@ -50,7 +53,11 @@ CREATE TRIGGER CST.TIUD#FinancialTransaction
 begin
     with balanceChanges
       as (select ft.CustomerID, 
-                 sum(tt.OperationSign * ft.Amount) as Balance
+                 sum(tt.OperationSign 
+                     * case when ft.IsCanceled = 1
+                            then 0
+                            else ft.Amount
+                       end) as Balance
             from CST.FinancialTransaction ft
                  inner join (select distinct CustomerID 
                                from INSERTED
@@ -70,7 +77,7 @@ begin
            inner join balanceChanges b
         on (c.ID = b.CustomerID)
      where 1 = 1;
-    
+   
 end
 
 GO
@@ -115,4 +122,8 @@ EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'Дата и
 
 GO
 EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'ИД пользвателя, выполнившего изменение', @level0type = N'SCHEMA', @level0name = N'CST', @level1type = N'TABLE', @level1name = N'FinancialTransaction', @level2type = N'COLUMN', @level2name = N'ModifiedBy';
+
+
+GO
+EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'Признак отмены', @level0type = N'SCHEMA', @level0name = N'CST', @level1type = N'TABLE', @level1name = N'FinancialTransaction', @level2type = N'COLUMN', @level2name = N'IsCanceled';
 
