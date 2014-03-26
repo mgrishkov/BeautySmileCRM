@@ -75,7 +75,7 @@ namespace BeautySmileCRM.Services
 
         private static void BuidConnectionString()
         {
-            string connectionString = String.Format("Data Source={0};Initial Catalog=CRM;User ID=AppUser;Password=qwerty~123", Server);
+            string connectionString = String.Format("Data Source={0};Initial Catalog=CRM;User ID=AppUser;Password=<fj,f,2014", Server);
  
             var scsb = new SqlConnectionStringBuilder(connectionString);
  
@@ -85,14 +85,6 @@ namespace BeautySmileCRM.Services
             ecb.ProviderConnectionString = scsb.ConnectionString;
 
             ConnectionString = ecb.ConnectionString;
-
-            /*var sb = new StringBuilder();
-            sb.AppendLine("<?xml version=\"1.0\" encoding=\"utf-16\"?>");
-            sb.AppendLine("<SerializableConnectionString xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">");
-            sb.AppendFormatLine("<ConnectionString>Data Source={0};Initial Catalog=CRM;User ID=AppUser;Password=qwerty~123</ConnectionString>", Server);
-            sb.AppendLine("<ProviderName>System.Data.SqlClient</ProviderName>");
-            sb.AppendLine("</SerializableConnectionString>");
-            ConnectionString = sb.ToString();*/
         }
     }
 }

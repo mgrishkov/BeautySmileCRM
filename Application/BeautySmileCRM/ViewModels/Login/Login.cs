@@ -203,7 +203,7 @@ namespace BeautySmileCRM.ViewModels
                         }
                         else
                         {
-                            ErrorMessage = String.Format("Ошибка подключения к базе данных: на сервере {0} база данных CMS не найдена!", Server);
+                            ErrorMessage = String.Format("Ошибка подключения к базе данных: на сервере {0} база данных CRM не найдена!", Server);
                             AuthorizationStage = Enums.AuthorizationStage.Error;
                         }
                     };                    

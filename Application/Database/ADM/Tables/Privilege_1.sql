@@ -31,4 +31,3 @@ EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'Описа�
 
 GO
 EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'ИД группы привелегий', @level0type = N'SCHEMA', @level0name = N'ADM', @level1type = N'TABLE', @level1name = N'Privilege', @level2type = N'COLUMN', @level2name = N'GroupID';
-

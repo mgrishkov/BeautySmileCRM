@@ -311,7 +311,11 @@ namespace BeautySmileCRM.ViewModels
                     _dc.FinancialTransactions.Add(ft);
                     _dc.SaveChanges();
                 };
-            };
+            }
+            else
+            {
+                args.Cancel = true;
+            }
         }
         private void OnDialogCancelCommandtExecuting()
         {
@@ -333,7 +337,10 @@ namespace BeautySmileCRM.ViewModels
         protected override void ApplyCommandExecuted()
         {
             base.ApplyCommandExecuted();
-            _dc.SaveChanges();
+            if (Validate())
+            {
+                _dc.SaveChanges();
+            };
         }
 
         private void recalcToPay()

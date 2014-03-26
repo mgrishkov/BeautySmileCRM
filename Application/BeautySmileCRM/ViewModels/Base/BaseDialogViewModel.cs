@@ -172,7 +172,7 @@ namespace BeautySmileCRM.ViewModels.Base
             {
                 sb.Append(this[itm.Name]);
             };
-            Error = String.Empty;
+            Error = sb.ToString();
             return String.IsNullOrWhiteSpace(Error);
         }
         

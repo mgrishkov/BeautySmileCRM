@@ -1,6 +1,27 @@
-﻿SET DATEFORMAT ymd
+﻿
+SET DATEFORMAT ymd
 SET ARITHABORT, ANSI_PADDING, ANSI_WARNINGS, CONCAT_NULL_YIELDS_NULL, QUOTED_IDENTIFIER, ANSI_NULLS, NOCOUNT ON
 SET NUMERIC_ROUNDABORT, IMPLICIT_TRANSACTIONS, XACT_ABORT OFF
+GO
+
+MERGE INTO CONF.PrivelegeGroup t1 USING (SELECT 1 id) t2 ON (t1.ID = 1)
+WHEN MATCHED THEN UPDATE  SET Code = N'ADM', Name = N'Администрирование', Description = NULL
+WHEN NOT MATCHED THEN INSERT (ID, Code, Name, Description) VALUES (1, N'ADM', N'Администрирование', NULL);
+MERGE INTO CONF.PrivelegeGroup t1 USING (SELECT 1 id) t2 ON (t1.ID = 2)
+WHEN MATCHED THEN UPDATE  SET Code = N'CONF', Name = N'Конфигурация', Description = NULL
+WHEN NOT MATCHED THEN INSERT (ID, Code, Name, Description) VALUES (2, N'CONF', N'Конфигурация', NULL);
+MERGE INTO CONF.PrivelegeGroup t1 USING (SELECT 1 id) t2 ON (t1.ID = 3)
+WHEN MATCHED THEN UPDATE  SET Code = N'USER', Name = N'Пользователи', Description = NULL
+WHEN NOT MATCHED THEN INSERT (ID, Code, Name, Description) VALUES (3, N'USER', N'Пользователи', NULL);
+MERGE INTO CONF.PrivelegeGroup t1 USING (SELECT 1 id) t2 ON (t1.ID = 4)
+WHEN MATCHED THEN UPDATE  SET Code = N'STAFF', Name = N'Персонал', Description = NULL
+WHEN NOT MATCHED THEN INSERT (ID, Code, Name, Description) VALUES (4, N'STAFF', N'Персонал', NULL);
+MERGE INTO CONF.PrivelegeGroup t1 USING (SELECT 1 id) t2 ON (t1.ID = 5)
+WHEN MATCHED THEN UPDATE  SET Code = N'CST', Name = N'Клиент', Description = NULL
+WHEN NOT MATCHED THEN INSERT (ID, Code, Name, Description) VALUES (5, N'CST', N'Клиент', NULL);
+MERGE INTO CONF.PrivelegeGroup t1 USING (SELECT 1 id) t2 ON (t1.ID = 6)
+WHEN MATCHED THEN UPDATE  SET Code = N'FIN', Name = N'Финансовые операции', Description = NULL
+WHEN NOT MATCHED THEN INSERT (ID, Code, Name, Description) VALUES (6, N'FIN', N'Финансовые операции', NULL);
 GO
 
 MERGE INTO ADM.Privilege t1 USING (SELECT 1 id) t2 ON (t1.ID = 1)
@@ -100,6 +121,7 @@ MERGE INTO ADM.Privilege t1 USING (SELECT 1 id) t2 ON (t1.ID = 403)
 WHEN MATCHED THEN UPDATE  SET Name = N'DeleteFinancialTransaction', Description = N'Удаление финансовой операции', GroupID = 6
 WHEN NOT MATCHED THEN INSERT (ID, Name, Description, GroupID) VALUES (403, N'DeleteFinancialTransaction', N'Удаление финансовой операции', 6);
 GO
+
 
 SET IDENTITY_INSERT ADM.[User] ON
 GO
@@ -257,6 +279,7 @@ WHEN MATCHED THEN UPDATE  SET Code = N'Cumulative', Name = N'Накопител�
 WHEN NOT MATCHED THEN INSERT (ID, Code, Name, Description) VALUES (1, N'Cumulative', N'Накопительная скидка', NULL);
 GO
 
+
 SET IDENTITY_INSERT CONF.TransactionType ON
 GO
 MERGE INTO CONF.TransactionType t1 USING (SELECT 1 id) t2 ON (t1.ID = 1)
@@ -267,4 +290,3 @@ WHEN MATCHED THEN UPDATE  SET Code = N'Withdrawal', Name = N'Списание', 
 WHEN NOT MATCHED THEN INSERT (ID, Code, Name, Description, OperationSign) VALUES (2, N'Withdrawal', N'Списание', NULL, -1);
 GO
 SET IDENTITY_INSERT CONF.TransactionType OFF
-GO
