@@ -7,6 +7,8 @@
 );
 
 
+
+
 GO
 EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'Справочник состояний событий', @level0type = N'SCHEMA', @level0name = N'CONF', @level1type = N'TABLE', @level1name = N'AppointmentState';
 
@@ -25,4 +27,28 @@ EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'Назва�
 
 GO
 EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'Описание', @level0type = N'SCHEMA', @level0name = N'CONF', @level1type = N'TABLE', @level1name = N'AppointmentState', @level2type = N'COLUMN', @level2name = N'Description';
+
+
+GO
+GRANT UPDATE
+    ON OBJECT::[CONF].[AppointmentState] TO [AppUser]
+    AS [dbo];
+
+
+GO
+GRANT SELECT
+    ON OBJECT::[CONF].[AppointmentState] TO [AppUser]
+    AS [dbo];
+
+
+GO
+GRANT INSERT
+    ON OBJECT::[CONF].[AppointmentState] TO [AppUser]
+    AS [dbo];
+
+
+GO
+GRANT DELETE
+    ON OBJECT::[CONF].[AppointmentState] TO [AppUser]
+    AS [dbo];
 

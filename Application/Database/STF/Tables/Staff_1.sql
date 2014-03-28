@@ -1,8 +1,8 @@
 ﻿CREATE TABLE [STF].[Staff] (
     [ID]            INT             IDENTITY (1, 1) NOT NULL,
-    [FirstName]     NVARCHAR (255)  NOT NULL,
-    [LastName]      NVARCHAR (255)  NOT NULL,
-    [MiddleName]    NVARCHAR (255)  NULL,
+    [FirstName]     NVARCHAR (100)  NOT NULL,
+    [LastName]      NVARCHAR (100)  NOT NULL,
+    [MiddleName]    NVARCHAR (100)  NULL,
     [Photo]         IMAGE           NULL,
     [DismissalDate] DATE            NULL,
     [UserID]        INT             NULL,
@@ -10,6 +10,10 @@
     CONSTRAINT [PK#Staff] PRIMARY KEY CLUSTERED ([ID] ASC),
     CONSTRAINT [FK#Staff@UserID#User@ID] FOREIGN KEY ([UserID]) REFERENCES [ADM].[User] ([ID])
 );
+
+
+
+
 
 
 GO
@@ -56,4 +60,28 @@ EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'ИД пол
 
 GO
 EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'Должность', @level0type = N'SCHEMA', @level0name = N'STF', @level1type = N'TABLE', @level1name = N'Staff', @level2type = N'COLUMN', @level2name = N'Position';
+
+
+GO
+GRANT UPDATE
+    ON OBJECT::[STF].[Staff] TO [AppUser]
+    AS [dbo];
+
+
+GO
+GRANT SELECT
+    ON OBJECT::[STF].[Staff] TO [AppUser]
+    AS [dbo];
+
+
+GO
+GRANT INSERT
+    ON OBJECT::[STF].[Staff] TO [AppUser]
+    AS [dbo];
+
+
+GO
+GRANT DELETE
+    ON OBJECT::[STF].[Staff] TO [AppUser]
+    AS [dbo];
 

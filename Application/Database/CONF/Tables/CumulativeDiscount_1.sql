@@ -10,6 +10,8 @@
 );
 
 
+
+
 GO
 EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'Справочни нкопительных скидок', @level0type = N'SCHEMA', @level0name = N'CONF', @level1type = N'TABLE', @level1name = N'CumulativeDiscount';
 
@@ -36,4 +38,28 @@ EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'Макс. �
 
 GO
 EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'Верхняя граница потраченной за период суммы', @level0type = N'SCHEMA', @level0name = N'CONF', @level1type = N'TABLE', @level1name = N'CumulativeDiscount', @level2type = N'COLUMN', @level2name = N'PurchaseTopLimit';
+
+
+GO
+GRANT UPDATE
+    ON OBJECT::[CONF].[CumulativeDiscount] TO [AppUser]
+    AS [dbo];
+
+
+GO
+GRANT SELECT
+    ON OBJECT::[CONF].[CumulativeDiscount] TO [AppUser]
+    AS [dbo];
+
+
+GO
+GRANT INSERT
+    ON OBJECT::[CONF].[CumulativeDiscount] TO [AppUser]
+    AS [dbo];
+
+
+GO
+GRANT DELETE
+    ON OBJECT::[CONF].[CumulativeDiscount] TO [AppUser]
+    AS [dbo];
 

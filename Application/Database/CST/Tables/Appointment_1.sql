@@ -25,6 +25,8 @@
 
 
 
+
+
 GO
 CREATE NONCLUSTERED INDEX [I#Appointment@StaffID@StateID]
     ON [CST].[Appointment]([StaffID] ASC, [StateID] ASC);
@@ -139,4 +141,28 @@ EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'Дата и
 
 GO
 EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'ИД пользователя, изменившего событие', @level0type = N'SCHEMA', @level0name = N'CST', @level1type = N'TABLE', @level1name = N'Appointment', @level2type = N'COLUMN', @level2name = N'ModifiedBy';
+
+
+GO
+GRANT UPDATE
+    ON OBJECT::[CST].[Appointment] TO [AppUser]
+    AS [dbo];
+
+
+GO
+GRANT SELECT
+    ON OBJECT::[CST].[Appointment] TO [AppUser]
+    AS [dbo];
+
+
+GO
+GRANT INSERT
+    ON OBJECT::[CST].[Appointment] TO [AppUser]
+    AS [dbo];
+
+
+GO
+GRANT DELETE
+    ON OBJECT::[CST].[Appointment] TO [AppUser]
+    AS [dbo];
 

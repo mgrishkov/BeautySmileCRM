@@ -1,12 +1,16 @@
 ﻿CREATE TABLE [ADM].[User] (
     [ID]             INT            IDENTITY (1, 1) NOT NULL,
-    [Login]          NVARCHAR (256) NOT NULL,
-    [Password]       NVARCHAR (256) NOT NULL,
+    [Login]          NVARCHAR (100) NOT NULL,
+    [Password]       NVARCHAR (100) NOT NULL,
     [Email]          NVARCHAR (255) NULL,
     [ExpirationDate] DATE           NULL,
     [IsSystem]       BIT            DEFAULT ((0)) NOT NULL,
     CONSTRAINT [PK#User] PRIMARY KEY CLUSTERED ([ID] ASC)
 );
+
+
+
+
 
 
 GO
@@ -40,4 +44,28 @@ EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'Дата б
 
 GO
 EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'Признак системного пользователя', @level0type = N'SCHEMA', @level0name = N'ADM', @level1type = N'TABLE', @level1name = N'User', @level2type = N'COLUMN', @level2name = N'IsSystem';
+
+
+GO
+GRANT UPDATE
+    ON OBJECT::[ADM].[User] TO [AppUser]
+    AS [dbo];
+
+
+GO
+GRANT SELECT
+    ON OBJECT::[ADM].[User] TO [AppUser]
+    AS [dbo];
+
+
+GO
+GRANT INSERT
+    ON OBJECT::[ADM].[User] TO [AppUser]
+    AS [dbo];
+
+
+GO
+GRANT DELETE
+    ON OBJECT::[ADM].[User] TO [AppUser]
+    AS [dbo];
 

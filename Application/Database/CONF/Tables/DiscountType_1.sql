@@ -7,6 +7,8 @@
 );
 
 
+
+
 GO
 EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'Тип дисконта', @level0type = N'SCHEMA', @level0name = N'CONF', @level1type = N'TABLE', @level1name = N'DiscountType';
 
@@ -25,4 +27,28 @@ EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'Назва�
 
 GO
 EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'Описание типа дисконта', @level0type = N'SCHEMA', @level0name = N'CONF', @level1type = N'TABLE', @level1name = N'DiscountType', @level2type = N'COLUMN', @level2name = N'Description';
+
+
+GO
+GRANT UPDATE
+    ON OBJECT::[CONF].[DiscountType] TO [AppUser]
+    AS [dbo];
+
+
+GO
+GRANT SELECT
+    ON OBJECT::[CONF].[DiscountType] TO [AppUser]
+    AS [dbo];
+
+
+GO
+GRANT INSERT
+    ON OBJECT::[CONF].[DiscountType] TO [AppUser]
+    AS [dbo];
+
+
+GO
+GRANT DELETE
+    ON OBJECT::[CONF].[DiscountType] TO [AppUser]
+    AS [dbo];
 

@@ -1,3 +1,0 @@
-﻿CREATE SCHEMA [STF]
-    AUTHORIZATION [dbo];
-

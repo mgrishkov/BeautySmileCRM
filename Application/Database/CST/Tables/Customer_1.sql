@@ -1,8 +1,8 @@
 ﻿CREATE TABLE [CST].[Customer] (
     [ID]               INT             IDENTITY (1, 1) NOT NULL,
-    [FirstName]        NVARCHAR (255)  NOT NULL,
-    [LastName]         NVARCHAR (255)  NOT NULL,
-    [MiddleName]       NVARCHAR (255)  NULL,
+    [FirstName]        NVARCHAR (100)  NOT NULL,
+    [LastName]         NVARCHAR (100)  NOT NULL,
+    [MiddleName]       NVARCHAR (100)  NULL,
     [Phone]            VARCHAR (18)    NULL,
     [Email]            VARCHAR (255)   NULL,
     [Address]          NVARCHAR (4000) NULL,
@@ -26,6 +26,10 @@
     CONSTRAINT [FK#Customer@DiscountCardID#DiscountCard@ID] FOREIGN KEY ([DiscountCardID]) REFERENCES [CST].[DiscountCard] ([ID]),
     CONSTRAINT [FK#Customer@UserID#User@ID] FOREIGN KEY ([UserID]) REFERENCES [ADM].[User] ([ID])
 );
+
+
+
+
 
 
 GO
@@ -150,4 +154,28 @@ EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'Дата с
 
 GO
 EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'Дата последнего изменения', @level0type = N'SCHEMA', @level0name = N'CST', @level1type = N'TABLE', @level1name = N'Customer', @level2type = N'COLUMN', @level2name = N'ModificationTime';
+
+
+GO
+GRANT UPDATE
+    ON OBJECT::[CST].[Customer] TO [AppUser]
+    AS [dbo];
+
+
+GO
+GRANT SELECT
+    ON OBJECT::[CST].[Customer] TO [AppUser]
+    AS [dbo];
+
+
+GO
+GRANT INSERT
+    ON OBJECT::[CST].[Customer] TO [AppUser]
+    AS [dbo];
+
+
+GO
+GRANT DELETE
+    ON OBJECT::[CST].[Customer] TO [AppUser]
+    AS [dbo];
 

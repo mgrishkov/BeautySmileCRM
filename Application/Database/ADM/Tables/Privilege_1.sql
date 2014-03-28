@@ -8,6 +8,8 @@
 );
 
 
+
+
 GO
 CREATE NONCLUSTERED INDEX [IFK#Privilege@GroupID#PrivelegeGroup@ID]
     ON [ADM].[Privilege]([GroupID] ASC);
@@ -31,3 +33,27 @@ EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'Описа�
 
 GO
 EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'ИД группы привелегий', @level0type = N'SCHEMA', @level0name = N'ADM', @level1type = N'TABLE', @level1name = N'Privilege', @level2type = N'COLUMN', @level2name = N'GroupID';
+
+GO
+GRANT UPDATE
+    ON OBJECT::[ADM].[Privilege] TO [AppUser]
+    AS [dbo];
+
+
+GO
+GRANT SELECT
+    ON OBJECT::[ADM].[Privilege] TO [AppUser]
+    AS [dbo];
+
+
+GO
+GRANT INSERT
+    ON OBJECT::[ADM].[Privilege] TO [AppUser]
+    AS [dbo];
+
+
+GO
+GRANT DELETE
+    ON OBJECT::[ADM].[Privilege] TO [AppUser]
+    AS [dbo];
+

@@ -1,3 +1,5 @@
-﻿GRANT CONNECT TO [AppUser]
+﻿
+GO
+GRANT CONNECT TO [AppUser]
     AS [dbo];
 

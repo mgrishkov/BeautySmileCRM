@@ -21,6 +21,8 @@
 
 
 
+
+
 GO
 CREATE NONCLUSTERED INDEX [IFK#FinancialTransaction@CustomerID#Customer@ID]
     ON [CST].[FinancialTransaction]([CustomerID] ASC);
@@ -126,4 +128,28 @@ EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'ИД пол
 
 GO
 EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'Признак отмены', @level0type = N'SCHEMA', @level0name = N'CST', @level1type = N'TABLE', @level1name = N'FinancialTransaction', @level2type = N'COLUMN', @level2name = N'IsCanceled';
+
+
+GO
+GRANT UPDATE
+    ON OBJECT::[CST].[FinancialTransaction] TO [AppUser]
+    AS [dbo];
+
+
+GO
+GRANT SELECT
+    ON OBJECT::[CST].[FinancialTransaction] TO [AppUser]
+    AS [dbo];
+
+
+GO
+GRANT INSERT
+    ON OBJECT::[CST].[FinancialTransaction] TO [AppUser]
+    AS [dbo];
+
+
+GO
+GRANT DELETE
+    ON OBJECT::[CST].[FinancialTransaction] TO [AppUser]
+    AS [dbo];
 

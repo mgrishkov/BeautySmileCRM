@@ -1,3 +1,0 @@
-﻿CREATE LOGIN [AppUser]
-    WITH PASSWORD = N'!te9gtkbhifbR:ZwvusuxvsamsFT7_&#$!~<v3p`c{{nzper', SID = 0x4A98E7F106481C4C9C6EFDDA695BA842, DEFAULT_LANGUAGE = [us_english], CHECK_POLICY = OFF;
-
