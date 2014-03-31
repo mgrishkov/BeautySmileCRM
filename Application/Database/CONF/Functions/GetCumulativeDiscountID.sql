@@ -6,7 +6,16 @@ begin
         as (select cd.ID,
                    cd.PurchaseTopLimit, 
                    row_number() over (order by cd.PurchaseTopLimit) RowNumber
-              from CONF.CumulativeDiscount cd
+              from (select ID,
+                           PurchaseTopLimit
+                      from CONF.CumulativeDiscount
+                    union all
+                    select top 1
+                           ID,
+                           99999999999999
+                      from CONF.CumulativeDiscount
+                     where PurchaseTopLimit = (select max(PurchaseTopLimit)
+                                                 from CONF.CumulativeDiscount)) cd
              where 1 = 1),
          discountQuant 
         as (select d1.ID, 

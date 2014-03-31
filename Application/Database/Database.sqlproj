@@ -100,7 +100,7 @@
     <Build Include="Security\AppUserLogin.sql" />
     <Build Include="Security\RoleMembershipsReader.sql" />
     <Build Include="Security\RoleMembershipsWriter.sql" />
-    <Build Include="CONF\Functions\GetCumulativeDiscountID_1.sql" />
+    <Build Include="CONF\Functions\GetCumulativeDiscountID.sql" />
     <Build Include="CST\Stored Procedures\CreateFinancialTransaction_1.sql" />
     <Build Include="APP\Stored Procedures\GetCustomerDashboardData_1.sql" />
     <Build Include="CST\Stored Procedures\DeleteFinancialTransaction_1.sql" />
