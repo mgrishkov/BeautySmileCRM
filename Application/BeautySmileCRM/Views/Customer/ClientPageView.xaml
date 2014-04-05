@@ -255,7 +255,7 @@
                         <dxe:ComboBoxEdit.EditValue>
                             <Binding Path="DiscountCardNumber"
                                     Mode="TwoWay"
-                                    UpdateSourceTrigger="Default"
+                                    UpdateSourceTrigger="PropertyChanged"
                                     ValidatesOnDataErrors="True"
                                     ValidatesOnExceptions="True"
                                     ValidatesOnNotifyDataErrors="True"/>
@@ -266,29 +266,47 @@
                                Text="Скидка" 
                                Style="{StaticResource GroupItem}"
                                Visibility="{Binding DiscountCardEnabled, Converter={converters:BoolToVisibilityConverter}}"/>
-                    <dxe:ComboBoxEdit Grid.Column="2" Grid.Row="8"
-                                      ValueMember="ID" DisplayMember="Name"
-                                      ItemsSource="{Binding CumulativeDiscounts}"
-                                      Visibility="{Binding DiscountCardEnabled, Converter={converters:BoolToVisibilityConverter}}"
-                                      IsEnabled="{Binding AllowEditDiscountCard}"
-                                      TabIndex="7">
-                        <dxe:ComboBoxEdit.EditValue>
-                            <Binding Path="NamedDiscount"
-                                Mode="TwoWay"
-                                UpdateSourceTrigger="Default"
-                                ValidatesOnDataErrors="True"
-                                ValidatesOnExceptions="True"
-                                ValidatesOnNotifyDataErrors="True"/>
-                        </dxe:ComboBoxEdit.EditValue>
-                    </dxe:ComboBoxEdit>
+                    <Grid Grid.Column="2" Grid.Row="8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="5" />
+                            <ColumnDefinition Width="65" />
+                        </Grid.ColumnDefinitions>
 
+                        <dxe:ComboBoxEdit Grid.Column="0"
+                                          ValueMember="ID" DisplayMember="Name"
+                                          ItemsSource="{Binding CumulativeDiscounts}"
+                                          Visibility="{Binding DiscountCardEnabled, Converter={converters:BoolToVisibilityConverter}}"
+                                          IsEnabled="{Binding AllowEditDiscountCard}"
+                                          TabIndex="7">
+                            <dxe:ComboBoxEdit.EditValue>
+                                <Binding Path="NamedDiscount"
+                                    Mode="TwoWay"
+                                    UpdateSourceTrigger="PropertyChanged"
+                                    ValidatesOnDataErrors="True"
+                                    ValidatesOnExceptions="True"
+                                    ValidatesOnNotifyDataErrors="True"/>
+                            </dxe:ComboBoxEdit.EditValue>
+                            <dxe:ComboBoxEdit.Buttons>
+                                <dxe:ButtonInfo GlyphKind="Refresh" ToolTip="Пересчитать скидку..." 
+                                                IsEnabled="{Binding FixedDiscount, Converter={converters:NotBoolConverter}}"
+                                                Command="{Binding OnRecalculateDiscountCommand}"/>
+                            </dxe:ComboBoxEdit.Buttons>
+                        </dxe:ComboBoxEdit>
+                        <dxe:CheckEdit Grid.Column="2" Content="Фикс." 
+                                       ToolTip="Фиксированная скидка не будет пересчитвываться в дальнейшем"
+                                       EditValue="{Binding FixedDiscount}"
+                                       Visibility="{Binding DiscountCardEnabled, Converter={converters:BoolToVisibilityConverter}}"/>
+                    </Grid>
+                    
                     <TextBlock Grid.Column="0" Grid.Row="9"
                                Text="Сумма платежей" 
                                Style="{StaticResource GroupItem}"
                                Visibility="{Binding DiscountCardEnabled, Converter={converters:BoolToVisibilityConverter}}"/>
                     <dxe:SpinEdit Grid.Column="2" Grid.Row="9"
                                   EditValue="{Binding TotalPurchaseValue, Mode=OneWay}"
-                                  IsReadOnly="True" DisplayFormatString="C" Mask="C" MaskType="Numeric"/>
+                                  IsReadOnly="True" DisplayFormatString="C" Mask="C" MaskType="Numeric"
+                                  Visibility="{Binding DiscountCardEnabled, Converter={converters:BoolToVisibilityConverter}}"/>
                     
                     <TextBlock Grid.Column="0" Grid.Row="10"
                                Text="Лимиты скидки" 

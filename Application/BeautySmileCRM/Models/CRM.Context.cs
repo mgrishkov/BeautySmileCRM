@@ -124,5 +124,23 @@ namespace BeautySmileCRM.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateFinancialTransaction", idParameter, userIDParameter, transactionTypeIDParameter, customerIDParameter, appointmentIDParameter, amountParameter, commentParameter);
         }
+    
+        public virtual ObjectResult<DiscountCard> RecalculateDiscount(Nullable<int> discountCardID)
+        {
+            var discountCardIDParameter = discountCardID.HasValue ?
+                new ObjectParameter("discountCardID", discountCardID) :
+                new ObjectParameter("discountCardID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<DiscountCard>("RecalculateDiscount", discountCardIDParameter);
+        }
+    
+        public virtual ObjectResult<DiscountCard> RecalculateDiscount(Nullable<int> discountCardID, MergeOption mergeOption)
+        {
+            var discountCardIDParameter = discountCardID.HasValue ?
+                new ObjectParameter("discountCardID", discountCardID) :
+                new ObjectParameter("discountCardID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<DiscountCard>("RecalculateDiscount", mergeOption, discountCardIDParameter);
+        }
     }
 }

@@ -6,9 +6,12 @@
     [DiscountTypeID]     INT             DEFAULT ((1)) NOT NULL,
     [MinDiscount]        DECIMAL (13, 2) DEFAULT ((0)) NOT NULL,
     [MaxDiscount]        DECIMAL (13, 2) DEFAULT ((9999999)) NOT NULL,
+    [FixedDiscount]      BIT             DEFAULT ((0)) NOT NULL,
     CONSTRAINT [PK#DiscountCard] PRIMARY KEY CLUSTERED ([ID] ASC),
     CONSTRAINT [FK#DiscountCard@DiscountTypeID#DiscountTYpe@ID] FOREIGN KEY ([DiscountTypeID]) REFERENCES [CONF].[DiscountType] ([ID])
 );
+
+
 
 
 

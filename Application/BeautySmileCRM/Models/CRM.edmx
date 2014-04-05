@@ -140,6 +140,7 @@
           <Property Name="DiscountTypeID" Type="int" Nullable="false" />
           <Property Name="MinDiscount" Type="decimal" Precision="13" Scale="2" Nullable="false" />
           <Property Name="MaxDiscount" Type="decimal" Precision="13" Scale="2" Nullable="false" />
+          <Property Name="FixedDiscount" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="FinancialTransaction">
           <Key>
@@ -162,9 +163,9 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="FirstName" Type="nvarchar" MaxLength="255" Nullable="false" />
-          <Property Name="LastName" Type="nvarchar" MaxLength="255" Nullable="false" />
-          <Property Name="MiddleName" Type="nvarchar" MaxLength="255" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="MiddleName" Type="nvarchar" MaxLength="100" />
           <Property Name="Photo" Type="image" />
           <Property Name="DismissalDate" Type="date" />
           <Property Name="UserID" Type="int" />
@@ -192,9 +193,9 @@ warning 6002: The table/view 'CRM.CST.AppointmentView' does not have a primary k
           </Key>
           <Property Name="AppointmentID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="CustomerID" Type="int" Nullable="false" />
-          <Property Name="CustomerFirstName" Type="nvarchar" MaxLength="255" Nullable="false" />
-          <Property Name="CustomerLastName" Type="nvarchar" MaxLength="255" Nullable="false" />
-          <Property Name="CustomerMiddleName" Type="nvarchar" MaxLength="255" />
+          <Property Name="CustomerFirstName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="CustomerLastName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="CustomerMiddleName" Type="nvarchar" MaxLength="100" />
           <Property Name="DiscountCardCode" Type="varchar" MaxLength="50" />
           <Property Name="DiscountCardPercent" Type="decimal" Precision="4" Scale="2" />
           <Property Name="DiscountCardTotalPurchaseValue" Type="decimal" Precision="13" Scale="2" />
@@ -230,9 +231,9 @@ warning 6002: The table/view 'CRM.CST.CustomerView' does not have a primary key 
             
           </Key>
           <Property Name="CustomerID" Type="int" Nullable="false" />
-          <Property Name="FirstName" Type="nvarchar" MaxLength="255" Nullable="false" />
-          <Property Name="LastName" Type="nvarchar" MaxLength="255" Nullable="false" />
-          <Property Name="MiddleName" Type="nvarchar" MaxLength="255" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="MiddleName" Type="nvarchar" MaxLength="100" />
           <Property Name="Gender" Type="int" Nullable="false" />
           <Property Name="Country" Type="nvarchar" MaxLength="4000" />
           <Property Name="City" Type="nvarchar" MaxLength="4000" />
@@ -281,9 +282,9 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
           </Key>
           <Property Name="ID" Type="int" Nullable="false" />
           <Property Name="CustomerID" Type="int" Nullable="false" />
-          <Property Name="CustomerFirstName" Type="nvarchar" MaxLength="255" Nullable="false" />
-          <Property Name="CustomerLastName" Type="nvarchar" MaxLength="255" Nullable="false" />
-          <Property Name="CustomerMiddleName" Type="nvarchar" MaxLength="255" />
+          <Property Name="CustomerFirstName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="CustomerLastName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="CustomerMiddleName" Type="nvarchar" MaxLength="100" />
           <Property Name="DiscountCardCode" Type="varchar" MaxLength="50" />
           <Property Name="DiscountCardPercent" Type="decimal" Precision="4" Scale="2" />
           <Property Name="DiscountCardTotalPurchaseValue" Type="decimal" Precision="13" Scale="2" />
@@ -526,6 +527,9 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
         </Function>
         <Function Name="DeleteFinancialTransaction" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="CST">
           <Parameter Name="id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="RecalculateDiscount" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="CST">
+          <Parameter Name="discountCardID" Type="int" Mode="In" />
         </Function>
         <Function Name="UpdateFinancialTransaction" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="CST">
           <Parameter Name="id" Type="int" Mode="In" />
@@ -815,6 +819,9 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
             <Parameter Name="comment" Mode="In" Type="String" />
           </FunctionImport>
           <EntitySet Name="FinancialTransactionView" EntityType="CRMModel.FinancialTransactionView" />
+          <FunctionImport Name="RecalculateDiscount" EntitySet="DiscountCards" ReturnType="Collection(CRMModel.DiscountCard)">
+          <Parameter Name="discountCardID" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="Privilege">
           <Key>
@@ -968,6 +975,7 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
           <NavigationProperty Name="Customers" Relationship="CRMModel.FK_Customer_DiscountCardID_DiscountCard_ID" FromRole="DiscountCard" ToRole="Customer" />
           <Property Name="MinDiscount" Type="Decimal" Nullable="false" Precision="13" Scale="2" />
           <Property Name="MaxDiscount" Type="Decimal" Nullable="false" Precision="13" Scale="2" />
+          <Property Name="FixedDiscount" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="FinancialTransaction">
           <Key>
@@ -995,9 +1003,9 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="LastName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="MiddleName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MiddleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Photo" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="DismissalDate" Type="DateTime" Precision="0" />
           <Property Name="UserID" Type="Int32" />
@@ -1211,9 +1219,9 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
           <Property Name="ModificationTime" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int32" />
           <Property Name="CreationTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="CustomerFirstName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="CustomerLastName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="CustomerMiddleName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerFirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerLastName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerMiddleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="DiscountCardCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="DiscountCardPercent" Type="Decimal" Precision="4" Scale="2" />
           <Property Name="DiscountCardTotalPurchaseValue" Type="Decimal" Precision="13" Scale="2" />
@@ -1225,9 +1233,9 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
             <PropertyRef Name="CustomerID" />
           </Key>
           <Property Name="CustomerID" Type="Int32" Nullable="false" />
-          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="LastName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="MiddleName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MiddleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Gender" Type="Int32" Nullable="false" />
           <Property Name="Country" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
           <Property Name="City" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
@@ -1269,9 +1277,9 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="CustomerID" Type="Int32" Nullable="false" />
-          <Property Name="CustomerFirstName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="CustomerLastName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="CustomerMiddleName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerFirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerLastName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerMiddleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="DiscountCardCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="DiscountCardPercent" Type="Decimal" Precision="4" Scale="2" />
           <Property Name="DiscountCardTotalPurchaseValue" Type="Decimal" Precision="13" Scale="2" />
@@ -1429,6 +1437,7 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
           <EntitySetMapping Name="DiscountCards">
             <EntityTypeMapping TypeName="CRMModel.DiscountCard">
               <MappingFragment StoreEntitySet="DiscountCard">
+                <ScalarProperty Name="FixedDiscount" ColumnName="FixedDiscount" />
                 <ScalarProperty Name="MaxDiscount" ColumnName="MaxDiscount" />
                 <ScalarProperty Name="MinDiscount" ColumnName="MinDiscount" />
                 <ScalarProperty Name="DiscountTypeID" ColumnName="DiscountTypeID" />
@@ -1622,6 +1631,7 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="RecalculateDiscount" FunctionName="CRMModel.Store.RecalculateDiscount" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

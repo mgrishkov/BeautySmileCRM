@@ -1,4 +1,5 @@
-﻿CREATE PROCEDURE CST.DeleteFinancialTransaction
+﻿
+CREATE PROCEDURE CST.DeleteFinancialTransaction
     @id int
 AS 
 begin
@@ -28,10 +29,12 @@ begin
         begin
             declare @discountCardID int,
                     @discountType int,
-                    @totalPurchaseValue decimal(13,2);
+                    @totalPurchaseValue decimal(13,2),
+                    @isFixedDiscount bit;
 
             select @discountCardID = dc.ID,
-                   @discountType = dc.DiscountTypeID
+                   @discountType = dc.DiscountTypeID,
+                   @isFixedDiscount = dc.FixedDiscount
               from CST.DiscountCard dc 
                    inner join CST.Customer c 
                 on dc.ID = c.DiscountCardID
@@ -50,7 +53,8 @@ begin
                set TotalPurchaseValue = isnull(@totalPurchaseValue, 0)
              where ID = @discountCardID;
 
-            if(@discountType = 1 /* накопительная скидка */)
+            if(@isFixedDiscount = 0 
+               and @discountType = 1 /* накопительная скидка */)
             begin
                 declare @cumulativeDiscountID int;
                 set @cumulativeDiscountID = CONF.GetCumulativeDiscountID(@discountCardID);

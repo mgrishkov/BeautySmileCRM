@@ -101,6 +101,7 @@ namespace BeautySmileCRM.ViewModels
         public ICommand DeleteCommand { get; private set; }
         public ICommand ExportCommand { get; private set; }
         public ICommand DeleteCustomerCommand { get; private set; }
+        public ICommand OnRecalculateDiscountCommand { get; private set; }
 
         public bool AllowSave
         {
@@ -559,6 +560,20 @@ namespace BeautySmileCRM.ViewModels
                 }
             }
         }
+        [BindGroup("DiscountCard")]
+        public bool FixedDiscount
+        {
+            get { return _discountCard != null ? _discountCard.FixedDiscount : false; }
+            set
+            {
+                if (_discountCard != null && _discountCard.FixedDiscount != value)
+                {
+                    _discountCard.FixedDiscount = value;
+                    RaisePropertyChanged("FixedDiscount");
+                    AllowSave = true;
+                }
+            }
+        }
         [Validate(), BindGroup("DiscountCard")]
         public decimal? MinDiscount
         {
@@ -738,6 +753,9 @@ namespace BeautySmileCRM.ViewModels
             DeleteCustomerCommand = new DelegateCommand(OnDeleteCustomerCommandExecuted,
                 () => { return _customer != null && _customer.ID > 0 && CurrentUser.HasPrivilege(Privilege.DeleteCustomer); });
 
+            OnRecalculateDiscountCommand = new DelegateCommand(OnRecalculateDiscountCommandExecuted,
+                () => { return DiscountCardEnabled && CurrentUser.HasPrivilege(Privilege.LinkDiscountCard); });
+
             this.PropertyChanged += ClientPage_PropertyChanged;
         }
 
@@ -783,6 +801,7 @@ namespace BeautySmileCRM.ViewModels
                 };
                 _customer.DiscountCard = _discountCard;
                 DiscountCardEnabled = true;
+                _dc.SaveChanges();
                 RaisePropertiesChanged(BindGroupAttribute.GetPropertiesOfGroup(this.GetType(), "DiscountCard").Select(x => x.Name).ToArray());
             }
             else
@@ -795,6 +814,7 @@ namespace BeautySmileCRM.ViewModels
             DiscountCardEnabled = false;
             _discountCard = null;
             RaisePropertiesChanged(BindGroupAttribute.GetPropertiesOfGroup(this.GetType(), "DiscountCard").Select(x => x.Name).ToArray());
+            _dc.SaveChanges();
         }
 
         private void OnAddCommandExecuted()
@@ -889,6 +909,15 @@ namespace BeautySmileCRM.ViewModels
                     NavigationService.GoBack();
                 };
             }
+        }
+
+        private void OnRecalculateDiscountCommandExecuted()
+        {
+            if(MessageService.Show(String.Format("Вы уверены, что хотите пересчитать скидку для дисконтной карты №{0}?", _discountCard.Code), "Подтвердите действие", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                var recalcResult = _dc.RecalculateDiscount(_discountCard.ID);
+                refreshData(_customer.ID);
+            };
         }
 
         private void refreshData(int customerID)

@@ -1,4 +1,4 @@
-use CRM
+﻿use CRM
 go
 
 PRINT N'Altering CONF.GetCumulativeDiscountID...';

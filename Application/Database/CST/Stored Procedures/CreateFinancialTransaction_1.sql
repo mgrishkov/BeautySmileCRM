@@ -1,4 +1,5 @@
-﻿CREATE PROCEDURE CST.CreateFinancialTransaction
+﻿
+CREATE PROCEDURE CST.CreateFinancialTransaction
     @userID int,
     @transactionTypeID int,
     @customerID int,
@@ -12,7 +13,8 @@ begin
             @discountType int,
             @totalPurchaseValue decimal(13, 2),
             @now datetime,
-            @message nvarchar(4000);
+            @message nvarchar(4000),
+            @isFixedDiscount bit;
     set @now = getdate();
     begin transaction;
     begin try
@@ -32,7 +34,8 @@ begin
                        where c.ID = @customerID))
         begin
             select @discountCardID = dc.ID,
-                   @discountType = dc.DiscountTypeID
+                   @discountType = dc.DiscountTypeID,
+                   @isFixedDiscount = dc.FixedDiscount
               from CST.DiscountCard dc 
                    inner join CST.Customer c 
                 on dc.ID = c.DiscountCardID
@@ -51,7 +54,8 @@ begin
                    set TotalPurchaseValue = isnull(@totalPurchaseValue, 0)
                  where ID = @discountCardID;
 
-            if(@discountType = 1 /* накопительная скидка */)
+            if(@isFixedDiscount = 0 
+               and @discountType = 1 /* накопительная скидка */)
             begin
                 declare @cumulativeDiscountID int;
                 set @cumulativeDiscountID = CONF.GetCumulativeDiscountID(@discountCardID);
