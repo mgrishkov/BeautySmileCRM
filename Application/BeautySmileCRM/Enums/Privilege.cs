@@ -20,6 +20,14 @@ namespace BeautySmileCRM.Enums
 		ModifyCumulativeDiscount                                                    = 32,
 		[Description("Удаление накопительных скидок")]
 		DeleteCumulativeDiscount                                                    = 33,
+		[Description("Создание услуги")]
+		CreateService                                                               = 34,
+		[Description("Изменение услуги")]
+		ModifySerice                                                                = 35,
+		[Description("Удаление услуги")]
+		DeleteService                                                               = 36,
+		[Description("Просмотр правочника услуги")]
+		ViewService                                                                 = 37,
 		[Description("Просмотр данных пользователей системы")]
 		ViewUser                                                                    = 100,
 		[Description("Создание новых пользователей системы")]

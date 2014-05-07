@@ -22,6 +22,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/TextBlockResourceDictionary.xaml" />
+                <ResourceDictionary Source="/Resources/ImageResourceDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 
@@ -39,6 +40,16 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+            <Style x:Key="BoldLink" TargetType="dxb:BarButtonItem">
+                <Setter Property="ContentTemplate">
+                    <Setter.Value>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" ToolTip="{Binding Tooltip}" FontSize="14" FontWeight="Medium" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       Background="Transparent"/>
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
             <Style TargetType="dxb:BarSubItem">
                 <Setter Property="ContentTemplate">
                     <Setter.Value>
@@ -50,12 +61,19 @@
             </Style>
         </dxb:BarManager.Resources>
         <dxb:BarManager.Categories>
-            <dxb:BarManagerCategory Name="Customer" />
+            <dxb:BarManagerCategory Name="Links" />
             <dxb:BarManagerCategory Name="Summary" />
+            <dxb:BarManagerCategory Name="Reports" />
             <dxb:BarManagerCategory Name="Settings" />
         </dxb:BarManager.Categories>
         <dxb:BarManager.Items>
-            <dxb:BarButtonItem Name="addCustomerButtonItem" CategoryName="Customer" 
+            <dxb:BarButtonItem Name="homeButtonItem" CategoryName="Links" 
+                               Content="{Binding NavigateToHome}"
+                               Command="{Binding OnNavigateToHomeCommand}"
+                               Style="{StaticResource BoldLink}"
+                               IsVisible="{Binding ShowHomeLink}"/>
+
+            <dxb:BarButtonItem Name="addCustomerButtonItem" CategoryName="Links" 
                                Content="{Binding CreateNewCustomer}"
                                Command="{Binding OnCreateNewCustomerCommand}"/>
 
@@ -71,6 +89,10 @@
                                Content="{Binding NavigateToFinancialTransactions}"
                                Command="{Binding OnNavigateToFinancialTransactionsCommand}"/>
 
+            <dxb:BarButtonItem Name="printQuestionnaireButtonItem" CategoryName="Reports"
+                               Content="{Binding NavigateToQuestionnaire}"
+                               Command="{Binding OnNavigateToQuestionnaireCommand}"/>
+            
             <dxb:BarButtonItem Name="showAdministrationButtonItem" CategoryName="Settings" 
                                Content="{Binding NavigateToAdministration}"
                                Command="{Binding OnNavigateToAdministrationCommand}"/>
@@ -83,7 +105,12 @@
                                Content="{Binding NavigateToDiscounts}"
                                Command="{Binding OnNavigateToDiscountsCommand}"/>
 
-            <dxb:BarSubItem Name="summarySubItem" CategoryName="Summary" Content="Сводные данные">
+            <dxb:BarButtonItem Name="showServiceButtonItem" CategoryName="Settings"
+                               Content="{Binding NavigateToServices}"
+                               Command="{Binding OnNavigateToServicesCommand}"/>
+            
+            
+            <dxb:BarSubItem Name="summarySubItem" CategoryName="Summary" Content="СВОДНЫЕ ДАННЫЕ">
                 <dxb:BarSubItem.ItemLinks>
                     <dxb:BarButtonItemLink BarItemName="showCustomersButtonItem"/>
                     <dxb:BarButtonItemLink BarItemName="showAppointmentsButtonItem"/>
@@ -91,7 +118,13 @@
                 </dxb:BarSubItem.ItemLinks>
             </dxb:BarSubItem>
 
-            <dxb:BarSubItem Name="settingsSubItem" CategoryName="Settings" Content="Настройки">
+            <dxb:BarSubItem Name="reportSubItem" CategoryName="Reports" Content="ПЕЧАТНЫЕ ФОРМЫ">
+                <dxb:BarSubItem.ItemLinks>
+                    <dxb:BarButtonItemLink BarItemName="printQuestionnaireButtonItem"/>
+                </dxb:BarSubItem.ItemLinks>
+            </dxb:BarSubItem>
+
+            <dxb:BarSubItem Name="settingsSubItem" CategoryName="Settings" Content="НАСТРОЙКИ">
                 <dxb:BarSubItem.ItemLinks>
                     <dxb:BarButtonItemLink BarItemName="showAdministrationButtonItem"/>
                     <dxb:BarButtonItemLink BarItemName="showPositionsButtonItem"/>
@@ -105,8 +138,10 @@
                     <dxb:BarDockInfo ContainerType="None" Row="0" ContainerName="quickLinksContainer"/>
                 </dxb:Bar.DockInfo>
                 <dxb:Bar.ItemLinks>
+                    <dxb:BarButtonItemLink BarItemName="homeButtonItem"/>
                     <dxb:BarButtonItemLink BarItemName="addCustomerButtonItem"/>
                     <dxb:BarSubItemLink BarItemName="summarySubItem"/>
+                    <dxb:BarSubItemLink BarItemName="reportSubItem"/>
                     <dxb:BarSubItemLink BarItemName="settingsSubItem"/>
                 </dxb:Bar.ItemLinks>
 
@@ -121,17 +156,18 @@
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0" Style="{StaticResource Title}"
-                   Text="Beauty Smile CMS"/>
-            <TextBlock Grid.Column="1" Style="{StaticResource SubTitle}"
+            <TextBlock Grid.Column="1" Style="{StaticResource Title}"
+                   Text="Beauty Smile CRM"/>
+            <TextBlock Grid.Column="2" Style="{StaticResource SubTitle}"
                    Text="{Binding Path='SubTitle',  ElementName='root'}"/>
 
             <dxb:BarContainerControl x:Name="quickLinksContainer"
-                                     Grid.Column="2" 
+                                     Grid.Column="3" 
                                      VerticalAlignment="Bottom" Height="30" Margin="0,0,10,0"
                                      Visibility="{Binding Path='ShowNavigationPanel', ElementName='root', Converter={converters:BoolToVisibilityConverter}}"/>
 

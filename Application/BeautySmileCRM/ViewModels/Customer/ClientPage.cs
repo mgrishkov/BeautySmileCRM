@@ -96,7 +96,8 @@ namespace BeautySmileCRM.ViewModels
 
         public ICommand LinkDiscountCardCommand { get; private set; }
         public ICommand UnlinkDiscountCardCommand { get; private set; }
-        public ICommand AddCommand { get; private set; }
+        public ICommand AddVisitCommand { get; private set; }
+        public ICommand AddPaymentCommand { get; private set; }
         public ICommand EditCommand { get; private set; }
         public ICommand DeleteCommand { get; private set; }
         public ICommand ExportCommand { get; private set; }
@@ -612,12 +613,18 @@ namespace BeautySmileCRM.ViewModels
         protected IDialogService FinancialTransactionDialogService { get { return GetService<IDialogService>("FinancialTransactionEditDialog"); } }
         protected IMessageBoxService MessageService { get { return GetService<IMessageBoxService>(); } }
 
-        [BindGroup("Commands")]
-        public string AddCaption
+        public string AddVisitCaption
         {
             get 
             {
-                return SelectedTab == null ? String.Empty : SelectedTab.Name == "visitHistoryTab" ? "Зарегистрировать визит..." : "Зарегистрировать оплату...";
+                return "Зарегистрировать визит...";
+            }
+        }
+        public string AddPaymentCaption
+        {
+            get
+            {
+                return "Зарегистрировать платеж...";
             }
         }
         [BindGroup("Commands")]
@@ -644,7 +651,7 @@ namespace BeautySmileCRM.ViewModels
                 return SelectedTab == null ? String.Empty : SelectedTab.Name == "visitHistoryTab" ? "Экспортировать в MS Excel данные по визитам" : "Экспортировать в MS Excel данные по финансовым операциям...";
             }
         }
-
+        [BindGroup("Commands")]
         public bool AllowEditRow
         {
             get
@@ -668,29 +675,25 @@ namespace BeautySmileCRM.ViewModels
                 return false;
             }
         }
-        public bool AllowAddRow
+        [BindGroup("Commands")]
+        public bool AllowAddVisit
         {
             get
             {
-                if (SelectedTab == null)
-                    return false;
-
-                switch (SelectedTab.Name)
-                {
-                    case "visitHistoryTab":
-                        return _customer != null && CurrentUser.HasPrivilege(Privilege.CreateAppointment);
-
-                    case "financialTransactionsTab":
-                        if (_customer.Appointments == null)
-                            return false;
-                        return _customer.Appointments.Count > 0 
-                            && SelectedAppointment.StateID != (int)AppointmentState.Canceled && SelectedAppointment.StateID != (int)AppointmentState.Completed 
-                            && CurrentUser.HasPrivilege(Privilege.CreateFinancialTransaction);
-                };
-
-                return false;
+                return _customer != null && CurrentUser.HasPrivilege(Privilege.CreateAppointment);
             }
         }
+        [BindGroup("Commands")]
+        public bool AllowAddPayment
+        {
+            get
+            {
+                return _customer != null && CurrentUser.HasPrivilege(Privilege.CreateFinancialTransaction)
+                    && SelectedAppointment != null
+                    && (SelectedAppointment.StateID != (int)AppointmentState.Completed || SelectedAppointment.StateID != (int)AppointmentState.Canceled);
+            }
+        }
+        [BindGroup("Commands")]
         public bool AllowDeleteRow
         {
             get
@@ -712,6 +715,28 @@ namespace BeautySmileCRM.ViewModels
                 };
 
                 return false;
+            }
+        }
+        [BindGroup("Commands")]
+        public bool ShowAddVisit
+        {
+            get
+            {
+                if (SelectedTab == null)
+                    return false;
+
+                return SelectedTab.Name == "visitHistoryTab";
+            }
+        }
+        [BindGroup("Commands")]
+        public bool ShowAddPayment
+        {
+            get
+            {
+                if (SelectedTab == null)
+                    return false;
+
+                return SelectedTab.Name == "visitHistoryTab";
             }
         }
 
@@ -741,8 +766,12 @@ namespace BeautySmileCRM.ViewModels
             UnlinkDiscountCardCommand = new DelegateCommand(OnUnlinkDiscountCardCommandExecuted,
                 () => { return DiscountCardEnabled && CurrentUser.HasPrivilege(Privilege.UnlinkDiscountCard); });
 
-            AddCommand = new DelegateCommand(OnAddCommandExecuted,
-                () => { return AllowAddRow; });
+            AddVisitCommand = new DelegateCommand(OnAddCommandExecuted,
+                () => { return AllowAddVisit; });
+
+            AddPaymentCommand = new DelegateCommand(OnAddCommandExecuted,
+                () => { return AllowAddPayment; });
+
             EditCommand = new DelegateCommand(OnEditCommandExecuted,
                 () => { return AllowEditRow; });
             DeleteCommand = new DelegateCommand(OnDeleteCommandExecuted,

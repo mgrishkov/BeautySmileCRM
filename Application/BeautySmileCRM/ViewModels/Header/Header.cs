@@ -16,6 +16,7 @@ namespace BeautySmileCRM.ViewModels
 {
     public class Header : BaseNavigationViewModel
     {
+        public ICommand OnNavigateToHomeCommand { get; private set; }
         public ICommand OnCreateNewCustomerCommand { get; private set; }
         public ICommand OnNavigateToCustomersCommand { get; private set; }
         public ICommand OnNavigateToAppointmentsCommand { get; private set; }
@@ -23,14 +24,27 @@ namespace BeautySmileCRM.ViewModels
         public ICommand OnNavigateToAdministrationCommand { get; private set; }
         public ICommand OnNavigateToStaffCommand { get; private set; }
         public ICommand OnNavigateToDiscountsCommand { get; private set; }
+        public ICommand OnNavigateToQuestionnaireCommand { get; private set; }
+        public ICommand OnNavigateToServicesCommand { get; private set; }
 
+        public dynamic NavigateToHome
+        {
+            get
+            {
+                return new
+                {
+                    Name = "ДОМОЙ",
+                    Tooltip = "Перейти на главную форму..."
+                };
+            }
+        }
         public dynamic CreateNewCustomer
         {
             get
             {
                 return new 
                 {
-                    Name = "Добавить клиента",
+                    Name = "НОВЫЙ КЛИЕНТ",
                     Tooltip = OnCreateNewCustomerCommand.CanExecute(null) ? "Перейти на форму создания новго клиента..." : ApplicationService.SufficientAuthority
                 };
             }
@@ -102,8 +116,42 @@ namespace BeautySmileCRM.ViewModels
             }
         }
 
+        public dynamic NavigateToQuestionnaire
+        {
+            get
+            {
+                return new
+                {
+                    Name = "Анкета клиента",
+                    Tooltip = "Распечатать анкету клиента..."
+                };
+            }
+        }
+        public dynamic NavigateToServices
+        {
+            get
+            {
+                return new
+                {
+                    Name = "Справочник услуг и цен",
+                    Tooltip = OnNavigateToServicesCommand.CanExecute(null) ? "Открыть форму справочника услуг и цен..." : ApplicationService.SufficientAuthority
+                };
+            }
+        }
+
+        public bool ShowHomeLink
+        {
+            get
+            {
+                return OnNavigateToHomeCommand.CanExecute(null);
+            }
+        }
+
         public Header()
         {
+            OnNavigateToHomeCommand = new DelegateCommand(() => NavigationService.Navigate("DashboardView", null, this),
+                () => { return !(NavigationService.Current is BeautySmileCRM.Views.DashboardView); });
+
             OnCreateNewCustomerCommand = new DelegateCommand(() => NavigationService.Navigate("ClientPageView", null, this),
                 () => { return CurrentUser != null && CurrentUser.HasPrivilege(Privilege.CreateCustomer); });
 
@@ -124,6 +172,15 @@ namespace BeautySmileCRM.ViewModels
 
             OnNavigateToDiscountsCommand = new DelegateCommand(() => NavigationService.Navigate("DiscountView", null, this),
                 () => { return CurrentUser != null && CurrentUser.HasPrivilege(Privilege.ViewConfiguration); });
+
+            //TODO
+            OnNavigateToServicesCommand = new DelegateCommand(() => NavigationService.Navigate("ServiceView", null, this),
+                () => { return CurrentUser != null && CurrentUser.HasPrivilege(Privilege.ViewService); });
+
+            //TODO 
+            OnNavigateToQuestionnaireCommand = new DelegateCommand(() => NavigationService.Navigate("QuestionnaireReportView", null, this));
+
+
         }
     }
 }

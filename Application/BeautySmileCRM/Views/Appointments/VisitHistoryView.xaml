@@ -168,7 +168,7 @@
                             </dxg:GridColumn>
                         </dxg:GridControlBand>
                         <dxg:GridControlBand Header="Прочее" HorizontalHeaderContentAlignment="Center" VisibleIndex="4">
-                            <dxg:GridColumn FieldName="CreationTime" Header="Дата зарегистрации визита" Width="120" ReadOnly="True" VisibleIndex="16" >
+                            <dxg:GridColumn FieldName="CreationTime" Header="Дата регистрации визита" Width="120" ReadOnly="True" VisibleIndex="16" >
                                 <dxg:GridColumn.EditSettings>
                                     <dxe:DateEditSettings Mask="g" MaskType="DateTime" MaskUseAsDisplayFormat="True" />
                                 </dxg:GridColumn.EditSettings>

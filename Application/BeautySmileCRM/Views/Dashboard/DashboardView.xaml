@@ -69,7 +69,7 @@
             
             <dxlc:TileLayoutControl Grid.Row="1"
                                     Background="White" Margin="0" AllowItemMoving="False" Padding="0, 10, 0, 0"
-                                    ItemsSource="{Binding Data}"
+                                    ItemsSource="{Binding Data}" Orientation="Horizontal"
                                     TileClickCommand="{Binding OnTileClick}">
                 <dxlc:TileLayoutControl.Resources>
                     <Style TargetType="dxlc:Tile">

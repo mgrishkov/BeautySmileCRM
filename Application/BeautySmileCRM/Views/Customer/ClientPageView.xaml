@@ -544,8 +544,14 @@
             </ScrollViewer>
             <dxb:BarManager Grid.Column="2" Margin="5, 0, 0, 0">
                 <dxb:BarManager.Items>
-                    <dxb:BarButtonItem x:Name="AddButton" Content="{Binding AddCaption}" 
-				               LargeGlyph="{StaticResource Add32}" Command="{Binding AddCommand}" />
+                    <dxb:BarButtonItem x:Name="AddVisitButton" Content="{Binding AddVisitCaption}" 
+				               LargeGlyph="{StaticResource AddVisit32}" Command="{Binding AddVisitCommand}" 
+                               IsVisible="{Binding ShowAddVisit}"/>
+
+                    <dxb:BarButtonItem x:Name="AddPaymentButton" Content="{Binding AddPaymentCaption}" 
+				               LargeGlyph="{StaticResource AddPayment32}" Command="{Binding AddPaymentCommand}" 
+                               IsVisible="{Binding ShowAddPayment}"/>
+                    
                     <dxb:BarButtonItem x:Name="EditButton" Content="{Binding EditCaption}" 
 				               LargeGlyph="{StaticResource Edit32}" Command="{Binding EditCommand}" />
                     <dxb:BarButtonItem x:Name="DeleteButton" Content="{Binding DeleteCaption}" 
@@ -566,7 +572,8 @@
                         <dxb:Bar.DockInfo>
                             <dxb:BarDockInfo ContainerType="Top" />
                         </dxb:Bar.DockInfo>
-                        <dxb:BarButtonItemLink BarItemName="AddButton" />
+                        <dxb:BarButtonItemLink BarItemName="AddVisitButton" />
+                        <dxb:BarButtonItemLink BarItemName="AddPaymentButton" />
                         <dxb:BarButtonItemLink BarItemName="EditButton" />
                         <dxb:BarButtonItemLink BarItemName="DeleteButton" />
                         <dxb:BarItemLinkSeparator />

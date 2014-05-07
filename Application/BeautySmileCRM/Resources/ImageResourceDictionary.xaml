@@ -4,12 +4,18 @@
     <BitmapImage x:Key="Search16" UriSource="/BeautySmileCRM;component/Content/Icons/16x16/search.png"></BitmapImage>
     
     <BitmapImage x:Key="Add32" UriSource="/BeautySmileCRM;component/Content/Icons/32x32/add.png"></BitmapImage>
+    <BitmapImage x:Key="AddVisit32" UriSource="/BeautySmileCRM;component/Content/Icons/32x32/add-visit.png"></BitmapImage>
+    <BitmapImage x:Key="AddPayment32" UriSource="/BeautySmileCRM;component/Content/Icons/32x32/add-payment.png"></BitmapImage>
     <BitmapImage x:Key="Edit32" UriSource="/BeautySmileCRM;component/Content/Icons/32x32/edit.png"></BitmapImage>
     <BitmapImage x:Key="Excel32" UriSource="/BeautySmileCRM;component/Content/Icons/32x32/excel.png"></BitmapImage>
     <BitmapImage x:Key="Delete32" UriSource="/BeautySmileCRM;component/Content/Icons/32x32/delete.png"></BitmapImage>
     <BitmapImage x:Key="Refresh32" UriSource="/BeautySmileCRM;component/Content/Icons/32x32/refresh.png"></BitmapImage>
 
+    <BitmapImage x:Key="Home48" UriSource="/BeautySmileCRM;component/Content/Icons/48x48/Home.png"></BitmapImage>
+
     <BitmapImage x:Key="WarningIcon64" UriSource="/BeautySmileCRM;component/Content/Icons/64x64/sign_warning.png"></BitmapImage>
     
     
 </ResourceDictionary>
+    
+    
