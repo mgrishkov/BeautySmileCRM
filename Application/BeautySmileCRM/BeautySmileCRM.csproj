@@ -214,6 +214,9 @@
     <Compile Include="Models\CustomerView.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DBVersion.cs">
+      <DependentUpon>CRM.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\DiscountCard.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>

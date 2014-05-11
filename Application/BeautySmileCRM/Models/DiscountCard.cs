@@ -27,6 +27,7 @@ namespace BeautySmileCRM.Models
         public decimal MinDiscount { get; set; }
         public decimal MaxDiscount { get; set; }
         public bool FixedDiscount { get; set; }
+        public decimal InitialDiscountPercent { get; set; }
     
         public virtual DiscountType DiscountType { get; set; }
         public virtual ICollection<Customer> Customers { get; set; }

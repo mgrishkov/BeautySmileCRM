@@ -78,6 +78,8 @@
     <Folder Include="APP\" />
     <Folder Include="APP\Stored Procedures\" />
     <Folder Include="Scripts" />
+    <Folder Include="SERVICE\" />
+    <Folder Include="SERVICE\Tables\" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="ADM\Tables\User_1.sql" />
@@ -121,6 +123,8 @@
     <Build Include="CST\Stored Procedures\RecalculateDiscount.sql">
       <QuotedIdentifier>Off</QuotedIdentifier>
     </Build>
+    <Build Include="SERVICE\Tables\DBVersion.sql" />
+    <Build Include="Security\SERVICE.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml">

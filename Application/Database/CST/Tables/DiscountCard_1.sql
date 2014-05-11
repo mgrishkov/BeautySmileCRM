@@ -1,15 +1,18 @@
 ﻿CREATE TABLE [CST].[DiscountCard] (
-    [ID]                 INT             IDENTITY (1, 1) NOT NULL,
-    [Code]               VARCHAR (50)    NOT NULL,
-    [DiscountPercent]    DECIMAL (4, 2)  DEFAULT ((0)) NOT NULL,
-    [TotalPurchaseValue] DECIMAL (13, 2) DEFAULT ((0)) NOT NULL,
-    [DiscountTypeID]     INT             DEFAULT ((1)) NOT NULL,
-    [MinDiscount]        DECIMAL (13, 2) DEFAULT ((0)) NOT NULL,
-    [MaxDiscount]        DECIMAL (13, 2) DEFAULT ((9999999)) NOT NULL,
-    [FixedDiscount]      BIT             DEFAULT ((0)) NOT NULL,
+    [ID]                     INT             IDENTITY (1, 1) NOT NULL,
+    [Code]                   VARCHAR (50)    NOT NULL,
+    [DiscountPercent]        DECIMAL (4, 2)  DEFAULT ((0)) NOT NULL,
+    [TotalPurchaseValue]     DECIMAL (13, 2) DEFAULT ((0)) NOT NULL,
+    [DiscountTypeID]         INT             DEFAULT ((1)) NOT NULL,
+    [MinDiscount]            DECIMAL (13, 2) DEFAULT ((0)) NOT NULL,
+    [MaxDiscount]            DECIMAL (13, 2) DEFAULT ((9999999)) NOT NULL,
+    [FixedDiscount]          BIT             DEFAULT ((0)) NOT NULL,
+    [InitialDiscountPercent] DECIMAL (4, 2)  DEFAULT ((0)) NOT NULL,
     CONSTRAINT [PK#DiscountCard] PRIMARY KEY CLUSTERED ([ID] ASC),
     CONSTRAINT [FK#DiscountCard@DiscountTypeID#DiscountTYpe@ID] FOREIGN KEY ([DiscountTypeID]) REFERENCES [CONF].[DiscountType] ([ID])
 );
+
+
 
 
 
@@ -80,4 +83,12 @@ GO
 GRANT DELETE
     ON OBJECT::[CST].[DiscountCard] TO [AppUser]
     AS [dbo];
+
+
+GO
+EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'Признак фиксированной скидки (без пересчета)', @level0type = N'SCHEMA', @level0name = N'CST', @level1type = N'TABLE', @level1name = N'DiscountCard', @level2type = N'COLUMN', @level2name = N'FixedDiscount';
+
+
+GO
+EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'Начальная скидка (устанавливается при ручной корректировки скидки', @level0type = N'SCHEMA', @level0name = N'CST', @level1type = N'TABLE', @level1name = N'DiscountCard', @level2type = N'COLUMN', @level2name = N'InitialDiscountPercent';
 

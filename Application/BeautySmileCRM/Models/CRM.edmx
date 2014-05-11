@@ -141,6 +141,7 @@
           <Property Name="MinDiscount" Type="decimal" Precision="13" Scale="2" Nullable="false" />
           <Property Name="MaxDiscount" Type="decimal" Precision="13" Scale="2" Nullable="false" />
           <Property Name="FixedDiscount" Type="bit" Nullable="false" />
+          <Property Name="InitialDiscountPercent" Type="decimal" Precision="4" Scale="2" Nullable="false" />
         </EntityType>
         <EntityType Name="FinancialTransaction">
           <Key>
@@ -157,6 +158,18 @@
           <Property Name="ModificationTime" Type="datetime" />
           <Property Name="ModifiedBy" Type="int" />
           <Property Name="IsCanceled" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DBVersion">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Major" Type="int" Nullable="false" />
+          <Property Name="Minor" Type="int" Nullable="false" />
+          <Property Name="Build" Type="int" Nullable="false" />
+          <Property Name="Revision" Type="int" Nullable="false" />
+          <Property Name="InstallationStarted" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="InstallationFinished" Type="datetime2" Precision="7" />
         </EntityType>
         <EntityType Name="Staff">
           <Key>
@@ -553,6 +566,7 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
           <EntitySet Name="Customer" EntityType="Self.Customer" Schema="CST" store:Type="Tables" />
           <EntitySet Name="DiscountCard" EntityType="Self.DiscountCard" Schema="CST" store:Type="Tables" />
           <EntitySet Name="FinancialTransaction" EntityType="Self.FinancialTransaction" Schema="CST" store:Type="Tables" />
+          <EntitySet Name="DBVersion" EntityType="Self.DBVersion" Schema="SERVICE" store:Type="Tables" />
           <EntitySet Name="Staff" EntityType="Self.Staff" Schema="STF" store:Type="Tables" />
           <EntitySet Name="AppointmentView" EntityType="Self.AppointmentView" store:Type="Views" store:Schema="CST">
             <DefiningQuery>SELECT 
@@ -822,6 +836,7 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
           <FunctionImport Name="RecalculateDiscount" EntitySet="DiscountCards" ReturnType="Collection(CRMModel.DiscountCard)">
           <Parameter Name="discountCardID" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="DBVersions" EntityType="CRMModel.DBVersion" />
         </EntityContainer>
         <EntityType Name="Privilege">
           <Key>
@@ -976,6 +991,7 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
           <Property Name="MinDiscount" Type="Decimal" Nullable="false" Precision="13" Scale="2" />
           <Property Name="MaxDiscount" Type="Decimal" Nullable="false" Precision="13" Scale="2" />
           <Property Name="FixedDiscount" Type="Boolean" Nullable="false" />
+          <Property Name="InitialDiscountPercent" Type="Decimal" Nullable="false" Precision="4" Scale="2" />
         </EntityType>
         <EntityType Name="FinancialTransaction">
           <Key>
@@ -1303,6 +1319,18 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
           <Property Name="Price" Type="Decimal" Nullable="false" Precision="13" Scale="2" />
           <Property Name="IsCanceled" Type="Boolean" Nullable="false" />
         </EntityType>
+        <EntityType Name="DBVersion">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Major" Type="Int32" Nullable="false" />
+          <Property Name="Minor" Type="Int32" Nullable="false" />
+          <Property Name="Build" Type="Int32" Nullable="false" />
+          <Property Name="Revision" Type="Int32" Nullable="false" />
+          <Property Name="InstallationStarted" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="InstallationFinished" Type="DateTime" Precision="7" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1437,6 +1465,7 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
           <EntitySetMapping Name="DiscountCards">
             <EntityTypeMapping TypeName="CRMModel.DiscountCard">
               <MappingFragment StoreEntitySet="DiscountCard">
+                <ScalarProperty Name="InitialDiscountPercent" ColumnName="InitialDiscountPercent" />
                 <ScalarProperty Name="FixedDiscount" ColumnName="FixedDiscount" />
                 <ScalarProperty Name="MaxDiscount" ColumnName="MaxDiscount" />
                 <ScalarProperty Name="MinDiscount" ColumnName="MinDiscount" />
@@ -1632,6 +1661,19 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="RecalculateDiscount" FunctionName="CRMModel.Store.RecalculateDiscount" />
+          <EntitySetMapping Name="DBVersions">
+            <EntityTypeMapping TypeName="CRMModel.DBVersion">
+              <MappingFragment StoreEntitySet="DBVersion">
+                <ScalarProperty Name="InstallationFinished" ColumnName="InstallationFinished" />
+                <ScalarProperty Name="InstallationStarted" ColumnName="InstallationStarted" />
+                <ScalarProperty Name="Revision" ColumnName="Revision" />
+                <ScalarProperty Name="Build" ColumnName="Build" />
+                <ScalarProperty Name="Minor" ColumnName="Minor" />
+                <ScalarProperty Name="Major" ColumnName="Major" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

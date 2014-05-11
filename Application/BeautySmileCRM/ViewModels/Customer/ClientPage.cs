@@ -554,6 +554,7 @@ namespace BeautySmileCRM.ViewModels
                 {
                     var discount = CumulativeDiscounts.First(x => x.ID == value);
                     _discountCard.DiscountPercent = discount.Percent;
+                    _discountCard.InitialDiscountPercent = discount.Percent;
                     RaisePropertyChanged("NamedDiscount");
                     MinDiscount = discount.MinDiscount;
                     MaxDiscount = discount.MaxDiscount;
@@ -766,10 +767,10 @@ namespace BeautySmileCRM.ViewModels
             UnlinkDiscountCardCommand = new DelegateCommand(OnUnlinkDiscountCardCommandExecuted,
                 () => { return DiscountCardEnabled && CurrentUser.HasPrivilege(Privilege.UnlinkDiscountCard); });
 
-            AddVisitCommand = new DelegateCommand(OnAddCommandExecuted,
+            AddVisitCommand = new DelegateCommand(OnAddAppointmentCommandExecuted,
                 () => { return AllowAddVisit; });
 
-            AddPaymentCommand = new DelegateCommand(OnAddCommandExecuted,
+            AddPaymentCommand = new DelegateCommand(OnAddPaymentCommandExecuted,
                 () => { return AllowAddPayment; });
 
             EditCommand = new DelegateCommand(OnEditCommandExecuted,
@@ -846,10 +847,31 @@ namespace BeautySmileCRM.ViewModels
             _dc.SaveChanges();
         }
 
-        private void OnAddCommandExecuted()
+        private void OnAddAppointmentCommandExecuted()
         {
-            ShowDialog(DialogMode.Create);
+            var result = MessageBoxResult.None;
+            result = ShowAppointmentEditDialog(DialogMode.Create);
+
+            if (result == MessageBoxResult.Yes || result == MessageBoxResult.OK)
+            {
+                refreshData(_customer.ID);
+            };
+
+
         }
+        private void OnAddPaymentCommandExecuted()
+        {
+            var result = MessageBoxResult.None;
+            result = ShowFinancialTransactionEditDialog(DialogMode.Create);
+
+            if (result == MessageBoxResult.Yes || result == MessageBoxResult.OK)
+            {
+                refreshData(_customer.ID);
+            };
+
+
+        }
+
         private void OnEditCommandExecuted()
         {
             ShowDialog(DialogMode.Update);
