@@ -23,7 +23,7 @@ namespace BeautySmileCRM.Enums
 		[Description("Создание услуги")]
 		CreateService                                                               = 34,
 		[Description("Изменение услуги")]
-		ModifySerice                                                                = 35,
+		ModifyService                                                               = 35,
 		[Description("Удаление услуги")]
 		DeleteService                                                               = 36,
 		[Description("Просмотр правочника услуги")]

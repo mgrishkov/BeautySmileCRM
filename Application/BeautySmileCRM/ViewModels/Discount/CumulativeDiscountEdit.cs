@@ -113,13 +113,13 @@ namespace BeautySmileCRM.ViewModels
             }
         }
 
-        public CumulativeDiscountEdit(DialogMode mode, int? staffID, IDialogService dialogService, IMessageBoxService messageService)
+        public CumulativeDiscountEdit(DialogMode mode, int? discountID, IDialogService dialogService, IMessageBoxService messageService)
             : base(mode, dialogService, messageService)
         {
             SubTitle = "Накопительную скидку";
-            if (staffID.HasValue)
+            if (discountID.HasValue)
             {
-                _data = _dc.CumulativeDiscounts.SingleOrDefault(x => x.ID == staffID);
+                _data = _dc.CumulativeDiscounts.SingleOrDefault(x => x.ID == discountID);
             }
             else
             {

@@ -173,7 +173,6 @@ namespace BeautySmileCRM.ViewModels
             OnNavigateToDiscountsCommand = new DelegateCommand(() => NavigationService.Navigate("DiscountView", null, this),
                 () => { return CurrentUser != null && CurrentUser.HasPrivilege(Privilege.ViewConfiguration); });
 
-            //TODO
             OnNavigateToServicesCommand = new DelegateCommand(() => NavigationService.Navigate("ServiceView", null, this),
                 () => { return CurrentUser != null && CurrentUser.HasPrivilege(Privilege.ViewService); });
 

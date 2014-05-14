@@ -1,6 +1,6 @@
 ﻿insert into ADM.Privilege (ID, Name, Description, GroupID)
 values (34, 'CreateService', 'Создание услуги', 2),
-       (35, 'ModifySerice', 'Изменение услуги', 2),
+       (35, 'ModifyService', 'Изменение услуги', 2),
        (36, 'DeleteService', 'Удаление услуги', 2),
        (37, 'ViewService', 'Просмотр правочника услуги', 2);
 go
@@ -152,3 +152,59 @@ begin
 end
 GO
 
+create table CRM.CONF.Service (
+    ID int identity,
+    Description nvarchar(4000) not null,
+    WorkingMinuts int not null,
+    Price decimal(13, 2) not null,
+    constraint PK#Service primary key (ID)
+) on [PRIMARY]
+go
+
+exec sp_addextendedproperty N'MS_Description',
+                            N'Справочник услуг',
+                            'SCHEMA',
+                            N'CONF',
+                            'TABLE',
+                            N'Service'
+go
+
+exec sp_addextendedproperty N'MS_Description',
+                            N'ИД услуги',
+                            'SCHEMA',
+                            N'CONF',
+                            'TABLE',
+                            N'Service',
+                            'COLUMN',
+                            N'ID'
+go
+
+exec sp_addextendedproperty N'MS_Description',
+                            N'Описание',
+                            'SCHEMA',
+                            N'CONF',
+                            'TABLE',
+                            N'Service',
+                            'COLUMN',
+                            N'Description'
+go
+
+exec sp_addextendedproperty N'MS_Description',
+                            N'Норма времени, мин',
+                            'SCHEMA',
+                            N'CONF',
+                            'TABLE',
+                            N'Service',
+                            'COLUMN',
+                            N'WorkingMinuts'
+go
+
+exec sp_addextendedproperty N'MS_Description',
+                            N'Стоимость услуги',
+                            'SCHEMA',
+                            N'CONF',
+                            'TABLE',
+                            N'Service',
+                            'COLUMN',
+                            N'Price'
+go

@@ -125,6 +125,7 @@
     </Build>
     <Build Include="SERVICE\Tables\DBVersion.sql" />
     <Build Include="Security\SERVICE.sql" />
+    <Build Include="CONF\Tables\Service.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml">

@@ -71,6 +71,15 @@
           <Property Name="Name" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="4000" />
         </EntityType>
+        <EntityType Name="Service">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="4000" Nullable="false" />
+          <Property Name="WorkingMinuts" Type="int" Nullable="false" />
+          <Property Name="Price" Type="decimal" Precision="13" Scale="2" Nullable="false" />
+        </EntityType>
         <EntityType Name="TransactionType">
           <Key>
             <PropertyRef Name="ID" />
@@ -561,6 +570,7 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
           <EntitySet Name="CumulativeDiscount" EntityType="Self.CumulativeDiscount" Schema="CONF" store:Type="Tables" />
           <EntitySet Name="DiscountType" EntityType="Self.DiscountType" Schema="CONF" store:Type="Tables" />
           <EntitySet Name="PrivelegeGroup" EntityType="Self.PrivelegeGroup" Schema="CONF" store:Type="Tables" />
+          <EntitySet Name="Service" EntityType="Self.Service" Schema="CONF" store:Type="Tables" />
           <EntitySet Name="TransactionType" EntityType="Self.TransactionType" Schema="CONF" store:Type="Tables" />
           <EntitySet Name="Appointment" EntityType="Self.Appointment" Schema="CST" store:Type="Tables" />
           <EntitySet Name="Customer" EntityType="Self.Customer" Schema="CST" store:Type="Tables" />
@@ -837,6 +847,7 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
           <Parameter Name="discountCardID" Mode="In" Type="Int32" />
           </FunctionImport>
           <EntitySet Name="DBVersions" EntityType="CRMModel.DBVersion" />
+          <EntitySet Name="Services" EntityType="CRMModel.Service" />
         </EntityContainer>
         <EntityType Name="Privilege">
           <Key>
@@ -1331,6 +1342,15 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
           <Property Name="InstallationStarted" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="InstallationFinished" Type="DateTime" Precision="7" />
         </EntityType>
+        <EntityType Name="Service">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="WorkingMinuts" Type="Int32" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Nullable="false" Precision="13" Scale="2" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1670,6 +1690,16 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
                 <ScalarProperty Name="Build" ColumnName="Build" />
                 <ScalarProperty Name="Minor" ColumnName="Minor" />
                 <ScalarProperty Name="Major" ColumnName="Major" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Services">
+            <EntityTypeMapping TypeName="CRMModel.Service">
+              <MappingFragment StoreEntitySet="Service">
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="WorkingMinuts" ColumnName="WorkingMinuts" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

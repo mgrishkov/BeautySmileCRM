@@ -236,6 +236,9 @@
     <Compile Include="Models\Privilege.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Service.cs">
+      <DependentUpon>CRM.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Staff.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
@@ -260,6 +263,8 @@
     <Compile Include="ViewModels\Customer\ClientPage.cs" />
     <Compile Include="ViewModels\Discount\CumulativeDiscountEdit.cs" />
     <Compile Include="ViewModels\FinancialTransaction\FinancialTransaction.cs" />
+    <Compile Include="ViewModels\Service\ServiceEdit.cs" />
+    <Compile Include="ViewModels\Service\Service.cs" />
     <Compile Include="ViewModels\Staff\StaffEdit.cs" />
     <Compile Include="ViewModels\Staff\Staff.cs" />
     <Compile Include="ViewModels\Discount\Discount.cs" />
@@ -284,6 +289,12 @@
     </Compile>
     <Compile Include="Views\FinancialTransaction\FinancialView.xaml.cs">
       <DependentUpon>FinancialView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Service\ServiceEditView.xaml.cs">
+      <DependentUpon>ServiceEditView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Service\ServiceView.xaml.cs">
+      <DependentUpon>ServiceView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Staff\StaffEditView.xaml.cs">
       <DependentUpon>StaffEditView.xaml</DependentUpon>
@@ -423,6 +434,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\FinancialTransaction\FinancialView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Service\ServiceEditView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Service\ServiceView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

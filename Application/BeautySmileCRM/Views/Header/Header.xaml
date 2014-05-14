@@ -129,6 +129,7 @@
                     <dxb:BarButtonItemLink BarItemName="showAdministrationButtonItem"/>
                     <dxb:BarButtonItemLink BarItemName="showPositionsButtonItem"/>
                     <dxb:BarButtonItemLink BarItemName="showCumulativeDiscountButtonItem"/>
+                    <dxb:BarButtonItemLink BarItemName="showServiceButtonItem"/>
                 </dxb:BarSubItem.ItemLinks>
             </dxb:BarSubItem>
         </dxb:BarManager.Items>
