@@ -97,7 +97,7 @@
                                Content="{Binding NavigateToAdministration}"
                                Command="{Binding OnNavigateToAdministrationCommand}"/>
             
-            <dxb:BarButtonItem Name="showPositionsButtonItem" CategoryName="Settings" 
+            <dxb:BarButtonItem Name="showStaffButtonItem" CategoryName="Settings" 
                                Content="{Binding NavigateToStaff}"
                                Command="{Binding OnNavigateToStaffCommand}"/>
             
@@ -127,9 +127,9 @@
             <dxb:BarSubItem Name="settingsSubItem" CategoryName="Settings" Content="НАСТРОЙКИ">
                 <dxb:BarSubItem.ItemLinks>
                     <dxb:BarButtonItemLink BarItemName="showAdministrationButtonItem"/>
-                    <dxb:BarButtonItemLink BarItemName="showPositionsButtonItem"/>
                     <dxb:BarButtonItemLink BarItemName="showCumulativeDiscountButtonItem"/>
                     <dxb:BarButtonItemLink BarItemName="showServiceButtonItem"/>
+                    <dxb:BarButtonItemLink BarItemName="showStaffButtonItem"/>
                 </dxb:BarSubItem.ItemLinks>
             </dxb:BarSubItem>
         </dxb:BarManager.Items>

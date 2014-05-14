@@ -208,3 +208,40 @@ exec sp_addextendedproperty N'MS_Description',
                             'COLUMN',
                             N'Price'
 go
+
+create table CRM.STF.StaffService (
+    StaffID int not null,
+    ServiceID int not null,
+    constraint PK#StaffService primary key (StaffID, ServiceID),
+    constraint FK#StaffService@ServiceID#Service@ID foreign key (ServiceID) references CONF.Service (ID),
+    constraint FK#StaffService@StaffID#Staff@ID foreign key (StaffID) references STF.Staff (ID) on delete cascade
+) on [PRIMARY]
+go
+
+exec sp_addextendedproperty N'MS_Description',
+                            N'Услуги персонала',
+                            'SCHEMA',
+                            N'STF',
+                            'TABLE',
+                            N'StaffService'
+go
+
+exec sp_addextendedproperty N'MS_Description',
+                            N'ИД отрудника',
+                            'SCHEMA',
+                            N'STF',
+                            'TABLE',
+                            N'StaffService',
+                            'COLUMN',
+                            N'StaffID'
+go
+
+exec sp_addextendedproperty N'MS_Description',
+                            N'ИД услуги',
+                            'SCHEMA',
+                            N'STF',
+                            'TABLE',
+                            N'StaffService',
+                            'COLUMN',
+                            N'ServiceID'
+go

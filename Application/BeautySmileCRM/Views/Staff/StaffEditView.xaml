@@ -8,7 +8,7 @@
         x:Class="BeautySmileCRM.Views.StaffEditView"
         SnapsToDevicePixels="True" UseLayoutRounding="True"
         dx:ThemeManager.ThemeName="MetropolisLight"
-        Width="490" Height="160"
+        Width="490" Height="360"
         x:Name="root" Background="White">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -23,6 +23,8 @@
 
     <Grid x:Name="formGrid">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -116,6 +118,26 @@
                          ValidatesOnNotifyDataErrors="True"/>
             </dxe:ComboBoxEdit.EditValue>
         </dxe:ComboBoxEdit>
-        
+
+        <TextBlock Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="3"
+                   Text="Оказываемые услуги" 
+                   Style="{StaticResource GroupHeader}"/>
+        <dxe:ListBoxEdit Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="4"
+                         HorizontalAlignment="Stretch" Height="180"
+                         ItemsSource="{Binding Services}"
+                         IsEnabled="{Binding AllowChangePrivilege}"
+                         DisplayMember="Description" SelectionMode="Multiple">
+            <dxe:ListBoxEdit.EditValue>
+                <Binding Path="StaffServices"
+                         Mode="TwoWay"
+                         UpdateSourceTrigger="PropertyChanged"
+                         ValidatesOnDataErrors="True"
+                         ValidatesOnExceptions="True"
+                         ValidatesOnNotifyDataErrors="True"/>
+            </dxe:ListBoxEdit.EditValue>
+            <dxe:ListBoxEdit.StyleSettings >
+                <dxe:CheckedListBoxEditStyleSettings />
+            </dxe:ListBoxEdit.StyleSettings>
+        </dxe:ListBoxEdit>
     </Grid>
 </UserControl>

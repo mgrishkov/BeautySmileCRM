@@ -63,6 +63,16 @@ namespace BeautySmileCRM.ViewModels
         #endregion
 
         private Models.Staff _data;
+        private bool _servicesWereChanged = false;
+        private List<object> _staffServices;
+
+        public IEnumerable<Models.Service> Services
+        {
+            get
+            {
+                return _dc.Services.OrderBy(x => x.Description).ToList();
+            }
+        }
 
         private bool _nameChanged = false;
 
@@ -138,6 +148,21 @@ namespace BeautySmileCRM.ViewModels
                 }
             }
         }
+        
+        public List<object> StaffServices
+        {
+            get { return _staffServices; }
+            set
+            {
+                if (_staffServices != value)
+                {
+                    _staffServices = value;
+                    _servicesWereChanged = true;
+                    AllowSave = true;
+                    RaisePropertyChanged("StaffServices");
+                }
+            }
+        }
 
         public IEnumerable<string> Positions
         {
@@ -159,7 +184,8 @@ namespace BeautySmileCRM.ViewModels
             {
                 _data = new Models.Staff();
                 _dc.Staffs.Add(_data);
-            }
+            };
+            _staffServices = new List<object>(_data.Services.Cast<object>().ToList());
         }
         public StaffEdit(DialogMode mode, IDialogService dialogService, IMessageBoxService messageService)
             : this(mode, (int?)null, dialogService, messageService)
@@ -169,6 +195,11 @@ namespace BeautySmileCRM.ViewModels
 
         protected override void ApplyCommandExecuted()
         {
+            if (_servicesWereChanged)
+            {
+                var list = StaffServices.Cast<Models.Service>();
+                _data.Services.Replace(list);
+            };
             _dc.SaveChanges();
         } 
     }

@@ -40,6 +40,7 @@
         <EntityTypeShape EntityType="CRMModel.FinancialTransactionView" Width="2.375" PointX="14.125" PointY="9.75" FillColor="0, 192, 0" />
         <EntityTypeShape EntityType="CRMModel.DBVersion" Width="1.5" PointX="14.125" PointY="2.75" />
         <EntityTypeShape EntityType="CRMModel.Service" Width="1.5" PointX="7.375" PointY="10.75" />
+        <AssociationConnector Association="CRMModel.StaffService" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

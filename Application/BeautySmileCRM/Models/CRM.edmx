@@ -193,6 +193,14 @@
           <Property Name="UserID" Type="int" />
           <Property Name="Position" Type="nvarchar" MaxLength="4000" Nullable="false" />
         </EntityType>
+        <EntityType Name="StaffService">
+          <Key>
+            <PropertyRef Name="StaffID" />
+            <PropertyRef Name="ServiceID" />
+          </Key>
+          <Property Name="StaffID" Type="int" Nullable="false" />
+          <Property Name="ServiceID" Type="int" Nullable="false" />
+        </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'CRM.CST.AppointmentView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="AppointmentView">
@@ -510,6 +518,30 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK#StaffService@ServiceID#Service@ID">
+          <End Role="Service" Type="Self.Service" Multiplicity="1" />
+          <End Role="StaffService" Type="Self.StaffService" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Service">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="StaffService">
+              <PropertyRef Name="ServiceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK#StaffService@StaffID#Staff@ID">
+          <End Role="Staff" Type="Self.Staff" Multiplicity="1" />
+          <End Role="StaffService" Type="Self.StaffService" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="StaffService">
+              <PropertyRef Name="StaffID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK#UserPrivilege@PrivelegeID#Privelege@ID">
           <End Role="Privilege" Type="Self.Privilege" Multiplicity="1" />
           <End Role="UserPrivilege" Type="Self.UserPrivilege" Multiplicity="*" />
@@ -578,6 +610,7 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
           <EntitySet Name="FinancialTransaction" EntityType="Self.FinancialTransaction" Schema="CST" store:Type="Tables" />
           <EntitySet Name="DBVersion" EntityType="Self.DBVersion" Schema="SERVICE" store:Type="Tables" />
           <EntitySet Name="Staff" EntityType="Self.Staff" Schema="STF" store:Type="Tables" />
+          <EntitySet Name="StaffService" EntityType="Self.StaffService" Schema="STF" store:Type="Tables" />
           <EntitySet Name="AppointmentView" EntityType="Self.AppointmentView" store:Type="Views" store:Schema="CST">
             <DefiningQuery>SELECT 
     [AppointmentView].[AppointmentID] AS [AppointmentID], 
@@ -727,6 +760,14 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
             <End Role="User" EntitySet="User" />
             <End Role="Staff" EntitySet="Staff" />
           </AssociationSet>
+          <AssociationSet Name="FK#StaffService@ServiceID#Service@ID" Association="Self.FK#StaffService@ServiceID#Service@ID">
+            <End Role="Service" EntitySet="Service" />
+            <End Role="StaffService" EntitySet="StaffService" />
+          </AssociationSet>
+          <AssociationSet Name="FK#StaffService@StaffID#Staff@ID" Association="Self.FK#StaffService@StaffID#Staff@ID">
+            <End Role="Staff" EntitySet="Staff" />
+            <End Role="StaffService" EntitySet="StaffService" />
+          </AssociationSet>
           <AssociationSet Name="FK#UserPrivilege@PrivelegeID#Privelege@ID" Association="Self.FK#UserPrivilege@PrivelegeID#Privelege@ID">
             <End Role="Privilege" EntitySet="Privilege" />
             <End Role="UserPrivilege" EntitySet="UserPrivilege" />
@@ -848,6 +889,10 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
           </FunctionImport>
           <EntitySet Name="DBVersions" EntityType="CRMModel.DBVersion" />
           <EntitySet Name="Services" EntityType="CRMModel.Service" />
+          <AssociationSet Name="StaffService" Association="CRMModel.StaffService">
+            <End Role="Service" EntitySet="Services" />
+            <End Role="Staff" EntitySet="Staffs" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Privilege">
           <Key>
@@ -1039,6 +1084,7 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
           <NavigationProperty Name="User" Relationship="CRMModel.FK_Staff_UserID_User_ID" FromRole="Staff" ToRole="User" />
           <NavigationProperty Name="Appointments" Relationship="CRMModel.FK_Appointment_StaffID_Staff_ID" FromRole="Staff" ToRole="Appointment" />
           <Property Name="Position" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Services" Relationship="CRMModel.StaffService" FromRole="Staff" ToRole="Service" />
         </EntityType>
         <Association Name="FK_Privilege_GroupID_PrivelegeGroup_ID">
           <End Type="CRMModel.PrivelegeGroup" Role="PrivelegeGroup" Multiplicity="1" />
@@ -1350,7 +1396,12 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
           <Property Name="Description" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
           <Property Name="WorkingMinuts" Type="Int32" Nullable="false" />
           <Property Name="Price" Type="Decimal" Nullable="false" Precision="13" Scale="2" />
+          <NavigationProperty Name="Staffs" Relationship="CRMModel.StaffService" FromRole="Service" ToRole="Staff" />
         </EntityType>
+        <Association Name="StaffService">
+          <End Type="CRMModel.Service" Role="Service" Multiplicity="*" />
+          <End Type="CRMModel.Staff" Role="Staff" Multiplicity="*" />
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1704,6 +1755,14 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <AssociationSetMapping Name="StaffService" TypeName="CRMModel.StaffService" StoreEntitySet="StaffService">
+            <EndProperty Name="Staff">
+              <ScalarProperty Name="ID" ColumnName="StaffID" />
+            </EndProperty>
+            <EndProperty Name="Service">
+              <ScalarProperty Name="ID" ColumnName="ServiceID" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

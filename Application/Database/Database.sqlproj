@@ -25,7 +25,7 @@
     <TargetDatabaseSet>True</TargetDatabaseSet>
     <DefaultCollation>Cyrillic_General_CI_AS</DefaultCollation>
     <DefaultFilegroup>PRIMARY</DefaultFilegroup>
-    <GenerateCreateScript>True</GenerateCreateScript>
+    <GenerateCreateScript>False</GenerateCreateScript>
     <IncludeSchemaNameInFileName>False</IncludeSchemaNameInFileName>
     <DacApplicationName>CRM</DacApplicationName>
   </PropertyGroup>
@@ -126,16 +126,9 @@
     <Build Include="SERVICE\Tables\DBVersion.sql" />
     <Build Include="Security\SERVICE.sql" />
     <Build Include="CONF\Tables\Service.sql" />
+    <Build Include="STF\Tables\StaffService.sql" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Database.publish.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Deploy.DACPAC.bat">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Deploy.SCRIPT.bat">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <None Include="SchemaCompare.scmp" />
   </ItemGroup>
 </Project>

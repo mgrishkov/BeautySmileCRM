@@ -14,9 +14,16 @@ namespace BeautySmileCRM.Models
     
     public partial class Service
     {
+        public Service()
+        {
+            this.Staffs = new HashSet<Staff>();
+        }
+    
         public int ID { get; set; }
         public string Description { get; set; }
         public int WorkingMinuts { get; set; }
         public decimal Price { get; set; }
+    
+        public virtual ICollection<Staff> Staffs { get; set; }
     }
 }
