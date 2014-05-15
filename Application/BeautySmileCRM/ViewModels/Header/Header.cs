@@ -11,6 +11,7 @@ using DevExpress.Xpf.WindowsUI;
 using BeautySmileCRM.Enums;
 using DevExpress.Xpf.Bars;
 using BeautySmileCRM.Services;
+using DevExpress.XtraReports.UI;
 
 namespace BeautySmileCRM.ViewModels
 {
@@ -176,10 +177,18 @@ namespace BeautySmileCRM.ViewModels
             OnNavigateToServicesCommand = new DelegateCommand(() => NavigationService.Navigate("ServiceView", null, this),
                 () => { return CurrentUser != null && CurrentUser.HasPrivilege(Privilege.ViewService); });
 
-            //TODO 
-            OnNavigateToQuestionnaireCommand = new DelegateCommand(() => NavigationService.Navigate("QuestionnaireReportView", null, this));
+            OnNavigateToQuestionnaireCommand = new DelegateCommand(() =>
+                {
+                    var rep = new Reports.Views.ClientQuestionnaireView();
+                    var ds = new List<object>();
+                    ds.Add(new Reports.ViewModels.ClientQuestionnaireViewModel());
+                    rep.DataSource = ds;
+                    rep.CreateDocument();
 
+                    var printTool = new ReportPrintTool(rep);
+                    printTool.ShowPreviewDialog();
 
+                });
         }
     }
 }
