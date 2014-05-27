@@ -46,6 +46,7 @@ namespace BeautySmileCRM.Models
         public virtual DbSet<FinancialTransactionView> FinancialTransactionView { get; set; }
         public virtual DbSet<DBVersion> DBVersions { get; set; }
         public virtual DbSet<Service> Services { get; set; }
+        public virtual DbSet<AppointmentDetail> AppointmentDetails { get; set; }
     
         public virtual int CreateFinancialTransaction(Nullable<int> userID, Nullable<int> transactionTypeID, Nullable<int> customerID, Nullable<int> appointmentID, Nullable<decimal> amount, string comment)
         {

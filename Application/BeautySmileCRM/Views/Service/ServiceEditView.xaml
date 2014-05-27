@@ -61,7 +61,7 @@
                    Text="Норма времени, мин" 
                    Style="{StaticResource GroupItem}"/>
         <dxe:SpinEdit Grid.Column="2" Grid.Row="2"
-                      MinValue="0" MaxValue="600"
+                      MinValue="0" MaxValue="3600"
                       IsFloatValue="False">
             <dxe:SpinEdit.EditValue>
                 <Binding Path="WorkingMinuts"

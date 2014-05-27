@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using BeautySmileCRM.Enums;
+using BeautySmileCRM.Services;
 using DevExpress.Xpf.Mvvm;
 using SmartClasses.Attributes;
 using SmartClasses.Extensions;
@@ -111,6 +112,7 @@ namespace BeautySmileCRM.ViewModels.Base
             Mode = mode;
             DialogService = dialogService;
             MessageService = messageService;
+            SesionService.ClearCache();
         }
 
         public MessageBoxResult ShowEditDialog()

@@ -15,6 +15,8 @@ using BeautySmileCRM.Enums;
 using System.ComponentModel;
 using SmartClasses.Attributes;
 using System.Windows;
+using BeautySmileCRM.Services;
+using DevExpress.Xpf.Grid;
 
 namespace BeautySmileCRM.ViewModels
 {
@@ -35,26 +37,32 @@ namespace BeautySmileCRM.ViewModels
                             errorMessage = "Дата начала визита не может быть больше даты его окончания!";
                         };
                         break;
-                    case "StaffID":
-                        if (StaffID <= 0)
+                    case "Details":
+                        if(Details.Count == 0)
                         {
-                            errorMessage = "Не указан лечащий врач!";
-                        };
-                        break;
-                    case "Purpose":
-                        if(String.IsNullOrWhiteSpace(Purpose))
-                        {
-                            errorMessage = "Не указана цель визита!";
+                            errorMessage = "Не указаны услуги, оказываемые пациенту за время визита!";
                         }
                         break;
+
                 };
                 return errorMessage;
             }
         }
         #endregion
 
+        public ICommand AddServiceCommand { get; private set; }
+        public ICommand RemoveServiceCommand { get; private set; }
+
         private Models.Appointment _data;
+        private ObservableCollection<AppointmentDetail> _details;
+        private AppointmentDetail _selectedDetail;
+        private IEnumerable<Models.Staff> _staffs;
+        private IEnumerable<Models.Service> _services;
+
         private DateTime _duration;
+
+        public IEnumerable<Models.Service> AllServices { get { return _services; } }
+        public IEnumerable<Models.Staff> AllStaffs{ get { return _staffs; } }
 
         public string ClientFullName 
         {
@@ -105,34 +113,6 @@ namespace BeautySmileCRM.ViewModels
                     RaisePropertyChanged("Duration");
                     AllowSave = true;
                     EndTime = StartTime.AddHours(_duration.Hour).AddMinutes(_duration.Minute);
-                }
-            }
-        }
-        [Validate()]
-        public int StaffID
-        {
-            get { return _data.StaffID; }
-            set
-            {
-                if (_data.StaffID != value)
-                {
-                    _data.StaffID = value;
-                    RaisePropertyChanged("StaffID");
-                    AllowSave = true;
-                }
-            }
-        }
-        [Validate()]
-        public string Purpose
-        {
-            get { return _data.Purpose; }
-            set
-            {
-                if (_data.Purpose != value)
-                {
-                    _data.Purpose = value;
-                    RaisePropertyChanged("Purpose");
-                    AllowSave = true;
                 }
             }
         }
@@ -200,22 +180,72 @@ namespace BeautySmileCRM.ViewModels
             get { return Mode == DialogMode.Update; }
         }
 
-        public IDictionary<int, string> Staff
+        public AppointmentDetail SelectedDetail
         {
-            get
+            get { return _selectedDetail; }
+            set
             {
-                return _dc.Staffs.Where(x => !x.DismissalDate.HasValue || x.DismissalDate < _data.EndTime).ToDictionary(x => x.ID, y => String.Format("{0} - {1}", y.ShortName, y.Position));
+                if(_selectedDetail != value)
+                {
+                    _selectedDetail = value;
+                    if (_selectedDetail != null)
+                    {
+                        _selectedDetail.PropertyChanged -= _selectedDetail_PropertyChanged;
+                        _selectedDetail.PropertyChanged += _selectedDetail_PropertyChanged;
+                    }
+                    RaisePropertyChanged("SelectedDetail");
+                    RaisePropertiesChanged(BindGroupAttribute.GetPropertiesOfGroup(this.GetType(), "Detail")
+                        .Select(x => x.Name)
+                        .ToArray());
+                }
             }
         }
-        public IEnumerable<string> Purposes
+
+        private void _selectedDetail_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if(e.PropertyName == "ServiceID")
+            {
+                var row = (AppointmentDetail)sender;
+                row.StaffID = _staffs.Where(x => x.Services.Any(t => t.ID == row.ServiceID)).First().ID;
+                row.Price = _services.Single(x => x.ID == row.ServiceID).Price;
+            }
+            if(e.PropertyName == "Price")
+            {
+                Price = Details.Sum(x => x.Price);
+            }
+        }
+        [Validate()]
+        public ObservableCollection<AppointmentDetail> Details
+        {
+            get { return _details; }
+            set
+            {
+                if(_details != value)
+                {
+                    _details = value;
+                    RaisePropertyChanged("Details");
+                }
+            }
+        }
+        [BindGroup("Detail")]
+        public IEnumerable<Models.Staff> Staffs
         {
             get
             {
-                return _dc.Appointments
-                    .Select(x => x.Purpose)
-                    .Distinct()
-                    .Take(100)
-                    .ToList();
+                return _staffs
+                    .Where(x => SelectedDetail != null && _data != null 
+                            && (!x.DismissalDate.HasValue || x.DismissalDate < _data.EndTime)
+                            && (SelectedDetail.ServiceID <= 0 || x.Services.Any(t => t.ID == SelectedDetail.ServiceID)));
+            }
+        }
+        [BindGroup("Detail")]
+        public IEnumerable<Models.Service> Services
+        {
+            get 
+            {
+                return _services
+                    .Where(x => SelectedDetail != null 
+                            && (SelectedDetail.StaffID <= 0 || x.Staffs.Any(t => t.ID == SelectedDetail.StaffID)));
             }
         }
 
@@ -223,13 +253,30 @@ namespace BeautySmileCRM.ViewModels
             : base(mode, dialogService, messageService)
         {
             SubTitle = "визита";
+            AddServiceCommand = new DelegateCommand<object>(OnAddServiceCommand,
+                x => { return CurrentUser.HasPrivilege(Privilege.CreateAppointment) || CurrentUser.HasPrivilege(Privilege.ModifyAppointment); });
+            RemoveServiceCommand = new DelegateCommand<object>(OnRemoveServiceCommand,
+                x => { return CurrentUser.HasPrivilege(Privilege.CreateAppointment) || CurrentUser.HasPrivilege(Privilege.ModifyAppointment); });
+            
+            _services = _dc.Services
+                .Where(x => x.Staffs.Any())
+                .ToList();
+            _staffs = _dc.Staffs
+                .Where(x => x.Services.Any())
+                .ToList();
+
+            SesionService.Cache.Add("AllServices", _services);
+            SesionService.Cache.Add("AllStaffs", _staffs);
+
             if (appointmentID.HasValue)
             {
                 _data = _dc.Appointments
                     .Where(x => x.ID == appointmentID)
+                    .Include(x => x.AppointmentDetails)
                     .Include(x => x.Customer)
                     .Include(x => x.Customer.DiscountCard)
                     .First();
+                Details = new ObservableCollection<AppointmentDetail>(_data.AppointmentDetails.Cast<AppointmentDetail>());
                 _data.ModifiedBy = CurrentUser.ID;
                 _data.ModificationTime = DateTime.Now;
             }
@@ -254,6 +301,8 @@ namespace BeautySmileCRM.ViewModels
                     ToPay = 0m,
                     StateID = (int)AppointmentState.Active
                 };
+                Details = new ObservableCollection<AppointmentDetail>();
+                
                 _dc.Appointments.Add(_data);
             };
             Duration = new DateTime(_data.StartTime.Year, _data.StartTime.Month, _data.StartTime.Day, (int)_data.EndTime.Subtract(_data.StartTime).TotalHours, 0, 0);
@@ -303,7 +352,7 @@ namespace BeautySmileCRM.ViewModels
                         Appointment = _data,
                         Customer = _data.Customer,
                         Amount = ToPay,
-                        CreatedBy = Services.UserProfileService.CurrentUser.ID,
+                        CreatedBy = UserProfileService.CurrentUser.ID,
                         CreationTime = DateTime.Now,
                         TransactionTypeID = (int)TransactionType.Deposit
                     };
@@ -332,6 +381,19 @@ namespace BeautySmileCRM.ViewModels
                 };
             }
         }
+        private void OnAddServiceCommand(object ctrl)
+        {
+            var row = new AppointmentDetail();
+            Details.Add(row);
+            SelectedDetail = row;
+        }
+        private void OnRemoveServiceCommand(object ctrl)
+        {
+            if (MessageService.Show("Вы действительно хотите исключить выбранную услугу?", "Подтвердите удаление", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                Details.Remove(SelectedDetail);
+            };
+        }
 
         protected override void AllowSaveChanged()
         {
@@ -343,6 +405,11 @@ namespace BeautySmileCRM.ViewModels
             base.ApplyCommandExecuted();
             if (Validate())
             {
+                _dc.AppointmentDetails.RemoveRange(_data.AppointmentDetails);
+                foreach (var d in Details)
+                {
+                    _dc.AppointmentDetails.Add(d);
+                };
                 _dc.SaveChanges();
             };
         }

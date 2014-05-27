@@ -209,6 +209,9 @@ exec sp_addextendedproperty N'MS_Description',
                             N'Price'
 go
 
+grant select, update, insert, delete on CONF.Service to AppUser
+go
+
 create table CRM.STF.StaffService (
     StaffID int not null,
     ServiceID int not null,
@@ -244,4 +247,96 @@ exec sp_addextendedproperty N'MS_Description',
                             N'StaffService',
                             'COLUMN',
                             N'ServiceID'
+go
+
+grant select, update, insert, delete on STF.StaffService to AppUser
+go
+
+create table CRM.CST.AppointmentDetail (
+    ID int identity,
+    AppointmentID int not null,
+    StaffID int not null,
+    ServiceID int not null,
+    Price decimal(13, 2) not null,
+    constraint PK#AppointmentDetail primary key (ID),
+    constraint FK#AppointmentDetail@AppointmentID#Appointment@ID foreign key (AppointmentID) references CST.Appointment (ID),
+    constraint FK#AppointmentDetail@ServiceID#Service@ID foreign key (ServiceID) references CONF.Service (ID),
+    constraint FK#AppointmentDetail@StaffID#Staff@ID foreign key (StaffID) references STF.Staff (ID)
+) on [PRIMARY]
+go
+
+create index FK#AppointmentDetail@ServiceID#Service@ID
+on CRM.CST.AppointmentDetail (ServiceID)
+on [PRIMARY]
+go
+
+create index IFK#AppointmentDetail@AppointmentID#Appointment@ID
+on CRM.CST.AppointmentDetail (AppointmentID)
+on [PRIMARY]
+go
+
+create index IFK#AppointmentDetail@StaffID#Staff@ID
+on CRM.CST.AppointmentDetail (StaffID)
+on [PRIMARY]
+go
+
+exec sp_addextendedproperty N'MS_Description',
+                            N'Деталб события',
+                            'SCHEMA',
+                            N'CST',
+                            'TABLE',
+                            N'AppointmentDetail'
+go
+
+exec sp_addextendedproperty N'MS_Description',
+                            N'ИД детали события',
+                            'SCHEMA',
+                            N'CST',
+                            'TABLE',
+                            N'AppointmentDetail',
+                            'COLUMN',
+                            N'ID'
+go
+
+exec sp_addextendedproperty N'MS_Description',
+                            N'ИД события',
+                            'SCHEMA',
+                            N'CST',
+                            'TABLE',
+                            N'AppointmentDetail',
+                            'COLUMN',
+                            N'AppointmentID'
+go
+
+exec sp_addextendedproperty N'MS_Description',
+                            N'ИД сотрудника',
+                            'SCHEMA',
+                            N'CST',
+                            'TABLE',
+                            N'AppointmentDetail',
+                            'COLUMN',
+                            N'StaffID'
+go
+
+exec sp_addextendedproperty N'MS_Description',
+                            N'ИД услуги',
+                            'SCHEMA',
+                            N'CST',
+                            'TABLE',
+                            N'AppointmentDetail',
+                            'COLUMN',
+                            N'ServiceID'
+go
+
+exec sp_addextendedproperty N'MS_Description',
+                            N'Фактическая стоимость',
+                            'SCHEMA',
+                            N'CST',
+                            'TABLE',
+                            N'AppointmentDetail',
+                            'COLUMN',
+                            N'Price'
+go
+
+grant select, update, insert, delete on CST.AppointmentDetail to AppUser
 go

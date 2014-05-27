@@ -41,6 +41,10 @@
         <EntityTypeShape EntityType="CRMModel.DBVersion" Width="1.5" PointX="14.125" PointY="2.75" />
         <EntityTypeShape EntityType="CRMModel.Service" Width="1.5" PointX="7.375" PointY="10.75" />
         <AssociationConnector Association="CRMModel.StaffService" />
+        <EntityTypeShape EntityType="CRMModel.AppointmentDetail" Width="1.5" PointX="16.75" PointY="5.625" />
+        <AssociationConnector Association="CRMModel.FK_AppointmentDetail_ServiceID_Service_ID" />
+        <AssociationConnector Association="CRMModel.FK_AppointmentDetail_AppointmentID_Appointment_ID" />
+        <AssociationConnector Association="CRMModel.FK_AppointmentDetail_StaffID_Staff_ID" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

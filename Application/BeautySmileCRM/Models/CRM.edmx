@@ -110,6 +110,16 @@
           <Property Name="ModificationTime" Type="datetime" />
           <Property Name="ModifiedBy" Type="int" />
         </EntityType>
+        <EntityType Name="AppointmentDetail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AppointmentID" Type="int" Nullable="false" />
+          <Property Name="StaffID" Type="int" Nullable="false" />
+          <Property Name="ServiceID" Type="int" Nullable="false" />
+          <Property Name="Price" Type="decimal" Precision="13" Scale="2" Nullable="false" />
+        </EntityType>
         <EntityType Name="Customer">
           <Key>
             <PropertyRef Name="ID" />
@@ -398,6 +408,42 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK#AppointmentDetail@AppointmentID#Appointment@ID">
+          <End Role="Appointment" Type="Self.Appointment" Multiplicity="1" />
+          <End Role="AppointmentDetail" Type="Self.AppointmentDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Appointment">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AppointmentDetail">
+              <PropertyRef Name="AppointmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK#AppointmentDetail@ServiceID#Service@ID">
+          <End Role="Service" Type="Self.Service" Multiplicity="1" />
+          <End Role="AppointmentDetail" Type="Self.AppointmentDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Service">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AppointmentDetail">
+              <PropertyRef Name="ServiceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK#AppointmentDetail@StaffID#Staff@ID">
+          <End Role="Staff" Type="Self.Staff" Multiplicity="1" />
+          <End Role="AppointmentDetail" Type="Self.AppointmentDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AppointmentDetail">
+              <PropertyRef Name="StaffID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK#Customer@DiscountCardID#DiscountCard@ID">
           <End Role="DiscountCard" Type="Self.DiscountCard" Multiplicity="0..1" />
           <End Role="Customer" Type="Self.Customer" Multiplicity="*" />
@@ -531,7 +577,9 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
           </ReferentialConstraint>
         </Association>
         <Association Name="FK#StaffService@StaffID#Staff@ID">
-          <End Role="Staff" Type="Self.Staff" Multiplicity="1" />
+          <End Role="Staff" Type="Self.Staff" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="StaffService" Type="Self.StaffService" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Staff">
@@ -605,6 +653,7 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
           <EntitySet Name="Service" EntityType="Self.Service" Schema="CONF" store:Type="Tables" />
           <EntitySet Name="TransactionType" EntityType="Self.TransactionType" Schema="CONF" store:Type="Tables" />
           <EntitySet Name="Appointment" EntityType="Self.Appointment" Schema="CST" store:Type="Tables" />
+          <EntitySet Name="AppointmentDetail" EntityType="Self.AppointmentDetail" Schema="CST" store:Type="Tables" />
           <EntitySet Name="Customer" EntityType="Self.Customer" Schema="CST" store:Type="Tables" />
           <EntitySet Name="DiscountCard" EntityType="Self.DiscountCard" Schema="CST" store:Type="Tables" />
           <EntitySet Name="FinancialTransaction" EntityType="Self.FinancialTransaction" Schema="CST" store:Type="Tables" />
@@ -719,6 +768,18 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
           <AssociationSet Name="FK#Appointment@StateID#AppointmentState@ID" Association="Self.FK#Appointment@StateID#AppointmentState@ID">
             <End Role="AppointmentState" EntitySet="AppointmentState" />
             <End Role="Appointment" EntitySet="Appointment" />
+          </AssociationSet>
+          <AssociationSet Name="FK#AppointmentDetail@AppointmentID#Appointment@ID" Association="Self.FK#AppointmentDetail@AppointmentID#Appointment@ID">
+            <End Role="Appointment" EntitySet="Appointment" />
+            <End Role="AppointmentDetail" EntitySet="AppointmentDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK#AppointmentDetail@ServiceID#Service@ID" Association="Self.FK#AppointmentDetail@ServiceID#Service@ID">
+            <End Role="Service" EntitySet="Service" />
+            <End Role="AppointmentDetail" EntitySet="AppointmentDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK#AppointmentDetail@StaffID#Staff@ID" Association="Self.FK#AppointmentDetail@StaffID#Staff@ID">
+            <End Role="Staff" EntitySet="Staff" />
+            <End Role="AppointmentDetail" EntitySet="AppointmentDetail" />
           </AssociationSet>
           <AssociationSet Name="FK#Customer@DiscountCardID#DiscountCard@ID" Association="Self.FK#Customer@DiscountCardID#DiscountCard@ID">
             <End Role="DiscountCard" EntitySet="DiscountCard" />
@@ -893,6 +954,19 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
             <End Role="Service" EntitySet="Services" />
             <End Role="Staff" EntitySet="Staffs" />
           </AssociationSet>
+          <EntitySet Name="AppointmentDetails" EntityType="CRMModel.AppointmentDetail" />
+          <AssociationSet Name="FK_AppointmentDetail_ServiceID_Service_ID" Association="CRMModel.FK_AppointmentDetail_ServiceID_Service_ID">
+            <End Role="Service" EntitySet="Services" />
+            <End Role="AppointmentDetail" EntitySet="AppointmentDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AppointmentDetail_AppointmentID_Appointment_ID" Association="CRMModel.FK_AppointmentDetail_AppointmentID_Appointment_ID">
+            <End Role="Appointment" EntitySet="Appointments" />
+            <End Role="AppointmentDetail" EntitySet="AppointmentDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AppointmentDetail_StaffID_Staff_ID" Association="CRMModel.FK_AppointmentDetail_StaffID_Staff_ID">
+            <End Role="Staff" EntitySet="Staffs" />
+            <End Role="AppointmentDetail" EntitySet="AppointmentDetails" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Privilege">
           <Key>
@@ -927,10 +1001,10 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Code" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="ID" Type="Int32" Nullable="false" a:GetterAccess="Public" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" a:SetterAccess="Public" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" a:GetterAccess="Public" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" a:SetterAccess="Public" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" a:GetterAccess="Public" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" a:SetterAccess="Public" />
+          <Property Name="Description" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" a:GetterAccess="Public" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" a:SetterAccess="Public" />
           <NavigationProperty Name="Appointments" Relationship="CRMModel.FK_Appointment_StateID_AppointmentState_ID" FromRole="AppointmentState" ToRole="Appointment" />
         </EntityType>
         <EntityType Name="CumulativeDiscount">
@@ -1000,6 +1074,7 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
           <NavigationProperty Name="Staff" Relationship="CRMModel.FK_Appointment_StaffID_Staff_ID" FromRole="Appointment" ToRole="Staff" />
           <NavigationProperty Name="FinancialTransactions" Relationship="CRMModel.FK_FinancialTransaction_AppointmentID_Appointment_iD" FromRole="Appointment" ToRole="FinancialTransaction" />
           <Property Name="CreationTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="AppointmentDetails" Relationship="CRMModel.FK_AppointmentDetail_AppointmentID_Appointment_ID" FromRole="Appointment" ToRole="AppointmentDetail" />
         </EntityType>
         <EntityType Name="Customer">
           <Key>
@@ -1085,6 +1160,7 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
           <NavigationProperty Name="Appointments" Relationship="CRMModel.FK_Appointment_StaffID_Staff_ID" FromRole="Staff" ToRole="Appointment" />
           <Property Name="Position" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Services" Relationship="CRMModel.StaffService" FromRole="Staff" ToRole="Service" />
+          <NavigationProperty Name="AppointmentDetails" Relationship="CRMModel.FK_AppointmentDetail_StaffID_Staff_ID" FromRole="Staff" ToRole="AppointmentDetail" />
         </EntityType>
         <Association Name="FK_Privilege_GroupID_PrivelegeGroup_ID">
           <End Type="CRMModel.PrivelegeGroup" Role="PrivelegeGroup" Multiplicity="1" />
@@ -1397,10 +1473,60 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
           <Property Name="WorkingMinuts" Type="Int32" Nullable="false" />
           <Property Name="Price" Type="Decimal" Nullable="false" Precision="13" Scale="2" />
           <NavigationProperty Name="Staffs" Relationship="CRMModel.StaffService" FromRole="Service" ToRole="Staff" />
+          <NavigationProperty Name="AppointmentDetails" Relationship="CRMModel.FK_AppointmentDetail_ServiceID_Service_ID" FromRole="Service" ToRole="AppointmentDetail" />
         </EntityType>
         <Association Name="StaffService">
           <End Type="CRMModel.Service" Role="Service" Multiplicity="*" />
           <End Type="CRMModel.Staff" Role="Staff" Multiplicity="*" />
+        </Association>
+        <EntityType Name="AppointmentDetail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AppointmentID" Type="Int32" Nullable="false" />
+          <Property Name="StaffID" Type="Int32" Nullable="false" />
+          <Property Name="ServiceID" Type="Int32" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Nullable="false" Precision="13" Scale="2" />
+          <NavigationProperty Name="Service" Relationship="CRMModel.FK_AppointmentDetail_ServiceID_Service_ID" FromRole="AppointmentDetail" ToRole="Service" />
+          <NavigationProperty Name="Appointment" Relationship="CRMModel.FK_AppointmentDetail_AppointmentID_Appointment_ID" FromRole="AppointmentDetail" ToRole="Appointment" />
+          <NavigationProperty Name="Staff" Relationship="CRMModel.FK_AppointmentDetail_StaffID_Staff_ID" FromRole="AppointmentDetail" ToRole="Staff" />
+        </EntityType>
+        <Association Name="FK_AppointmentDetail_ServiceID_Service_ID">
+          <End Type="CRMModel.Service" Role="Service" Multiplicity="1" />
+          <End Type="CRMModel.AppointmentDetail" Role="AppointmentDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Service">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AppointmentDetail">
+              <PropertyRef Name="ServiceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AppointmentDetail_AppointmentID_Appointment_ID">
+          <End Type="CRMModel.Appointment" Role="Appointment" Multiplicity="1" />
+          <End Type="CRMModel.AppointmentDetail" Role="AppointmentDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Appointment">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AppointmentDetail">
+              <PropertyRef Name="AppointmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AppointmentDetail_StaffID_Staff_ID">
+          <End Type="CRMModel.Staff" Role="Staff" Multiplicity="1" />
+          <End Type="CRMModel.AppointmentDetail" Role="AppointmentDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="AppointmentDetail">
+              <PropertyRef Name="StaffID" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
         </Schema>
     </edmx:ConceptualModels>
@@ -1763,6 +1889,17 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
               <ScalarProperty Name="ID" ColumnName="ServiceID" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="AppointmentDetails">
+            <EntityTypeMapping TypeName="CRMModel.AppointmentDetail">
+              <MappingFragment StoreEntitySet="AppointmentDetail">
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
+                <ScalarProperty Name="StaffID" ColumnName="StaffID" />
+                <ScalarProperty Name="AppointmentID" ColumnName="AppointmentID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -17,6 +17,7 @@ namespace BeautySmileCRM.Models
         public Appointment()
         {
             this.FinancialTransactions = new HashSet<FinancialTransaction>();
+            this.AppointmentDetails = new HashSet<AppointmentDetail>();
         }
     
         public int ID { get; set; }
@@ -41,5 +42,6 @@ namespace BeautySmileCRM.Models
         public virtual Customer Customer { get; set; }
         public virtual Staff Staff { get; set; }
         public virtual ICollection<FinancialTransaction> FinancialTransactions { get; set; }
+        public virtual ICollection<AppointmentDetail> AppointmentDetails { get; set; }
     }
 }

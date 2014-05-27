@@ -12,20 +12,16 @@ namespace BeautySmileCRM.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Service
+    public partial class AppointmentDetail
     {
-        public Service()
-        {
-            this.Staffs = new HashSet<Staff>();
-            this.AppointmentDetails = new HashSet<AppointmentDetail>();
-        }
-    
         public int ID { get; set; }
-        public string Description { get; set; }
-        public int WorkingMinuts { get; set; }
+        public int AppointmentID { get; set; }
+        public int StaffID { get; set; }
+        public int ServiceID { get; set; }
         public decimal Price { get; set; }
     
-        public virtual ICollection<Staff> Staffs { get; set; }
-        public virtual ICollection<AppointmentDetail> AppointmentDetails { get; set; }
+        public virtual Service Service { get; set; }
+        public virtual Appointment Appointment { get; set; }
+        public virtual Staff Staff { get; set; }
     }
 }

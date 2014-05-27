@@ -18,6 +18,7 @@ namespace BeautySmileCRM.Models
         {
             this.Appointments = new HashSet<Appointment>();
             this.Services = new HashSet<Service>();
+            this.AppointmentDetails = new HashSet<AppointmentDetail>();
         }
     
         public int ID { get; set; }
@@ -32,5 +33,6 @@ namespace BeautySmileCRM.Models
         public virtual User User { get; set; }
         public virtual ICollection<Appointment> Appointments { get; set; }
         public virtual ICollection<Service> Services { get; set; }
+        public virtual ICollection<AppointmentDetail> AppointmentDetails { get; set; }
     }
 }

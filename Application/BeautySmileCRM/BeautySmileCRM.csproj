@@ -155,6 +155,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Converters\AuthorizationStageToVisibilityConverter.cs" />
+    <Compile Include="Converters\StaffForServiceConverter.cs" />
     <Compile Include="Converters\IntToVisibilityConverter.cs" />
     <Compile Include="Converters\ObjectToTableViewConverter.cs" />
     <Compile Include="Converters\ObjectToVisibilityConverter.cs" />
@@ -191,6 +192,9 @@
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Appointment.Extended.cs" />
+    <Compile Include="Models\AppointmentDetail.cs">
+      <DependentUpon>CRM.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\AppointmentState.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
@@ -264,9 +268,11 @@
     <Compile Include="Models\User.Extended.cs" />
     <Compile Include="Services\ApplicationService.cs" />
     <Compile Include="Services\NavigationService.cs" />
+    <Compile Include="Services\SesionService.cs" />
     <Compile Include="Services\UserProfileService.cs" />
     <Compile Include="Utils\Notification.cs" />
     <Compile Include="ViewModels\Administration\AdminEdit.cs" />
+    <Compile Include="ViewModels\Appointments\AppointmentDetail.cs" />
     <Compile Include="ViewModels\Base\BaseDialogViewModel.cs" />
     <Compile Include="ViewModels\Base\BaseNavigationViewModel.cs" />
     <Compile Include="ViewModels\FinancialTransaction\FinancialTransactionEdit.cs" />
