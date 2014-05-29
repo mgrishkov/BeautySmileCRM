@@ -4,11 +4,11 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="0b23b891dfaa4c78a5a8b0057803e60b" Name="Diagram1" ZoomLevel="109">
+      <Diagram DiagramId="0b23b891dfaa4c78a5a8b0057803e60b" Name="Diagram1" ZoomLevel="67">
         <EntityTypeShape EntityType="CRMModel.Privilege" Width="1.5" PointX="0.75" PointY="7.75" />
         <EntityTypeShape EntityType="CRMModel.User" Width="1.5" PointX="3" PointY="7" />
         <EntityTypeShape EntityType="CRMModel.AppointmentPaymentState" Width="1.5" PointX="5.25" PointY="7.5" />
-        <EntityTypeShape EntityType="CRMModel.AppointmentState" Width="1.5" PointX="5.25" PointY="12.375" />
+        <EntityTypeShape EntityType="CRMModel.AppointmentState" Width="2.125" PointX="4.625" PointY="12.375" />
         <EntityTypeShape EntityType="CRMModel.CumulativeDiscount" Width="1.5" PointX="9.75" PointY="6.75" />
         <EntityTypeShape EntityType="CRMModel.DiscountType" Width="1.5" PointX="0.75" PointY="2.875" />
         <EntityTypeShape EntityType="CRMModel.PrivelegeGroup" Width="1.5" PointX="1.5" PointY="11.875" />
@@ -30,7 +30,6 @@
         <AssociationConnector Association="CRMModel.FK_DiscountCard_DiscountTypeID_DiscountTYpe_ID" />
         <AssociationConnector Association="CRMModel.FK_FinancialTransaction_TransactionTypeID_TransactionType_ID" />
         <AssociationConnector Association="CRMModel.FK_Appointment_CustomerID_Customer_ID" />
-        <AssociationConnector Association="CRMModel.FK_Appointment_StaffID_Staff_ID" />
         <AssociationConnector Association="CRMModel.FK_FinancialTransaction_AppointmentID_Appointment_iD" />
         <AssociationConnector Association="CRMModel.FK_Customer_DiscountCardID_DiscountCard_ID" />
         <AssociationConnector Association="CRMModel.FK_FinancialTransaction_CustomerID_Customer_ID" />
@@ -41,7 +40,7 @@
         <EntityTypeShape EntityType="CRMModel.DBVersion" Width="1.5" PointX="14.125" PointY="2.75" />
         <EntityTypeShape EntityType="CRMModel.Service" Width="1.5" PointX="7.375" PointY="10.75" />
         <AssociationConnector Association="CRMModel.StaffService" />
-        <EntityTypeShape EntityType="CRMModel.AppointmentDetail" Width="1.5" PointX="16.75" PointY="5.625" />
+        <EntityTypeShape EntityType="CRMModel.AppointmentDetail" Width="2.625" PointX="16.75" PointY="5.625" />
         <AssociationConnector Association="CRMModel.FK_AppointmentDetail_ServiceID_Service_ID" />
         <AssociationConnector Association="CRMModel.FK_AppointmentDetail_AppointmentID_Appointment_ID" />
         <AssociationConnector Association="CRMModel.FK_AppointmentDetail_StaffID_Staff_ID" />

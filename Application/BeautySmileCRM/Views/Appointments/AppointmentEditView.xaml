@@ -139,23 +139,31 @@
                         <dxe:ComboBoxEditSettings ItemsSource="{Binding AllServices}" DisplayMember="Description" ValueMember="ID" AutoComplete="True" IncrementalFiltering="True" />
                     </dxg:GridColumn.EditSettings>
                 </dxg:GridColumn>
-                <dxg:GridColumn FieldName="StaffID" Header="Лечащий врач" Width="190" ReadOnly="False" VisibleIndex="1">
-                    <dxg:GridColumn.CellTemplate>
-                        <DataTemplate>
+                <dxg:GridColumn FieldName="StaffID" Header="Лечащий врач" Width="160" ReadOnly="False" VisibleIndex="1">
+                    
+                    <dxg:GridColumn.DisplayTemplate>
+                        <ControlTemplate>
+                            <TextBlock Text="{Binding Data.StaffID, Converter={converters:StaffIDToShortNameConverter}}" 
+                                       Padding="5 0 0 0" VerticalAlignment="Center"/>
+                        </ControlTemplate>
+                    </dxg:GridColumn.DisplayTemplate>
+                    <dxg:GridColumn.EditTemplate>
+                        <ControlTemplate>
                             <dxe:ComboBoxEdit DisplayMember="ShortName" ValueMember="ID" ItemsSource="{Binding Data, Converter={converters:StaffForServiceConverter}}"
                                               EditValue="{Binding Data.StaffID}"/>
-                        </DataTemplate>
-                    </dxg:GridColumn.CellTemplate>
+                        </ControlTemplate>
+                    </dxg:GridColumn.EditTemplate>
                 </dxg:GridColumn>
-                <dxg:GridColumn FieldName="Price" Header="Стоимость" Width="90" ReadOnly="False" VisibleIndex="2">
+                
+                <dxg:GridColumn FieldName="Price" Header="Стоимость" Width="140" ReadOnly="False" VisibleIndex="2">
                     <dxg:GridColumn.EditSettings>
                         <dxe:SpinEditSettings IsFloatValue="True"  MaskType="Numeric" Mask="C" MaskUseAsDisplayFormat="True" HorizontalContentAlignment="Right"/>
                     </dxg:GridColumn.EditSettings>
                 </dxg:GridColumn>
             </dxg:GridControl.Columns>
             <dxg:GridControl.View>
-                <dxg:TableView AllowEditing="True" AllowHorizontalScrollingVirtualization="False" 
-            	               ShowGroupPanel="False" ShowFilterPanelMode="Never" />
+                <dxg:TableView AutoWidth="True" AllowEditing="True" AllowHorizontalScrollingVirtualization="False" 
+            	               ShowGroupPanel="False" ShowFilterPanelMode="Never"/>
             </dxg:GridControl.View>
         </dxg:GridControl>
 

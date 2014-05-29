@@ -18,27 +18,29 @@ using BeautySmileCRM.Services;
 
 namespace BeautySmileCRM.Converters
 {
-    public class StaffForServiceConverter : MarkupExtension, IValueConverter
+    public class StaffIDToShortNameConverter : MarkupExtension, IValueConverter
     {
-        public StaffForServiceConverter()
+        public StaffIDToShortNameConverter()
         {
         }
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            IEnumerable<Models.Staff> staffs = null;
+            var result = String.Empty;
             try
             {
-                var rowValueConverter = new RowPropertyValueConverter();
-                var serviceID = (int?)(rowValueConverter as IValueConverter).Convert(value, null, "ServiceID", null);
-                staffs = SesionService.Cache["AllStaffs"] as IEnumerable<Models.Staff>;
-                if (staffs != null && serviceID.HasValue)
+                if (value is int)
                 {
-                    return staffs.Where(x => x.Services.Any(s => s.ID == serviceID));
-                };
-                
+                    var staffs = SesionService.Cache["AllStaffs"] as IEnumerable<Models.Staff>;
+                    var staff = staffs.SingleOrDefault(x => x.ID == (int)value);
+
+                    if (staff != null)
+                    {
+                        result = staff.ShortName;
+                    };
+                }
             }
             catch { }
-            return staffs;
+            return result;
         }
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {

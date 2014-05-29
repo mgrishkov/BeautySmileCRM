@@ -17,6 +17,7 @@ using SmartClasses.Attributes;
 using System.Windows;
 using BeautySmileCRM.Services;
 using DevExpress.Xpf.Grid;
+using System.Data.Entity.Validation;
 
 namespace BeautySmileCRM.ViewModels
 {
@@ -268,6 +269,8 @@ namespace BeautySmileCRM.ViewModels
             SesionService.Cache.Add("AllServices", _services);
             SesionService.Cache.Add("AllStaffs", _staffs);
 
+            Details = new ObservableCollection<AppointmentDetail>();
+
             if (appointmentID.HasValue)
             {
                 _data = _dc.Appointments
@@ -276,7 +279,10 @@ namespace BeautySmileCRM.ViewModels
                     .Include(x => x.Customer)
                     .Include(x => x.Customer.DiscountCard)
                     .First();
-                Details = new ObservableCollection<AppointmentDetail>(_data.AppointmentDetails.Cast<AppointmentDetail>());
+
+                _data.AppointmentDetails.ToList().ForEach(x => Details.Add(x));
+
+                
                 _data.ModifiedBy = CurrentUser.ID;
                 _data.ModificationTime = DateTime.Now;
             }
@@ -301,12 +307,18 @@ namespace BeautySmileCRM.ViewModels
                     ToPay = 0m,
                     StateID = (int)AppointmentState.Active
                 };
-                Details = new ObservableCollection<AppointmentDetail>();
                 
                 _dc.Appointments.Add(_data);
             };
+
+            Details.CollectionChanged += Details_CollectionChanged;
             Duration = new DateTime(_data.StartTime.Year, _data.StartTime.Month, _data.StartTime.Day, (int)_data.EndTime.Subtract(_data.StartTime).TotalHours, 0, 0);
             
+        }
+
+        void Details_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            Price = Details.Sum(x => x.Price);
         }
         public AppointmentEdit(DialogMode mode, int clientID, IDialogService dialogService, IMessageBoxService messageService)
             : this(mode, (int?)null, clientID, dialogService, messageService)
@@ -383,7 +395,10 @@ namespace BeautySmileCRM.ViewModels
         }
         private void OnAddServiceCommand(object ctrl)
         {
-            var row = new AppointmentDetail();
+            var row = new AppointmentDetail() 
+            {
+                AppointmentID = _data.ID 
+            };
             Details.Add(row);
             SelectedDetail = row;
         }
@@ -410,31 +425,37 @@ namespace BeautySmileCRM.ViewModels
                 {
                     _dc.AppointmentDetails.Add(d);
                 };
+
                 _dc.SaveChanges();
             };
         }
 
         private void recalcToPay()
         {
-            var discount = Math.Round(Price * DiscountPercent, 2);
-
-            if(discount < _data.Customer.DiscountCard.MinDiscount)
+            if (_data.Customer.DiscountCard != null)
             {
-                Discount = _data.Customer.DiscountCard.MinDiscount;
-                DiscountPercent = Math.Round(Discount / Price, 2);
-            }
-            else if(discount > _data.Customer.DiscountCard.MaxDiscount)
-            {
-                discount = _data.Customer.DiscountCard.MaxDiscount;
-                DiscountPercent = Math.Round(Discount / Price, 2);
+                var discount = Math.Round(Price * DiscountPercent, 2);
+                if (discount < _data.Customer.DiscountCard.MinDiscount)
+                {
+                    Discount = _data.Customer.DiscountCard.MinDiscount;
+                    DiscountPercent = Math.Round(Discount / Price, 2);
+                }
+                else if (discount > _data.Customer.DiscountCard.MaxDiscount)
+                {
+                    discount = _data.Customer.DiscountCard.MaxDiscount;
+                    DiscountPercent = Math.Round(Discount / Price, 2);
+                }
+                else
+                {
+                    Discount = discount;
+                };
+                if (Discount != discount)
+                    MessageService.Show(String.Format("Скидка была скорректирована, т.к расчитанный размер скидки [{0:c}] выходит за границы доступного размера скидки для данного клиента: [{1:c} - {2:c}].", discount, _data.Customer.DiscountCard.MinDiscount, _data.Customer.DiscountCard.MaxDiscount), "Внимание!", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             else
             {
-                Discount = discount;
+                Discount = 0;
             };
-
-            if (Discount != discount)
-                MessageService.Show(String.Format("Скидка была скорректирована, т.к расчитанный размер скидки [{0:c}] выходит за границы доступного размера скидки для данного клиента: [{1:c} - {2:c}].", discount, _data.Customer.DiscountCard.MinDiscount, _data.Customer.DiscountCard.MaxDiscount), "Внимание!", MessageBoxButton.OK, MessageBoxImage.Warning);
 
             ToPay = Price - Discount;
         }

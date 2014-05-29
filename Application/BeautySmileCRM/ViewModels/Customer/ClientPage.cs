@@ -84,7 +84,7 @@ namespace BeautySmileCRM.ViewModels
         
         private IEnumerable<Models.Appointment> _visitHistory;
         private Models.Appointment _seletedAppointment;
-
+        
         private IEnumerable<Models.FinancialTransaction> _financialTransactions;
         private Models.FinancialTransaction _selectedFinancialTransaction;
 
@@ -979,7 +979,6 @@ namespace BeautySmileCRM.ViewModels
                     .Where(x => x.ID == customerID)
                     .Include(x => x.DiscountCard)
                     .Include(x => x.Appointments)
-                    .Include(x => x.Appointments.Select(t => t.Staff))
                     .Include(x => x.FinancialTransactions)
                     .First();
 

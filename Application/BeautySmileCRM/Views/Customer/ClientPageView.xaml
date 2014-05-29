@@ -604,24 +604,13 @@
                                             <dxe:DateEditSettings DisplayFormat="dd.MM.yyyy HH:mm" />
                                         </dxg:GridColumn.EditSettings>
                                     </dxg:GridColumn>
-                                    <dxg:GridColumn x:Name="purposeField" FieldName="Purpose" Header="Цель визита" Width="230" ReadOnly="True" VisibleIndex="2" >
-                                        <dxg:GridColumn.EditSettings>
-                                            <dxe:TextEditSettings />
-                                        </dxg:GridColumn.EditSettings>
-                                    </dxg:GridColumn>
-                                    <dxg:GridColumn x:Name="staffIDField" FieldName="StaffID" Header="Лечащий врач" Width="130" ReadOnly="True" VisibleIndex="3" >
-                                        <dxg:GridColumn.EditSettings>
-                                            <dxe:ComboBoxEditSettings ItemsSource="{Binding Staff}" 
-                                                                      DisplayMember="Value" ValueMember="Key"/>
-                                        </dxg:GridColumn.EditSettings>
-                                    </dxg:GridColumn>
                                     <dxg:GridColumn x:Name="StateIDField" FieldName="StateID" Header="Статус" Width="100" ReadOnly="True" VisibleIndex="4" >
                                         <dxg:GridColumn.EditSettings>
                                             <dxe:ComboBoxEditSettings ItemsSource="{Binding AppointmentStates}" 
                                                                       DisplayMember="Value" ValueMember="Key"/>
                                         </dxg:GridColumn.EditSettings>
                                     </dxg:GridColumn>
-                                    <dxg:GridColumn x:Name="priceField" FieldName="Price" Header="Сумма" Width="60" ReadOnly="True" VisibleIndex="5" >
+                                    <dxg:GridColumn x:Name="totalPriceField" FieldName="Price" Header="Сумма" Width="60" ReadOnly="True" VisibleIndex="5" >
                                         <dxg:GridColumn.EditSettings>
                                             <dxe:SpinEditSettings DisplayFormat="C" />
                                         </dxg:GridColumn.EditSettings>
@@ -666,10 +655,29 @@
                                 </dxg:GridControl.Columns>
                                 <dxg:GridControl.View>
                                     <dxg:TableView x:Name="AppointmentsTableView"
-                                                   ShowTotalSummary="True" AllowEditing="True"
-						                           ShowAutoFilterRow="True" ShowGroupedColumns="True" AllowHorizontalScrollingVirtualization="False" 
+						                           ShowAutoFilterRow="True" AllowHorizontalScrollingVirtualization="False" 
             					                   ShowGroupPanel="False" />
                                 </dxg:GridControl.View>
+
+                                <dxg:GridControl.DetailDescriptor>
+                                    <dxg:DataControlDetailDescriptor ItemsSourceBinding="{Binding AppointmentDetails}">
+                                        <dxg:GridControl>
+                                            <dxg:GridControl.Columns>
+                                                <dxg:GridColumn x:Name="serviceIDField" FieldName="Service.Description" Header="Услуга" Width="350" ReadOnly="True" VisibleIndex="1" />
+                                                <dxg:GridColumn x:Name="staffIDField" FieldName="Staff.ShortName" Header="Лечащий врач" Width="130" ReadOnly="True" VisibleIndex="2" />
+                                                <dxg:GridColumn x:Name="priceField" FieldName="Price" Header="Сумма" Width="130" ReadOnly="True" VisibleIndex="3" >
+                                                    <dxg:GridColumn.EditSettings>
+                                                        <dxe:SpinEditSettings DisplayFormat="C" />
+                                                    </dxg:GridColumn.EditSettings>
+                                                </dxg:GridColumn>
+                                            </dxg:GridControl.Columns>
+                                            <dxg:GridControl.View>
+                                                <dxg:TableView ShowGroupPanel="False" />
+                                            </dxg:GridControl.View>
+                                        </dxg:GridControl>
+                                    </dxg:DataControlDetailDescriptor>
+                                </dxg:GridControl.DetailDescriptor>
+                                
                             </dxg:GridControl>
                         </Grid>
                     </dx:DXTabItem>

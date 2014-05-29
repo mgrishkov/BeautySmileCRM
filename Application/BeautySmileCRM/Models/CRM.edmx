@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="CRMModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="CRMModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Privilege">
           <Key>
             <PropertyRef Name="ID" />
@@ -98,8 +98,6 @@
           <Property Name="CustomerID" Type="int" Nullable="false" />
           <Property Name="StartTime" Type="datetime" Nullable="false" />
           <Property Name="EndTime" Type="datetime" Nullable="false" />
-          <Property Name="StaffID" Type="int" Nullable="false" />
-          <Property Name="Purpose" Type="nvarchar" MaxLength="4000" Nullable="false" />
           <Property Name="Price" Type="decimal" Precision="13" Scale="2" Nullable="false" />
           <Property Name="DiscountPercent" Type="decimal" Precision="4" Scale="2" Nullable="false" />
           <Property Name="Discount" Type="decimal" Precision="13" Scale="2" Nullable="false" />
@@ -381,18 +379,6 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
             </Principal>
             <Dependent Role="Appointment">
               <PropertyRef Name="ModifiedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK#Appointment@StaffID#Staff@ID">
-          <End Role="Staff" Type="Self.Staff" Multiplicity="1" />
-          <End Role="Appointment" Type="Self.Appointment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Staff">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Appointment">
-              <PropertyRef Name="StaffID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -761,10 +747,6 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
             <End Role="User" EntitySet="User" />
             <End Role="Appointment" EntitySet="Appointment" />
           </AssociationSet>
-          <AssociationSet Name="FK#Appointment@StaffID#Staff@ID" Association="Self.FK#Appointment@StaffID#Staff@ID">
-            <End Role="Staff" EntitySet="Staff" />
-            <End Role="Appointment" EntitySet="Appointment" />
-          </AssociationSet>
           <AssociationSet Name="FK#Appointment@StateID#AppointmentState@ID" Association="Self.FK#Appointment@StateID#AppointmentState@ID">
             <End Role="AppointmentState" EntitySet="AppointmentState" />
             <End Role="Appointment" EntitySet="Appointment" />
@@ -897,10 +879,6 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
           </AssociationSet>
           <AssociationSet Name="FK_Appointment_CustomerID_Customer_ID" Association="CRMModel.FK_Appointment_CustomerID_Customer_ID">
             <End Role="Customer" EntitySet="Customers" />
-            <End Role="Appointment" EntitySet="Appointments" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Appointment_StaffID_Staff_ID" Association="CRMModel.FK_Appointment_StaffID_Staff_ID">
-            <End Role="Staff" EntitySet="Staffs" />
             <End Role="Appointment" EntitySet="Appointments" />
           </AssociationSet>
           <AssociationSet Name="FK_FinancialTransaction_AppointmentID_Appointment_iD" Association="CRMModel.FK_FinancialTransaction_AppointmentID_Appointment_iD">
@@ -1057,8 +1035,6 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
           <Property Name="CustomerID" Type="Int32" Nullable="false" />
           <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="EndTime" Type="DateTime" Precision="3" Nullable="false" />
-          <Property Name="StaffID" Type="Int32" Nullable="false" />
-          <Property Name="Purpose" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
           <Property Name="Price" Type="Decimal" Nullable="false" Precision="13" Scale="2" />
           <Property Name="DiscountPercent" Type="Decimal" Nullable="false" Precision="4" Scale="2" />
           <Property Name="Discount" Type="Decimal" Nullable="false" Precision="13" Scale="2" />
@@ -1071,7 +1047,6 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
           <NavigationProperty Name="ModifiedByUser" Relationship="CRMModel.FK_Appointment_ModfiedBy_User_ID" FromRole="Appointment" ToRole="User" />
           <NavigationProperty Name="AppointmentState" Relationship="CRMModel.FK_Appointment_StateID_AppointmentState_ID" FromRole="Appointment" ToRole="AppointmentState" />
           <NavigationProperty Name="Customer" Relationship="CRMModel.FK_Appointment_CustomerID_Customer_ID" FromRole="Appointment" ToRole="Customer" />
-          <NavigationProperty Name="Staff" Relationship="CRMModel.FK_Appointment_StaffID_Staff_ID" FromRole="Appointment" ToRole="Staff" />
           <NavigationProperty Name="FinancialTransactions" Relationship="CRMModel.FK_FinancialTransaction_AppointmentID_Appointment_iD" FromRole="Appointment" ToRole="FinancialTransaction" />
           <Property Name="CreationTime" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="AppointmentDetails" Relationship="CRMModel.FK_AppointmentDetail_AppointmentID_Appointment_ID" FromRole="Appointment" ToRole="AppointmentDetail" />
@@ -1157,7 +1132,6 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
           <Property Name="DismissalDate" Type="DateTime" Precision="0" />
           <Property Name="UserID" Type="Int32" />
           <NavigationProperty Name="User" Relationship="CRMModel.FK_Staff_UserID_User_ID" FromRole="Staff" ToRole="User" />
-          <NavigationProperty Name="Appointments" Relationship="CRMModel.FK_Appointment_StaffID_Staff_ID" FromRole="Staff" ToRole="Appointment" />
           <Property Name="Position" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Services" Relationship="CRMModel.StaffService" FromRole="Staff" ToRole="Service" />
           <NavigationProperty Name="AppointmentDetails" Relationship="CRMModel.FK_AppointmentDetail_StaffID_Staff_ID" FromRole="Staff" ToRole="AppointmentDetail" />
@@ -1291,18 +1265,6 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
             </Principal>
             <Dependent Role="Appointment">
               <PropertyRef Name="CustomerID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Appointment_StaffID_Staff_ID">
-          <End Type="CRMModel.Staff" Role="Staff" Multiplicity="1" />
-          <End Type="CRMModel.Appointment" Role="Appointment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Staff">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Appointment">
-              <PropertyRef Name="StaffID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1621,8 +1583,6 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
                 <ScalarProperty Name="Discount" ColumnName="Discount" />
                 <ScalarProperty Name="DiscountPercent" ColumnName="DiscountPercent" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="Purpose" ColumnName="Purpose" />
-                <ScalarProperty Name="StaffID" ColumnName="StaffID" />
                 <ScalarProperty Name="EndTime" ColumnName="EndTime" />
                 <ScalarProperty Name="StartTime" ColumnName="StartTime" />
                 <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />

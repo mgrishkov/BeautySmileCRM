@@ -155,6 +155,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Converters\AuthorizationStageToVisibilityConverter.cs" />
+    <Compile Include="Converters\StaffIDToShortNameConverter.cs" />
     <Compile Include="Converters\StaffForServiceConverter.cs" />
     <Compile Include="Converters\IntToVisibilityConverter.cs" />
     <Compile Include="Converters\ObjectToTableViewConverter.cs" />

@@ -24,8 +24,6 @@ namespace BeautySmileCRM.Models
         public int CustomerID { get; set; }
         public System.DateTime StartTime { get; set; }
         public System.DateTime EndTime { get; set; }
-        public int StaffID { get; set; }
-        public string Purpose { get; set; }
         public decimal Price { get; set; }
         public decimal DiscountPercent { get; set; }
         public decimal Discount { get; set; }
@@ -40,7 +38,6 @@ namespace BeautySmileCRM.Models
         public virtual User ModifiedByUser { get; set; }
         public virtual AppointmentState AppointmentState { get; set; }
         public virtual Customer Customer { get; set; }
-        public virtual Staff Staff { get; set; }
         public virtual ICollection<FinancialTransaction> FinancialTransactions { get; set; }
         public virtual ICollection<AppointmentDetail> AppointmentDetails { get; set; }
     }

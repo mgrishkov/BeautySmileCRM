@@ -340,3 +340,14 @@ go
 
 grant select, update, insert, delete on CST.AppointmentDetail to AppUser
 go
+
+alter table CST.Appointment drop constraint FK#Appointment@StaffID#Staff@ID
+go
+drop index I#Appointment@StaffID@StateID on CST.Appointment
+go
+alter table CST.Appointment drop column StaffID
+go
+alter table CST.Appointment drop column Purpose
+go
+
+
