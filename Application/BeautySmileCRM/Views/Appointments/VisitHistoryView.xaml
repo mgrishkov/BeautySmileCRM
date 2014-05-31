@@ -118,25 +118,20 @@
                                 </dxg:GridColumn.EditSettings>
                             </dxg:GridColumn>
                         </dxg:GridControlBand>
-                        <dxg:GridControlBand Header="Основные данные" HorizontalHeaderContentAlignment="Center" VisibleIndex="2">
-                            <dxg:GridColumn FieldName="StartTime" Header="Начало визита" Width="120" ReadOnly="True" VisibleIndex="7" >
+                        <dxg:GridControlBand Header="Визит" HorizontalHeaderContentAlignment="Center" VisibleIndex="2">
+                            <dxg:GridColumn FieldName="StartTime" Header="Начало" Width="120" ReadOnly="True" VisibleIndex="7" >
                                 <dxg:GridColumn.EditSettings>
                                     <dxe:DateEditSettings Mask="g" MaskType="DateTime" MaskUseAsDisplayFormat="True" />
                                 </dxg:GridColumn.EditSettings>
                             </dxg:GridColumn>
-                            <dxg:GridColumn FieldName="EndTime" Header="Окончание визита" Width="120" ReadOnly="True" VisibleIndex="8" >
+                            <dxg:GridColumn FieldName="EndTime" Header="Окончание" Width="120" ReadOnly="True" VisibleIndex="8" >
                                 <dxg:GridColumn.EditSettings>
                                     <dxe:DateEditSettings Mask="g" MaskType="DateTime" MaskUseAsDisplayFormat="True" />
                                 </dxg:GridColumn.EditSettings>
                             </dxg:GridColumn>
-                            <dxg:GridColumn FieldName="Purpose" Header="Цель визита" Width="280" ReadOnly="True" VisibleIndex="9" >
+                            <dxg:GridColumn FieldName="AppointementDetails" Header="Оказанные услуги" Width="250" ReadOnly="True" VisibleIndex="9" >
                                 <dxg:GridColumn.EditSettings>
-                                    <dxe:TextEditSettings />
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
-                            <dxg:GridColumn FieldName="StaffID" Header="Лечащий врач" Width="130" ReadOnly="True" VisibleIndex="10">
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:ComboBoxEditSettings ItemsSource="{Binding Staff}" DisplayMember="Value" ValueMember="Key" />
+                                    <dxe:MemoEditSettings ShowIcon="False" />
                                 </dxg:GridColumn.EditSettings>
                             </dxg:GridColumn>
                         </dxg:GridControlBand>
@@ -190,7 +185,6 @@
                             </dxg:GridColumn>
                         </dxg:GridControlBand>
                     </dxg:GridControl.Bands>
-
                     <dxg:GridControl.View>
                         <dxg:TableView x:Name="visitsView" ShowTotalSummary="True" AllowEditing="True"
 						               ShowAutoFilterRow="True" ShowGroupedColumns="True" AllowHorizontalScrollingVirtualization="False" 

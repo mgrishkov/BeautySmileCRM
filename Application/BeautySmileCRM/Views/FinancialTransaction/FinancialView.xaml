@@ -117,27 +117,17 @@
                                     <dxe:SpinEditSettings Mask="C" MaskType="Numeric" />
                                 </dxg:GridColumn.EditSettings>
                             </dxg:GridColumn>
+                        </dxg:GridControlBand>
+
+                        <dxg:GridControlBand Header="Визит" HorizontalHeaderContentAlignment="Center" VisibleIndex="2">
                             <dxg:GridColumn FieldName="AppointmentStartTime" Header="Начало визита" Width="120" ReadOnly="True" VisibleIndex="8" >
                                 <dxg:GridColumn.EditSettings>
                                     <dxe:DateEditSettings Mask="g" MaskType="DateTime" MaskUseAsDisplayFormat="True" />
                                 </dxg:GridColumn.EditSettings>
                             </dxg:GridColumn>
-                        </dxg:GridControlBand>
-
-                        <dxg:GridControlBand Header="Визит" HorizontalHeaderContentAlignment="Center" VisibleIndex="2">
                             <dxg:GridColumn FieldName="AppointmentEndTime" Header="Окончание визита" Width="120" ReadOnly="True" VisibleIndex="9" >
                                 <dxg:GridColumn.EditSettings>
                                     <dxe:DateEditSettings Mask="g" MaskType="DateTime" MaskUseAsDisplayFormat="True" />
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
-                            <dxg:GridColumn FieldName="AppointmentPurpose" Header="Цель визита" Width="280" ReadOnly="True" VisibleIndex="10" >
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:TextEditSettings />
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
-                            <dxg:GridColumn FieldName="StaffID" Header="Лечащий врач" Width="130" ReadOnly="True" VisibleIndex="11">
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:ComboBoxEditSettings ItemsSource="{Binding Staff}" DisplayMember="Value" ValueMember="Key" />
                                 </dxg:GridColumn.EditSettings>
                             </dxg:GridColumn>
                             <dxg:GridColumn FieldName="Price" Header="Стоимсть услуг" Width="80" ReadOnly="True" VisibleIndex="12">

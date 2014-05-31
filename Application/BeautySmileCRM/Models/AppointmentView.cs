@@ -18,8 +18,6 @@ namespace BeautySmileCRM.Models
         public int CustomerID { get; set; }
         public System.DateTime StartTime { get; set; }
         public System.DateTime EndTime { get; set; }
-        public int StaffID { get; set; }
-        public string Purpose { get; set; }
         public decimal Price { get; set; }
         public decimal DiscountPercent { get; set; }
         public decimal Discount { get; set; }
@@ -38,5 +36,6 @@ namespace BeautySmileCRM.Models
         public Nullable<decimal> DiscountCardTotalPurchaseValue { get; set; }
         public Nullable<decimal> DiscountCardMinDiscount { get; set; }
         public Nullable<decimal> DiscountCardMaxDiscount { get; set; }
+        public string AppointementDetails { get; set; }
     }
 }

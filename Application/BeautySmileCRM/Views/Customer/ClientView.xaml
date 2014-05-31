@@ -120,17 +120,17 @@
                         </dxg:GridControlBand>
 
                         <dxg:GridControlBand Header="Визиты" VisibleIndex="3" HorizontalHeaderContentAlignment="Center">
-                            <dxg:GridColumn FieldName="FirstVisit" Header="Первый" Width="90" ReadOnly="True" VisibleIndex="6" >
+                            <dxg:GridColumn FieldName="FirstVisit" Header="Первый" Width="90" ReadOnly="True" VisibleIndex="6" ToolTip="Первый закрытый визит с момента регистрации клиента" >
                                 <dxg:GridColumn.EditSettings>
                                     <dxe:DateEditSettings Mask="d" MaskType="DateTime" MaskUseAsDisplayFormat="True" />
                                 </dxg:GridColumn.EditSettings>
                             </dxg:GridColumn>
-                            <dxg:GridColumn FieldName="LastVisit" Header="Последний" Width="90" ReadOnly="True" VisibleIndex="6" >
+                            <dxg:GridColumn FieldName="LastVisit" Header="Последний" Width="90" ReadOnly="True" VisibleIndex="6" ToolTip="Последний закрытый визит с момента регистрации клиента" >
                                 <dxg:GridColumn.EditSettings>
                                     <dxe:DateEditSettings Mask="d" MaskType="DateTime" MaskUseAsDisplayFormat="True" />
                                 </dxg:GridColumn.EditSettings>
                             </dxg:GridColumn>
-                            <dxg:GridColumn FieldName="NextVisit" Header="Следующий" Width="90" ReadOnly="True" VisibleIndex="6" >
+                            <dxg:GridColumn FieldName="NextVisit" Header="Предстоящий" Width="90" ReadOnly="True" VisibleIndex="6" ToolTip="Предстоящий/запланированный визит">
                                 <dxg:GridColumn.EditSettings>
                                     <dxe:DateEditSettings Mask="d" MaskType="DateTime" MaskUseAsDisplayFormat="True" />
                                 </dxg:GridColumn.EditSettings>

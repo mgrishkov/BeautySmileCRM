@@ -215,8 +215,6 @@ warning 6002: The table/view 'CRM.CST.AppointmentView' does not have a primary k
           <Key>
             <PropertyRef Name="AppointmentID" />
             
-            <PropertyRef Name="CustomerFirstName" />
-            <PropertyRef Name="CustomerLastName" />
             
             
             
@@ -241,9 +239,8 @@ warning 6002: The table/view 'CRM.CST.AppointmentView' does not have a primary k
           <Property Name="DiscountCardMaxDiscount" Type="decimal" Precision="13" Scale="2" />
           <Property Name="StartTime" Type="datetime" Nullable="false" />
           <Property Name="EndTime" Type="datetime" Nullable="false" />
-          <Property Name="StaffID" Type="int" Nullable="false" />
-          <Property Name="Purpose" Type="nvarchar" MaxLength="4000" Nullable="false" />
           <Property Name="Price" Type="decimal" Precision="13" Scale="2" Nullable="false" />
+          <Property Name="AppointementDetails" Type="nvarchar(max)" />
           <Property Name="DiscountPercent" Type="decimal" Precision="4" Scale="2" Nullable="false" />
           <Property Name="Discount" Type="decimal" Precision="13" Scale="2" Nullable="false" />
           <Property Name="ToPay" Type="decimal" Precision="13" Scale="2" Nullable="false" />
@@ -306,8 +303,6 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
             
             
             
-            
-            
             <PropertyRef Name="Price" />
             
             
@@ -329,10 +324,8 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
           <Property Name="DiscountCardMinDiscount" Type="decimal" Precision="13" Scale="2" />
           <Property Name="DiscountCardMaxDiscount" Type="decimal" Precision="13" Scale="2" />
           <Property Name="AppointmentID" Type="int" Nullable="false" />
-          <Property Name="AppointmentPurpose" Type="nvarchar" MaxLength="4000" Nullable="false" />
           <Property Name="AppointmentStartTime" Type="datetime" Nullable="false" />
           <Property Name="AppointmentEndTime" Type="datetime" Nullable="false" />
-          <Property Name="StaffID" Type="int" Nullable="false" />
           <Property Name="Price" Type="decimal" Precision="13" Scale="2" Nullable="false" />
           <Property Name="ToPay" Type="decimal" Precision="13" Scale="2" Nullable="false" />
           <Property Name="DiscountPercent" Type="decimal" Precision="4" Scale="2" Nullable="false" />
@@ -660,9 +653,8 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
     [AppointmentView].[DiscountCardMaxDiscount] AS [DiscountCardMaxDiscount], 
     [AppointmentView].[StartTime] AS [StartTime], 
     [AppointmentView].[EndTime] AS [EndTime], 
-    [AppointmentView].[StaffID] AS [StaffID], 
-    [AppointmentView].[Purpose] AS [Purpose], 
     [AppointmentView].[Price] AS [Price], 
+    [AppointmentView].[AppointementDetails] AS [AppointementDetails], 
     [AppointmentView].[DiscountPercent] AS [DiscountPercent], 
     [AppointmentView].[Discount] AS [Discount], 
     [AppointmentView].[ToPay] AS [ToPay], 
@@ -717,10 +709,8 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
     [FinancialTransactionView].[DiscountCardMinDiscount] AS [DiscountCardMinDiscount], 
     [FinancialTransactionView].[DiscountCardMaxDiscount] AS [DiscountCardMaxDiscount], 
     [FinancialTransactionView].[AppointmentID] AS [AppointmentID], 
-    [FinancialTransactionView].[AppointmentPurpose] AS [AppointmentPurpose], 
     [FinancialTransactionView].[AppointmentStartTime] AS [AppointmentStartTime], 
     [FinancialTransactionView].[AppointmentEndTime] AS [AppointmentEndTime], 
-    [FinancialTransactionView].[StaffID] AS [StaffID], 
     [FinancialTransactionView].[Price] AS [Price], 
     [FinancialTransactionView].[ToPay] AS [ToPay], 
     [FinancialTransactionView].[DiscountPercent] AS [DiscountPercent], 
@@ -1311,15 +1301,11 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
         <EntityType Name="AppointmentView">
           <Key>
             <PropertyRef Name="AppointmentID" />
-            <PropertyRef Name="CustomerFirstName" />
-            <PropertyRef Name="CustomerLastName" />
           </Key>
           <Property Name="AppointmentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CustomerID" Type="Int32" Nullable="false" />
           <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="EndTime" Type="DateTime" Precision="3" Nullable="false" />
-          <Property Name="StaffID" Type="Int32" Nullable="false" />
-          <Property Name="Purpose" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
           <Property Name="Price" Type="Decimal" Nullable="false" Precision="13" Scale="2" />
           <Property Name="DiscountPercent" Type="Decimal" Nullable="false" Precision="4" Scale="2" />
           <Property Name="Discount" Type="Decimal" Nullable="false" Precision="13" Scale="2" />
@@ -1338,6 +1324,7 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
           <Property Name="DiscountCardTotalPurchaseValue" Type="Decimal" Precision="13" Scale="2" />
           <Property Name="DiscountCardMinDiscount" Type="Decimal" Precision="13" Scale="2" />
           <Property Name="DiscountCardMaxDiscount" Type="Decimal" Precision="13" Scale="2" />
+          <Property Name="AppointementDetails" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="CustomerView">
           <Key>
@@ -1397,10 +1384,8 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
           <Property Name="DiscountCardMinDiscount" Type="Decimal" Precision="13" Scale="2" />
           <Property Name="DiscountCardMaxDiscount" Type="Decimal" Precision="13" Scale="2" />
           <Property Name="AppointmentID" Type="Int32" Nullable="false" />
-          <Property Name="AppointmentPurpose" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
           <Property Name="AppointmentStartTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="AppointmentEndTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="StaffID" Type="Int32" Nullable="false" />
           <Property Name="ToPay" Type="Decimal" Nullable="false" Precision="13" Scale="2" />
           <Property Name="DiscountPercent" Type="Decimal" Nullable="false" Precision="4" Scale="2" />
           <Property Name="Discount" Type="Decimal" Nullable="false" Precision="13" Scale="2" />
@@ -1708,6 +1693,7 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
           <EntitySetMapping Name="AppointmentView">
             <EntityTypeMapping TypeName="CRMModel.AppointmentView">
               <MappingFragment StoreEntitySet="AppointmentView">
+                <ScalarProperty Name="AppointementDetails" ColumnName="AppointementDetails" />
                 <ScalarProperty Name="DiscountCardMaxDiscount" ColumnName="DiscountCardMaxDiscount" />
                 <ScalarProperty Name="DiscountCardMinDiscount" ColumnName="DiscountCardMinDiscount" />
                 <ScalarProperty Name="DiscountCardTotalPurchaseValue" ColumnName="DiscountCardTotalPurchaseValue" />
@@ -1726,8 +1712,6 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
                 <ScalarProperty Name="Discount" ColumnName="Discount" />
                 <ScalarProperty Name="DiscountPercent" ColumnName="DiscountPercent" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="Purpose" ColumnName="Purpose" />
-                <ScalarProperty Name="StaffID" ColumnName="StaffID" />
                 <ScalarProperty Name="EndTime" ColumnName="EndTime" />
                 <ScalarProperty Name="StartTime" ColumnName="StartTime" />
                 <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
@@ -1799,10 +1783,8 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
                 <ScalarProperty Name="Discount" ColumnName="Discount" />
                 <ScalarProperty Name="DiscountPercent" ColumnName="DiscountPercent" />
                 <ScalarProperty Name="ToPay" ColumnName="ToPay" />
-                <ScalarProperty Name="StaffID" ColumnName="StaffID" />
                 <ScalarProperty Name="AppointmentEndTime" ColumnName="AppointmentEndTime" />
                 <ScalarProperty Name="AppointmentStartTime" ColumnName="AppointmentStartTime" />
-                <ScalarProperty Name="AppointmentPurpose" ColumnName="AppointmentPurpose" />
                 <ScalarProperty Name="AppointmentID" ColumnName="AppointmentID" />
                 <ScalarProperty Name="DiscountCardMaxDiscount" ColumnName="DiscountCardMaxDiscount" />
                 <ScalarProperty Name="DiscountCardMinDiscount" ColumnName="DiscountCardMinDiscount" />

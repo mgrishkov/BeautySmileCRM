@@ -350,4 +350,137 @@ go
 alter table CST.Appointment drop column Purpose
 go
 
+alter VIEW CST.CustomerView (CustomerID, FirstName, LastName, MiddleName, Gender, Country, City, Region, Zip, Phone, MobilePhone, Email, Address, BirthDate, MoneyBalance, NotifyByEmail, NotifyBySms, NotifyByPost, CreationTime, ModificationTime, DiscountcardID, DiscountCardCode, DiscountPercent, FirstVisit, LastVisit, NextVisit)
+AS
+    select  c.ID as CustomerID,
+        c.FirstName,
+        c.LastName,
+        c.MiddleName,
+        c.Gender,
+        c.Country,
+        c.City,
+        c.Region,
+        c.Zip,
+        c.Phone,
+        c.MobilePhone,
+        c.Email,
+        c.Address,
+        c.BirthDate,
+        c.MoneyBalance,
+        c.NotifyByEmail,
+        c.NotifyBySms,
+        c.NotifyByPost,
+        c.CreationTime,
+        c.ModificationTime,
+        dc.ID as DiscountcardID,
+        dc.Code as DiscountCardCode,
+        dc.DiscountPercent,
+        (select min(a.StartTime)
+           from CST.Appointment a
+          where a.CustomerID = c.ID
+            and a.StateID != 3 /* Completed */) as FirstVisit,
+        (select max(a.StartTime)
+           from CST.Appointment a
+          where a.CustomerID = c.ID
+            and a.StartTime < getdate()
+            and a.StateID = 3 /* Completed */) as LastVisit,
+        (select max(a.StartTime)
+           from CST.Appointment a
+          where a.CustomerID = c.ID
+            and a.StartTime > getdate()
+            and a.StateID not in (3, 4) /* Canceled, Completed */) as NextVisit
+  from CST.Customer c
+       left outer join CST.DiscountCard dc
+    on c.DiscountCardID = dc.ID
+ where 1 =1
+GO
+
+alter VIEW CST.AppointmentView (AppointmentID, CustomerID, CustomerFirstName, CustomerLastName, CustomerMiddleName, DiscountCardCode, DiscountCardPercent, DiscountCardTotalPurchaseValue, DiscountCardMinDiscount, DiscountCardMaxDiscount, StartTime, EndTime, Price, AppointementDetails, DiscountPercent, Discount, ToPay, Payed, StateID, CreationTime, CreatedBy, ModificationTime, ModifiedBy)
+AS
+ select a.ID as AppointmentID,
+        a.CustomerID,
+        c.FirstName as CustomerFirstName,
+        c.LastName as CustomerLastName,
+        c.MiddleName as CustomerMiddleName,
+        dc.Code as DiscountCardCode,
+        dc.DiscountPercent as DiscountCardPercent,
+        dc.TotalPurchaseValue as DiscountCardTotalPurchaseValue,
+        dc.MinDiscount as DiscountCardMinDiscount,
+        dc.MaxDiscount as DiscountCardMaxDiscount,
+        a.StartTime,
+        a.EndTime,
+        a.Price,
+        stuff((select char(10) + s.[Description] + N' - ' 
+                         + cast(ad.Price as nvarchar) + N'руб. /'
+                         + st.LastName + N' ' + left(st.FirstName, 1) + N'.' + case when st.MiddleName is not null
+                                                                                    then left(st.MiddleName, 1) + N'.'
+                                                                                    else N''
+                                                                               end + N'/'
+                 from CST.AppointmentDetail ad
+                      inner join CONF.Service s 
+                   on ad.ServiceID = s.ID
+                      inner join STF.Staff st
+                   on ad.StaffID = st.ID
+                where ad.AppointmentID = a.ID
+                order by ad.ID
+                  for xml path('')
+              ),1,1,'') as AppointementDetails,
+        a.DiscountPercent,
+        a.Discount,
+        a.ToPay,
+        cast(isnull((select sum(ft.Amount)
+                       from CST.FinancialTransaction ft
+                            inner join CONF.TransactionType tt 
+                         on ft.TransactionTypeID = tt.ID
+                      where ft.AppointmentID = a.ID
+                        and tt.OperationSign = 1), 0) as decimal(13,2)) as Payed,
+        a.StateID,
+        a.CreationTime,
+        a.CreatedBy,
+        a.ModificationTime,
+        a.ModifiedBy
+   from CST.Appointment a
+        inner join CST.Customer c
+     on a.CustomerID = c.ID
+        left outer join CST.DiscountCard dc
+     on c.DiscountCardID = dc.ID
+  where 1 = 1
+GO
+
+alter VIEW CST.FinancialTransactionView (ID, CustomerID, CustomerFirstName, CustomerLastName, CustomerMiddleName, DiscountCardCode, DiscountCardPercent, DiscountCardTotalPurchaseValue, DiscountCardMinDiscount, DiscountCardMaxDiscount, AppointmentID, AppointmentStartTime, AppointmentEndTime, Price, ToPay, DiscountPercent, Discount, TransactionTypeID, Amount, Comment, CreationTime, CreatedBy, ModificationTime, ModifiedBy, IsCanceled)
+AS
+ select  ft.ID,
+         ft.CustomerID,
+         c.FirstName as CustomerFirstName,
+         c.LastName as CustomerLastName,
+         c.MiddleName as CustomerMiddleName,
+         dc.Code as DiscountCardCode,
+         dc.DiscountPercent as DiscountCardPercent,
+         dc.TotalPurchaseValue as DiscountCardTotalPurchaseValue,
+         dc.MinDiscount as DiscountCardMinDiscount,
+         dc.MaxDiscount as DiscountCardMaxDiscount,
+         ft.AppointmentID,
+         a.StartTime as AppointmentStartTime,
+         a.EndTime as AppointmentEndTime,
+         a.Price,
+         a.ToPay,
+         a.DiscountPercent,
+         a.Discount,
+         ft.TransactionTypeID,
+         ft.Amount,
+         ft.Comment,
+         ft.CreationTime,
+         ft.CreatedBy,
+         ft.ModificationTime,
+         ft.ModifiedBy,
+         ft.IsCanceled
+   from CST.FinancialTransaction ft
+        inner join CST.Appointment a
+     on ft.AppointmentID = a.ID
+        inner join CST.Customer c
+     on ft.CustomerID = c.ID
+        left outer join CST.DiscountCard dc
+     on c.DiscountCardID = dc.ID   
+  where 1 = 1
+GO
 
