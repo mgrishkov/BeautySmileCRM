@@ -14,18 +14,39 @@ using SmartClasses.Extensions;
 using System.Data.Entity;
 using BeautySmileCRM.ViewModels.Base;
 using BeautySmileCRM.Services;
+using SmartClasses.Utils.DBUpdater;
+using System.IO;
+using System.Threading;
 
 namespace BeautySmileCRM.ViewModels
 {
     public class Login : BaseNavigationViewModel
     {
+        private const string SYSDBA = "sysdba";
+        private const string LOCALHOST = "localhost";
+        private const string LOCALHOST_IP = "127.0.0.1";
+
         private string _account;
         private ObservableCollection<string> _usedAccounts;
         private string _password;
-        private AuthorizationStage _authorizationStage;
+        private LoginStage _stage;
         private string _errorMessage;
         private string _server;
         private string _focuseTo;
+        private bool _allowEditServer;
+        private string _updatingMessage;
+        public bool AllowEditServer
+        {
+            get { return _allowEditServer; }
+            set
+            {
+                if(_allowEditServer != value)
+                {
+                    _allowEditServer = value;
+                    RaisePropertyChanged("AllowEditServer");
+                }
+            }
+        }
 
         public string Account 
         { 
@@ -36,6 +57,16 @@ namespace BeautySmileCRM.ViewModels
                 {
                     _account = value;
                     RaisePropertyChanged("Account");
+                    if(Account == SYSDBA)
+                    {
+                        Server = LOCALHOST;
+                        AllowEditServer = false;
+                        FocuseTo = "Password";
+                    }
+                    else
+                    {
+                        AllowEditServer = true;
+                    }
                 }
             }
         }
@@ -63,15 +94,15 @@ namespace BeautySmileCRM.ViewModels
                 }
             }
         }
-        public AuthorizationStage AuthorizationStage
+        public LoginStage Stage
         {
-            get { return _authorizationStage; }
+            get { return _stage; }
             set
             {
-                if (_authorizationStage != value)
+                if (_stage != value)
                 {
-                    _authorizationStage = value;
-                    RaisePropertiesChanged("AuthorizationStage");
+                    _stage = value;
+                    RaisePropertiesChanged("Stage");
                 }
             }
         }
@@ -111,6 +142,19 @@ namespace BeautySmileCRM.ViewModels
                 }
             }
         }
+        public string UpdatingMessage
+        {
+            get { return _updatingMessage; }
+            set
+            {
+                if(_updatingMessage != value)
+                {
+                    _updatingMessage = value;
+                    RaisePropertyChanged("UpdatingMessage");
+                }
+            }
+        }
+
 
         public IEnumerable<string> Logins
         {
@@ -143,7 +187,8 @@ namespace BeautySmileCRM.ViewModels
 
         private void initialize()
         {
-            AuthorizationStage = AuthorizationStage.Pending;
+            _allowEditServer = true;
+            Stage = LoginStage.Pending;
             ErrorMessage = String.Empty;
             Password = String.Empty;
         }
@@ -160,51 +205,116 @@ namespace BeautySmileCRM.ViewModels
                 && !String.IsNullOrWhiteSpace(Server))
             {
                 UserProfileService.Server = Server;
-                AuthorizationStage = Enums.AuthorizationStage.Authorization;
                 Task.Factory.StartNew(() =>
                 {
                     using(var dc = new CRMContext())
                     {
-                        if (dc.Database.Exists())
+                        if (!dc.Database.Exists() && Account.ToLower() != SYSDBA)
                         {
-
-                            var encriptedPassword = Password.ToMD5Hash();
-                            var user = dc.Users
-                                .Where(x => x.Login == Account && x.Password == encriptedPassword)
-                                .Include(x => x.Privileges)
-                                .SingleOrDefault();
-                            if (user != null)
+                            ErrorMessage = String.Format("Ошибка подключения к базе данных: на сервере \"{0}\" база данных CRM не найдена!", Server);
+                            Stage = Enums.LoginStage.Error;
+                            return;
+                        }
+                        else if (Account.ToLower() == SYSDBA && Server.ToLower() != LOCALHOST && Server != LOCALHOST_IP)
+                        {
+                            Stage = LoginStage.Error;
+                            ErrorMessage = "Запуск приложения от имени пользователя SYSDBA разрешено только с ПК-сервера базы данных!";
+                            return;
+                        } 
+                        else if (Account.ToLower() == SYSDBA && (Server.ToLower() == LOCALHOST || Server == LOCALHOST_IP))
+                        {
+                            if(Password != "qwerty~123")
                             {
-                                if (user.ExpirationDate.HasValue && user.ExpirationDate < DateTime.Now)
+                                ErrorMessage = "Указан неверный пароль системного пользоваетеля";
+                                Stage = Enums.LoginStage.Error;
+                            }
+
+                            var updater = new DBUpdater(BeautySmileCRM.Properties.Settings.Default.ServiceConnectionString, "CRM", "SERVICE", Resources.Packs.ResourceManager);
+                            if (updater.IsNewVersionFound)
+                            {
+                                try
                                 {
-                                    ErrorMessage = String.Format("Учетная запись заблокирована с {0:d}", user.ExpirationDate);
-                                    AuthorizationStage = Enums.AuthorizationStage.Error;
+                                    Stage = LoginStage.Updating;
+                                    UpdatingMessage = "Выполняется обновление БД...";
+                                    Thread.Sleep(2000);
+
+                                    updater.InstallUpdates();
+                                    UpdatingMessage = String.Format("База данных успешно обновлена до версии {0}", updater.NewVersion);
+                                    using (var outfile = new StreamWriter(String.Format("update_{0}.log", DateTime.Now.Date.ToString("ddMMyyyHHmmss"))))
+                                    {
+                                        outfile.Write(updater.Log.ToString());
+                                    }
+                                    Thread.Sleep(4000);
                                 }
-                                else if (!user.Privileges.Any(x => x.ID == (int)Enums.Privilege.Login))
+                                catch (Exception ex)
                                 {
-                                    ErrorMessage = "Пользователь не имеет достаточно прав для запуска приложения";
-                                    AuthorizationStage = Enums.AuthorizationStage.Error;
+                                    Stage = LoginStage.Error;
+                                    ErrorMessage = "Во время обновления произошла ошибка. Подробнее см. лог-файл обновления в корневой папке приложения.";
+                                    using (var outfile = new StreamWriter(String.Format("update_{0}.log", DateTime.Now.Date.ToString("ddMMyyyHHmmss"))))
+                                    {
+                                        outfile.WriteLine(updater.Log.ToString());
+                                        outfile.WriteLine(ex.Message);
+                                    }
+                                    return;
                                 }
-                                else
-                                {
-                                    user.Password = "*".PadLeft(user.Password.Length, '*');
-                                    CurrentUser = user;
-                                    AuthorizationStage = Enums.AuthorizationStage.Authorized;
-                                    NavigationService.Navigate("DashboardView", null, this);
-                                    UserProfileService.SetLogins(user.Login);
-                                    UserProfileService.SetServers(Server);
-                                };
+                            };
+                        }
+
+                        var dbVersionRow = dc.DBVersions
+                            .OrderByDescending(x => x.Major)
+                            .ThenByDescending(x => x.Minor)
+                            .ThenByDescending(x => x.Build)
+                            .ThenByDescending(x => x.Revision)
+                            .FirstOrDefault();
+
+                        if(dbVersionRow == null)
+                        {
+                            Stage = LoginStage.Error;
+                            ErrorMessage = "База данных не иницализирована. Обратитесь к администратору для инициализации БД.";
+                            return;
+                        }
+
+                        var dbVersion = new Version(dbVersionRow.Major, dbVersionRow.Minor, dbVersionRow.Build, dbVersionRow.Revision);
+                        if (dbVersion != ApplicationService.AppVersion)
+                        {
+                            Stage = LoginStage.Error;
+                            ErrorMessage = String.Format("Не совпадают версии БД ({0}) и приложения ({1})", dbVersion.ToString(), ApplicationService.AppVersion.ToString());
+                            return;
+                        }
+    
+                        Stage = Enums.LoginStage.Authorization;
+                        var encriptedPassword = Password.ToMD5Hash();
+                        var user = dc.Users
+                            .Where(x => x.Login == Account && x.Password == encriptedPassword)
+                            .Include(x => x.Privileges)
+                            .SingleOrDefault();
+                        if (user != null)
+                        {
+                            user.Password = "*".PadLeft(user.Password.Length, '*');
+
+                            if (user.ExpirationDate.HasValue && user.ExpirationDate < DateTime.Now)
+                            {
+                                ErrorMessage = String.Format("Учетная запись заблокирована с {0:d}", user.ExpirationDate);
+                                Stage = Enums.LoginStage.Error;
+                            }
+                            else if (!user.Privileges.Any(x => x.ID == (int)Enums.Privilege.Login))
+                            {
+                                ErrorMessage = "Пользователь не имеет достаточно прав для запуска приложения";
+                                Stage = Enums.LoginStage.Error;
                             }
                             else
                             {
-                                ErrorMessage = "Пользователь с указанным логином и паролем не найден";
-                                AuthorizationStage = Enums.AuthorizationStage.Error;
-                            }
+                                CurrentUser = user;
+                                Stage = Enums.LoginStage.Authorized;
+                                NavigationService.Navigate("DashboardView", null, this);
+                                UserProfileService.SetLogins(user.Login);
+                                UserProfileService.SetServers(Server);
+                            };
                         }
                         else
                         {
-                            ErrorMessage = String.Format("Ошибка подключения к базе данных: на сервере {0} база данных CRM не найдена!", Server);
-                            AuthorizationStage = Enums.AuthorizationStage.Error;
+                            ErrorMessage = "Пользователь с указанным логином и паролем не найден";
+                            Stage = Enums.LoginStage.Error;
                         }
                     };                    
                 });   
@@ -212,7 +322,7 @@ namespace BeautySmileCRM.ViewModels
             else
             {
                 ErrorMessage = "Не заполнен логин или пароль";
-                AuthorizationStage = Enums.AuthorizationStage.Error;
+                Stage = Enums.LoginStage.Error;
             };
         }
         private void OnPasswordKeyUpCommandExecuted(KeyEventArgs args)

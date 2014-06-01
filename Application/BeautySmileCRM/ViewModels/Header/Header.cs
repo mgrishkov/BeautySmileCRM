@@ -28,6 +28,11 @@ namespace BeautySmileCRM.ViewModels
         public ICommand OnNavigateToQuestionnaireCommand { get; private set; }
         public ICommand OnNavigateToServicesCommand { get; private set; }
 
+        public string AppVersion
+        {
+            get { return ApplicationService.AppVersion.ToString(); }
+        }
+
         public dynamic NavigateToHome
         {
             get

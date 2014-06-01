@@ -3,8 +3,6 @@
     [CustomerID]       INT             NOT NULL,
     [StartTime]        DATETIME        NOT NULL,
     [EndTime]          DATETIME        NOT NULL,
-    [StaffID]          INT             NOT NULL,
-    [Purpose]          NVARCHAR (4000) NOT NULL,
     [Price]            DECIMAL (13, 2) NOT NULL,
     [DiscountPercent]  DECIMAL (4, 2)  DEFAULT ((0)) NOT NULL,
     [Discount]         DECIMAL (13, 2) DEFAULT ((0)) NOT NULL,
@@ -18,7 +16,6 @@
     CONSTRAINT [FK#Appointment@CreatedBy#User@ID] FOREIGN KEY ([CreatedBy]) REFERENCES [ADM].[User] ([ID]),
     CONSTRAINT [FK#Appointment@CustomerID#Customer@ID] FOREIGN KEY ([CustomerID]) REFERENCES [CST].[Customer] ([ID]),
     CONSTRAINT [FK#Appointment@ModfiedBy#User@ID] FOREIGN KEY ([ModifiedBy]) REFERENCES [ADM].[User] ([ID]),
-    CONSTRAINT [FK#Appointment@StaffID#Staff@ID] FOREIGN KEY ([StaffID]) REFERENCES [STF].[Staff] ([ID]),
     CONSTRAINT [FK#Appointment@StateID#AppointmentState@ID] FOREIGN KEY ([StateID]) REFERENCES [CONF].[AppointmentState] ([ID])
 );
 
@@ -27,9 +24,10 @@
 
 
 
+
+
 GO
-CREATE NONCLUSTERED INDEX [I#Appointment@StaffID@StateID]
-    ON [CST].[Appointment]([StaffID] ASC, [StateID] ASC);
+
 
 
 GO
@@ -100,11 +98,11 @@ EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'Дата и
 
 
 GO
-EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'ИД сотрудника, ответсвенного за встречу', @level0type = N'SCHEMA', @level0name = N'CST', @level1type = N'TABLE', @level1name = N'Appointment', @level2type = N'COLUMN', @level2name = N'StaffID';
+
 
 
 GO
-EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'Цель события', @level0type = N'SCHEMA', @level0name = N'CST', @level1type = N'TABLE', @level1name = N'Appointment', @level2type = N'COLUMN', @level2name = N'Purpose';
+
 
 
 GO

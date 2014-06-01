@@ -73,7 +73,7 @@
 				       Text="Авторизация"/>
 
             <StackPanel Grid.Row="2" Grid.Column="1" 
-			            Visibility="{Binding AuthorizationStage, ConverterParameter=Pending, Converter={converters:AuthorizationStageToVisibilityConverter}}"
+			            Visibility="{Binding Stage, ConverterParameter=Pending, Converter={converters:LoginStageToVisibilityConverter}}"
 			            Style="{StaticResource Fadeable}">
                 <dxe:ComboBoxEdit x:Name="AccountEdit"
 				                  NullText="Логин"
@@ -82,6 +82,7 @@
                 <dxe:ComboBoxEdit x:Name="ServerEdit"
                                   NullText="Сервер" Margin="0,5,0,0"
 				                  EditValue="{Binding Server}"
+                                  IsEnabled="{Binding AllowEditServer}"
 				                  ItemsSource="{Binding Servers}"/>
                 <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
                     <dxe:PasswordBoxEdit x:Name="PasswordEdit"
@@ -99,14 +100,14 @@
                 </StackPanel>
             </StackPanel>
             <StackPanel Grid.Row="2" Grid.Column="1" 
-			            Visibility="{Binding AuthorizationStage, ConverterParameter=Authorization, Converter={converters:AuthorizationStageToVisibilityConverter}}"
+			            Visibility="{Binding Stage, ConverterParameter=Authorization, Converter={converters:LoginStageToVisibilityConverter}}"
 			            Style="{StaticResource Fadeable}">
                 <TextBlock Style="{StaticResource NormalItem}"
 				           Text="Проверка..."/>
                 <preloader:HorizontalPreloader/>
             </StackPanel>
             <StackPanel Grid.Row="3" Grid.Column="1" 
-			            Visibility="{Binding AuthorizationStage, ConverterParameter=Error, Converter={converters:AuthorizationStageToVisibilityConverter}}"
+			            Visibility="{Binding Stage, ConverterParameter=Error, Converter={converters:LoginStageToVisibilityConverter}}"
 			            Style="{StaticResource Fadeable}">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="{StaticResource WarningIcon64}" Margin="0,0,5,0" VerticalAlignment="Top"/>
@@ -118,6 +119,13 @@
 				        Width="100" Margin="0,5,0,0" HorizontalAlignment="Right"
 				        Content="Повторить"
 				        Command="{Binding OnRetryLoginCommand}"/>
+            </StackPanel>
+            <StackPanel Grid.Row="4" Grid.Column="1" 
+			            Visibility="{Binding Stage, ConverterParameter=Updating, Converter={converters:LoginStageToVisibilityConverter}}"
+			            Style="{StaticResource Fadeable}">
+                <TextBlock Style="{StaticResource NormalItem}" TextWrapping="Wrap"
+				           Text="{Binding UpdatingMessage}"/>
+                <preloader:HorizontalPreloader/>
             </StackPanel>
         </Grid>
     </dxwui:PageAdornerControl>

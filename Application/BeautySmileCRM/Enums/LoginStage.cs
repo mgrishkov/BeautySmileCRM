@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace BeautySmileCRM.Enums
 {
-    public enum AuthorizationStage
+    public enum LoginStage
     {
         Pending,
         Authorization,
         Authorized,
+        Updating,
         Error
     }
 }

@@ -36,7 +36,7 @@ AS
            from CST.Appointment a
           where a.CustomerID = c.ID
             and a.StartTime > getdate()
-            and a.StateID in (1, 2) /* Draft, Planned */) as NextVisit
+            and a.StateID not in (3, 4) /* Canceled, Completed */) as NextVisit
   from CST.Customer c
        left outer join CST.DiscountCard dc
     on c.DiscountCardID = dc.ID

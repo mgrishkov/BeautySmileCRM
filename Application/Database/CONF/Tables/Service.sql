@@ -7,6 +7,8 @@
 );
 
 
+
+
 GO
 EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'Стоимость услуги', @level0type = N'SCHEMA', @level0name = N'CONF', @level1type = N'TABLE', @level1name = N'Service', @level2type = N'COLUMN', @level2name = N'Price';
 
@@ -25,4 +27,28 @@ EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'ИД усл
 
 GO
 EXECUTE sp_addextendedproperty @name = N'MS_Description', @value = N'Справочник услуг', @level0type = N'SCHEMA', @level0name = N'CONF', @level1type = N'TABLE', @level1name = N'Service';
+
+
+GO
+GRANT UPDATE
+    ON OBJECT::[CONF].[Service] TO [AppUser]
+    AS [dbo];
+
+
+GO
+GRANT SELECT
+    ON OBJECT::[CONF].[Service] TO [AppUser]
+    AS [dbo];
+
+
+GO
+GRANT INSERT
+    ON OBJECT::[CONF].[Service] TO [AppUser]
+    AS [dbo];
+
+
+GO
+GRANT DELETE
+    ON OBJECT::[CONF].[Service] TO [AppUser]
+    AS [dbo];
 

@@ -17,15 +17,15 @@ using BeautySmileCRM.Enums;
 
 namespace BeautySmileCRM.Converters
 {
-    public class AuthorizationStageToVisibilityConverter : MarkupExtension, IValueConverter
+    public class LoginStageToVisibilityConverter : MarkupExtension, IValueConverter
     {
-        public AuthorizationStageToVisibilityConverter()
+        public LoginStageToVisibilityConverter()
         {
         }
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var stage = (AuthorizationStage)value;
-            var panelStage = (AuthorizationStage)Enum.Parse(typeof(AuthorizationStage), (string)parameter);
+            var stage = (LoginStage)value;
+            var panelStage = (LoginStage)Enum.Parse(typeof(LoginStage), (string)parameter);
 
             return (stage == panelStage) ? Visibility.Visible : Visibility.Collapsed;
         }

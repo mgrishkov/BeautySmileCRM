@@ -127,6 +127,7 @@
     <Build Include="Security\SERVICE.sql" />
     <Build Include="CONF\Tables\Service.sql" />
     <Build Include="STF\Tables\StaffService.sql" />
+    <Build Include="CST\Tables\AppointmentDetail.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SchemaCompare.scmp" />

@@ -49,7 +49,7 @@
     <dxwui:PageAdornerControl>
         <dxwui:PageAdornerControl.HeaderTemplate>
             <DataTemplate>
-                <Views:Header Grid.Row="0" SubTitle="Справочник скидок" />
+                <Views:Header Grid.Row="0" SubTitle="Справочник услуг и цен" />
             </DataTemplate>
         </dxwui:PageAdornerControl.HeaderTemplate>
 
