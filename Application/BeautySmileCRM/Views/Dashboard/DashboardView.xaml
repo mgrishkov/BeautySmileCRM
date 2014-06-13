@@ -87,6 +87,7 @@
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
                                         </Grid.RowDefinitions>
 
                                         <TextBlock Grid.Column="0" Grid.Row="0"
@@ -100,6 +101,10 @@
                                         <TextBlock Grid.Column="0" Grid.Row="2"
                                                Foreground="#FFFFFFFF" FontSize="14"
                                                Text="{Binding MobilePhone}" />
+
+                                        <TextBlock Grid.Column="0" Grid.Row="3"
+                                               Foreground="#FFFFFFFF" FontSize="12" HorizontalAlignment="Right"
+                                               Text="{Binding DiscountCardCode}" />
 
                                         <TextBlock Grid.Column="2" Grid.Row="0" 
                                                Text="{Binding NearestAppointmentDate, StringFormat={}{0:HH:mm}}" 
@@ -115,7 +120,7 @@
                                 </DataTemplate>
                             </Setter.Value>
                         </Setter>
-                        <Setter Property="Height" Value="80" />
+                        <Setter Property="Height" Value="95" />
                         <Setter Property="Width" Value="300" />
                         <Setter Property="dxlc:FlowLayoutControl.IsFlowBreak" Value="{Binding IsNewGroup}"/>
                     </Style>

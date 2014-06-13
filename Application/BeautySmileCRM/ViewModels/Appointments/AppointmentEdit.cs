@@ -370,6 +370,13 @@ namespace BeautySmileCRM.ViewModels
                     };
                     _data.StateID = (int)AppointmentState.Completed;
                     _dc.FinancialTransactions.Add(ft);
+
+                    _dc.AppointmentDetails.RemoveRange(_data.AppointmentDetails);
+                    foreach (var d in Details)
+                    {
+                        _dc.AppointmentDetails.Add(d);
+                    };
+
                     _dc.SaveChanges();
                 }
                 else

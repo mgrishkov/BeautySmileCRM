@@ -885,6 +885,7 @@ namespace BeautySmileCRM.ViewModels
                     if (MessageService.Show("Вы действительно хотите удалить выбранный визит, включая финансовые операции?", "Подтвердите удаление", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                     {
                         _dc.FinancialTransactions.RemoveRange(SelectedAppointment.FinancialTransactions);
+                        _dc.AppointmentDetails.RemoveRange(SelectedAppointment.AppointmentDetails);
                         _dc.Appointments.Remove(SelectedAppointment);
                         result = true;
                     };
