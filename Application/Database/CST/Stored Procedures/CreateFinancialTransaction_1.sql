@@ -1,4 +1,5 @@
 ﻿
+
 CREATE PROCEDURE CST.CreateFinancialTransaction
     @userID int,
     @transactionTypeID int,
@@ -23,11 +24,11 @@ begin
         values 
             (@customerID, @appointmentID, @transactionTypeID, @amount, @comment, getdate(), @userID);
         set @id = scope_identity();
-        if(exists(select 1 /* операция увеличивает баланс */
+        if(exists(select 1 /* РѕРїРµСЂР°С†РёСЏ СѓРІРµР»РёС‡РёРІР°РµС‚ Р±Р°Р»Р°РЅСЃ */
                     from CONF.TransactionType tt
                    where tt.OperationSign = 1
                      and tt.ID = @transactionTypeID)
-           and exists(select 1 /* клиент имеет дисконтную карту */
+           and exists(select 1 /* РєР»РёРµРЅС‚ РёРјРµРµС‚ РґРёСЃРєРѕРЅС‚РЅСѓСЋ РєР°СЂС‚Сѓ */
                         from CST.DiscountCard dc 
                              inner join CST.Customer c 
                           on dc.ID = c.DiscountCardID
@@ -55,7 +56,7 @@ begin
                  where ID = @discountCardID;
 
             if(@isFixedDiscount = 0 
-               and @discountType = 1 /* накопительная скидка */)
+               and @discountType = 1 /* РЅР°РєРѕРїРёС‚РµР»СЊРЅР°СЏ СЃРєРёРґРєР° */)
             begin
                 declare @cumulativeDiscountID int;
                 set @cumulativeDiscountID = CONF.GetCumulativeDiscountID(@discountCardID);

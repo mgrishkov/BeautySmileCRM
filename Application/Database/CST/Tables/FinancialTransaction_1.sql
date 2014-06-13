@@ -25,6 +25,8 @@
 
 
 
+
+
 GO
 CREATE NONCLUSTERED INDEX [IFK#FinancialTransaction@CustomerID#Customer@ID]
     ON [CST].[FinancialTransaction]([CustomerID] ASC);
@@ -51,11 +53,22 @@ CREATE NONCLUSTERED INDEX [IFK#FinancialTransaction@AppointmentID#Appointment@iD
 
 
 GO
-CREATE TRIGGER CST.TIUD#FinancialTransaction
+
+
+CREATE TRIGGER [CST].[TIUD#FinancialTransaction]
     on CST.FinancialTransaction
     after insert, update, delete as
 begin
-    with balanceChanges
+
+    with affectedCustomers 
+      as (select distinct CustomerID 
+           from INSERTED
+          where 1 = 1
+         union
+         select distinct CustomerID 
+           from DELETED
+          where 1 = 1),
+        balanceChanges
       as (select ft.CustomerID, 
                  sum(tt.OperationSign 
                      * case when ft.IsCanceled = 1
@@ -63,23 +76,19 @@ begin
                             else ft.Amount
                        end) as Balance
             from CST.FinancialTransaction ft
-                 inner join (select distinct CustomerID 
-                               from INSERTED
-                              where 1 = 1
-                             union
-                             select distinct CustomerID 
-                               from DELETED
-                              where 1 = 1) i
+                 inner join affectedCustomers i
               on ft.CustomerID = i.CustomerID
                  inner join CONF.TransactionType tt
               on tt.ID = ft.TransactionTypeID
            where 1 = 1
            group by ft.CustomerID)
     update c
-       set c.MoneyBalance = b.Balance
+       set c.MoneyBalance = isnull(b.Balance, 0)
       from CST.Customer c
-           inner join balanceChanges b
-        on (c.ID = b.CustomerID)
+           inner join affectedCustomers ac
+        on (c.ID = ac.CustomerID)
+           left outer join balanceChanges b
+        on ac.CustomerID = b.CustomerID
      where 1 = 1;
    
     if(exists(select 1

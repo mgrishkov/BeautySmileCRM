@@ -1,4 +1,6 @@
-﻿CREATE VIEW CST.FinancialTransactionView 
+﻿
+
+CREATE VIEW CST.FinancialTransactionView (ID, CustomerID, CustomerFirstName, CustomerLastName, CustomerMiddleName, DiscountCardCode, DiscountCardPercent, DiscountCardTotalPurchaseValue, DiscountCardMinDiscount, DiscountCardMaxDiscount, AppointmentID, AppointmentStartTime, AppointmentEndTime, Price, ToPay, DiscountPercent, Discount, TransactionTypeID, Amount, Comment, CreationTime, CreatedBy, ModificationTime, ModifiedBy, IsCanceled)
 AS
  select  ft.ID,
          ft.CustomerID,

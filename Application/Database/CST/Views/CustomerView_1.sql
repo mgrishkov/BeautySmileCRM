@@ -1,4 +1,6 @@
-﻿CREATE VIEW CST.CustomerView 
+﻿
+
+CREATE VIEW CST.CustomerView (CustomerID, FirstName, LastName, MiddleName, Gender, Country, City, Region, Zip, Phone, MobilePhone, Email, Address, BirthDate, MoneyBalance, NotifyByEmail, NotifyBySms, NotifyByPost, CreationTime, ModificationTime, DiscountcardID, DiscountCardCode, DiscountPercent, FirstVisit, LastVisit, NextVisit)
 AS
     select  c.ID as CustomerID,
         c.FirstName,
@@ -26,12 +28,12 @@ AS
         (select min(a.StartTime)
            from CST.Appointment a
           where a.CustomerID = c.ID
-            and a.StateID != 3 /* Completed */) as FirstVisit,
+            and a.StateID = 4 /* Completed */) as FirstVisit,
         (select max(a.StartTime)
            from CST.Appointment a
           where a.CustomerID = c.ID
             and a.StartTime < getdate()
-            and a.StateID = 3 /* Completed */) as LastVisit,
+            and a.StateID = 4 /* Completed */) as LastVisit,
         (select max(a.StartTime)
            from CST.Appointment a
           where a.CustomerID = c.ID

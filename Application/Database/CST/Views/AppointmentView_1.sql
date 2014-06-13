@@ -1,4 +1,6 @@
-﻿CREATE VIEW CST.AppointmentView 
+﻿
+
+CREATE VIEW CST.AppointmentView (AppointmentID, CustomerID, CustomerFirstName, CustomerLastName, CustomerMiddleName, DiscountCardCode, DiscountCardPercent, DiscountCardTotalPurchaseValue, DiscountCardMinDiscount, DiscountCardMaxDiscount, StartTime, EndTime, Price, AppointementDetails, DiscountPercent, Discount, ToPay, Payed, StateID, CreationTime, CreatedBy, ModificationTime, ModifiedBy)
 AS
  select a.ID as AppointmentID,
         a.CustomerID,

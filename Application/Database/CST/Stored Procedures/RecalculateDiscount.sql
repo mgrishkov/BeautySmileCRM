@@ -1,4 +1,5 @@
 ﻿
+
 CREATE PROCEDURE CST.RecalculateDiscount
     @discountCardID int
 AS 
@@ -32,7 +33,7 @@ begin
          where ID = @discountCardID;
 
         if(@isFixedDiscount = 0 
-           and @discountType = 1 /* накопительная скидка */)
+           and @discountType = 1 /* РЅР°РєРѕРїРёС‚РµР»СЊРЅР°СЏ СЃРєРёРґРєР° */)
         begin
             declare @cumulativeDiscountID int;
             set @cumulativeDiscountID = CONF.GetCumulativeDiscountID(@discountCardID);
