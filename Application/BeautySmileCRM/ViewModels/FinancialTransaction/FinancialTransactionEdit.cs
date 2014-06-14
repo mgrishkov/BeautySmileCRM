@@ -150,7 +150,7 @@ namespace BeautySmileCRM.ViewModels
             if (transactionID.HasValue)
             {
                 _data = _dc.FinancialTransactions.SingleOrDefault(x => x.ID == transactionID);
-                _data.ModifiedBy = CurrentUser.ID;
+              //  _data.ModifiedBy = CurrentUser.ID;
                 _data.ModificationTime = DateTime.Now;
             }
             else

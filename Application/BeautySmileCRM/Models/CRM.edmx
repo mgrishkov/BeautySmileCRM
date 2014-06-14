@@ -1659,11 +1659,6 @@ warning 6002: The table/view 'CRM.CST.FinancialTransactionView' does not have a 
                   <ScalarProperty Name="TransactionTypeID" ParameterName="transactionTypeID" Version="Current" />
                   <ScalarProperty Name="ModifiedBy" ParameterName="userID" Version="Current" />
                   <ScalarProperty Name="ID" ParameterName="id" Version="Current" />
-                  <ResultBinding Name="ID" ColumnName="ID" />
-                  <ResultBinding Name="Amount" ColumnName="Amount" />
-                  <ResultBinding Name="Comment" ColumnName="Comment" />
-                  <ResultBinding Name="CreationTime" ColumnName="CreationTime" />
-                  <ResultBinding Name="ModificationTime" ColumnName="ModificationTime" />
                 </UpdateFunction>
               </ModificationFunctionMapping>
             </EntityTypeMapping>

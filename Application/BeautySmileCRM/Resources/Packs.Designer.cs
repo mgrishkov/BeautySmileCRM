@@ -202,5 +202,33 @@ namespace BeautySmileCRM.Resources {
                 return ResourceManager.GetString("v_1_2_0_4", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to use CRM
+        ///go
+        ///
+        ///alter FUNCTION CONF.GetCumulativeDiscountID(@discountCardID int)
+        ///returns int
+        ///begin
+        ///    declare @result int,
+        ///            @initialDiscount decimal(4,2),
+        ///            @newDiscount decimal(4, 2);
+        ///
+        ///    select @initialDiscount = dc.InitialDiscountPercent
+        ///      from CST.DiscountCard dc
+        ///     where dc.ID = @discountCardID;
+        ///
+        ///
+        ///    with discounts
+        ///        as (select cd.ID,
+        ///                   cd.PurchaseTopLimit, 
+        ///                   cd.[Percent],
+        ///                   row_number() over (order b [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string v_1_2_0_5 {
+            get {
+                return ResourceManager.GetString("v_1_2_0_5", resourceCulture);
+            }
+        }
     }
 }

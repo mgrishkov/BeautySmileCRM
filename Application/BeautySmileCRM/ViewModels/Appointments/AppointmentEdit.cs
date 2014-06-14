@@ -142,7 +142,6 @@ namespace BeautySmileCRM.ViewModels
                     _data.DiscountPercent = value;
                     RaisePropertyChanged("DiscountPercent");
                     AllowSave = true;
-                    recalcToPay();
                 }
             }
         }
@@ -449,7 +448,7 @@ namespace BeautySmileCRM.ViewModels
                 }
                 else if (discount > _data.Customer.DiscountCard.MaxDiscount)
                 {
-                    discount = _data.Customer.DiscountCard.MaxDiscount;
+                    Discount = _data.Customer.DiscountCard.MaxDiscount;
                     DiscountPercent = Math.Round(Discount / Price, 2);
                 }
                 else
