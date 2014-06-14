@@ -247,7 +247,7 @@
                                Style="{StaticResource GroupItem}"
                                Visibility="{Binding DiscountCardEnabled, Converter={converters:BoolToVisibilityConverter}}" />
                     <dxe:ComboBoxEdit Grid.Column="2" Grid.Row="7"
-                                      AutoComplete="True" IncrementalFiltering="True"
+                                      AutoComplete="False" IncrementalFiltering="True" ImmediatePopup="True"
                                       ItemsSource="{Binding DiscountCards}"
                                       Visibility="{Binding DiscountCardEnabled, Converter={converters:BoolToVisibilityConverter}}"
                                       IsEnabled="{Binding AllowEditDiscountCard}"

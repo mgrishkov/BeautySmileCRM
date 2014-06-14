@@ -192,9 +192,12 @@ namespace BeautySmileCRM.ViewModels
         {
             get
             {
-                return _dc.DiscountCards
-                    .Select(x => x.Code)
-                    .ToList();
+                using(var dc = new Models.CRMContext())
+                {
+                    return dc.DiscountCards
+                        .Select(x => x.Code)
+                        .ToList();
+                }
             }
         }
         public IDictionary<int, string> Staff
@@ -536,6 +539,7 @@ namespace BeautySmileCRM.ViewModels
                     }
                     else
                     {
+                        _discountCard = new Models.DiscountCard();
                         _discountCard.Code = value;
                     };
 
@@ -842,9 +846,21 @@ namespace BeautySmileCRM.ViewModels
         private void OnUnlinkDiscountCardCommandExecuted()
         {
             DiscountCardEnabled = false;
+            var cardID = _discountCard.ID;
+            var cardCode = _discountCard.Code;
             _discountCard = null;
+            _customer.DiscountCard = null;
+            
             RaisePropertiesChanged(BindGroupAttribute.GetPropertiesOfGroup(this.GetType(), "DiscountCard").Select(x => x.Name).ToArray());
             _dc.SaveChanges();
+
+            if(!_dc.Customers.Any(x => x.DiscountCardID == cardID)
+                && MessageService.Show(String.Format("Карта с кодом \"{0}\" не принадлежит ни одному клиенту, удалить карту из системы?", cardCode), "Подтвердите удаление картф", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                var card = _dc.DiscountCards.Single(x => x.ID == cardID);
+                _dc.DiscountCards.Remove(card);
+                _dc.SaveChanges();
+            }
         }
 
         private void OnAddAppointmentCommandExecuted()

@@ -1,8 +1,11 @@
-﻿CREATE FUNCTION CONF.GetCumulativeDiscountID(@discountCardID int)
+﻿
+
+CREATE FUNCTION CONF.GetCumulativeDiscountID(@discountCardID int)
 returns int
 begin
     declare @result int,
-            @initialDiscount decimal(4,2);
+            @initialDiscount decimal(4,2),
+            @newDiscount decimal(4, 2);
 
     select @initialDiscount = dc.InitialDiscountPercent
       from CST.DiscountCard dc
@@ -37,7 +40,8 @@ begin
                 on d2.RowNumber = d1.RowNumber - 1
              where 1 = 1)
     select top 1 
-           @result = dq.ID
+           @result = dq.ID,
+           @newDiscount = dq.[Percent]
       from CST.DiscountCard dc
            inner join discountQuant dq
         on (dc.TotalPurchaseValue >= dq.PurchaseTopLimitFrom
@@ -45,16 +49,13 @@ begin
      where dc.ID = @discountCardID
      order by dq.PurchaseTopLimitTo desc
     
-    if(not exists (select 1 
-                     from CONF.CumulativeDiscount cd
-                    where cd.ID = @result
-                      and cd.[Percent] >= @initialDiscount))
+    if(@newDiscount < @initialDiscount)
     begin
         select top 1
-               @result = 1
+               @result = cd.ID
           from CONF.CumulativeDiscount cd
          where cd.[Percent] >= @initialDiscount
-         order by cd.[Percent];
+         order by cd.[Percent] asc;
     end;
 
     return @result;
