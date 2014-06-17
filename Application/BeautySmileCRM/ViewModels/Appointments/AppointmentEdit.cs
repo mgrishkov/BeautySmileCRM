@@ -61,6 +61,7 @@ namespace BeautySmileCRM.ViewModels
         private IEnumerable<Models.Service> _services;
 
         private DateTime _duration;
+        private bool _detailsChanged = false;
 
         public IEnumerable<Models.Service> AllServices { get { return _services; } }
         public IEnumerable<Models.Staff> AllStaffs{ get { return _staffs; } }
@@ -317,7 +318,11 @@ namespace BeautySmileCRM.ViewModels
 
         void Details_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            Price = Details.Sum(x => x.Price);
+            if (e.Action == NotifyCollectionChangedAction.Add || e.Action == NotifyCollectionChangedAction.Remove)
+            {
+                Price = Details.Sum(x => x.Price);
+                _detailsChanged = true;
+            };
         }
         public AppointmentEdit(DialogMode mode, int clientID, IDialogService dialogService, IMessageBoxService messageService)
             : this(mode, (int?)null, clientID, dialogService, messageService)
@@ -370,10 +375,13 @@ namespace BeautySmileCRM.ViewModels
                     _data.StateID = (int)AppointmentState.Completed;
                     _dc.FinancialTransactions.Add(ft);
 
-                    _dc.AppointmentDetails.RemoveRange(_data.AppointmentDetails);
-                    foreach (var d in Details)
+                    if (_detailsChanged)
                     {
-                        _dc.AppointmentDetails.Add(d);
+                        _dc.AppointmentDetails.RemoveRange(_data.AppointmentDetails);
+                        foreach (var d in Details)
+                        {
+                            _dc.AppointmentDetails.Add(d);
+                        };
                     };
 
                     _dc.SaveChanges();

@@ -22,6 +22,9 @@ namespace BeautySmileCRM.Models
     	public CRMContext()
             : base(UserProfileService.ConnectionString)
         {		
+    #if(DEBUG)
+            this.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
+    #endif    
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

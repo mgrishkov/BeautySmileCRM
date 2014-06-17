@@ -1,6 +1,4 @@
-﻿
-
-CREATE PROCEDURE CST.RecalculateDiscount
+﻿CREATE PROCEDURE CST.RecalculateDiscount
     @discountCardID int
 AS 
 begin
@@ -49,24 +47,25 @@ begin
              where dc.ID = @discountCardID;                
         end;
         commit;
-
-        select dc.ID,
-               dc.Code,
-               dc.DiscountPercent,
-               dc.TotalPurchaseValue,
-               dc.DiscountTypeID,
-               dc.MinDiscount,
-               dc.MaxDiscount,
-               dc.FixedDiscount
-          from CST.DiscountCard dc
-         where dc.ID = @discountCardID;
-
     end try
     begin catch
         declare @message nvarchar(max) = error_message();
         rollback;
         raiserror(@message, 16, 1);
     end catch;
+
+    
+    select dc.ID,
+           dc.Code,
+           dc.DiscountPercent,
+           dc.TotalPurchaseValue,
+           dc.DiscountTypeID,
+           dc.MinDiscount,
+           dc.MaxDiscount,
+           dc.FixedDiscount,
+           dc.InitialDiscountPercent
+      from CST.DiscountCard dc
+     where dc.ID = @discountCardID;
 end
 GO
 GRANT EXECUTE

@@ -60,6 +60,9 @@ using BeautySmileCRM.Services;
 	public <#=code.Escape(container)#>()
         : base(UserProfileService.ConnectionString)
     {		
+#if(DEBUG)
+        this.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
+#endif    
 <#
 if (!loader.IsLazyLoadingEnabled(container))
 {

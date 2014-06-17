@@ -539,9 +539,9 @@ namespace BeautySmileCRM.ViewModels
                     }
                     else
                     {
-                        _discountCard = new Models.DiscountCard();
+                        _customer.DiscountCard = _discountCard;
                         _discountCard.Code = value;
-                    };
+                    }
 
                     RaisePropertyChanged("DiscountCardNumber");
                     AllowSave = true;

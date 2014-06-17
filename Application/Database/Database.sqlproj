@@ -131,5 +131,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="SchemaCompare.scmp" />
+    <None Include="DropDB.sql" />
   </ItemGroup>
 </Project>

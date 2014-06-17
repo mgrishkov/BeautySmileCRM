@@ -179,6 +179,35 @@ namespace BeautySmileCRM.Resources {
         ///   Looks up a localized string similar to use CRM
         ///go
         ///
+        ///alter TRIGGER CST.TIUD#FinancialTransaction
+        ///    on CST.FinancialTransaction
+        ///    after insert, update, delete as
+        ///begin
+        ///
+        ///    with affectedCustomers 
+        ///      as (select distinct CustomerID 
+        ///           from INSERTED
+        ///          where 1 = 1
+        ///         union
+        ///         select distinct CustomerID 
+        ///           from DELETED
+        ///          where 1 = 1),
+        ///        balanceChanges
+        ///      as (select ft.CustomerID, 
+        ///                 sum(tt.OperationSign 
+        ///                     * case when ft.IsCanceled = 1
+        ///   [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string v_1_2_0_10 {
+            get {
+                return ResourceManager.GetString("v_1_2_0_10", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to use CRM
+        ///go
+        ///
         ///alter TRIGGER [CST].[TIUD#FinancialTransaction]
         ///    on CST.FinancialTransaction
         ///    after insert, update, delete as

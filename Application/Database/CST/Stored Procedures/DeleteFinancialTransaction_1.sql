@@ -1,6 +1,4 @@
-﻿
-
-CREATE	 PROCEDURE CST.DeleteFinancialTransaction
+﻿CREATE	 PROCEDURE CST.DeleteFinancialTransaction
     @id int
 AS 
 begin
@@ -8,10 +6,12 @@ begin
     begin try
         declare @transactionTypeID int,
                 @customerID int,
-                @message nvarchar(4000);
+                @message nvarchar(4000),
+                @appointmentID int;
         
         select @transactionTypeID = ft.TransactionTypeID,
-               @customerID = ft.CustomerID
+               @customerID = ft.CustomerID,
+               @appointmentID = ft.AppointmentID
           from CST.FinancialTransaction ft
          where ID = @id;
 
@@ -71,6 +71,35 @@ begin
                  where dc.ID = @discountCardID;                
             end;
         end;
+
+        declare @apointmentStateID int,
+                @appointmentToPay decimal(13,2),
+                @payed decimal(13,2);
+        select @apointmentStateID = a.StateID,
+               @appointmentToPay = a.ToPay
+          from CST.Appointment a
+         where a.ID = @appointmentID;
+
+        set @payed = isnull((select sum(ft.Amount)
+                               from CST.FinancialTransaction ft
+                              where ft.AppointmentID = @appointmentID
+                                and ft.TransactionTypeID = 1
+                                and ft.IsCanceled = 0), 0);
+        
+        if(@apointmentStateID = 3 /* canceled */)
+        begin
+            return;
+        end        
+        else
+        begin
+            update CST.Appointment
+               set StateID = case when @appointmentToPay > @payed
+                                  then 2
+                                  else 4
+                             end
+             where ID = @appointmentID;
+        end;
+
         commit;
     end try
     begin catch

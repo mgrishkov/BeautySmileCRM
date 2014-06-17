@@ -254,11 +254,11 @@
                                       TabIndex="6">
                         <dxe:ComboBoxEdit.EditValue>
                             <Binding Path="DiscountCardNumber"
-                                    Mode="TwoWay"
-                                    UpdateSourceTrigger="PropertyChanged"
-                                    ValidatesOnDataErrors="True"
-                                    ValidatesOnExceptions="True"
-                                    ValidatesOnNotifyDataErrors="True"/>
+                                     Mode="TwoWay"
+                                     UpdateSourceTrigger="PropertyChanged"
+                                     ValidatesOnDataErrors="True"
+                                     ValidatesOnExceptions="True"
+                                     ValidatesOnNotifyDataErrors="True"/>
                         </dxe:ComboBoxEdit.EditValue>
                     </dxe:ComboBoxEdit>
 
@@ -630,7 +630,7 @@
                                             <dxe:SpinEditSettings DisplayFormat="C" />
                                         </dxg:GridColumn.EditSettings>
                                     </dxg:GridColumn>
-                                    <dxg:GridColumn x:Name="creationTimeField" FieldName="CreatintTime" Header="Регистрация" Width="95" ReadOnly="True" VisibleIndex="10" >
+                                    <dxg:GridColumn x:Name="creationTimeField" FieldName="CreationTime" Header="Регистрация" Width="95" ReadOnly="True" VisibleIndex="10" >
                                         <dxg:GridColumn.EditSettings>
                                             <dxe:DateEditSettings DisplayFormat="dd.MM.yyyy HH:mm:ss" />
                                         </dxg:GridColumn.EditSettings>
