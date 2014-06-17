@@ -34,7 +34,7 @@ begin
         as (select d1.ID, 
                    isnull(d2.PurchaseTopLimit, 0) as PurchaseTopLimitFrom,
                    d1.PurchaseTopLimit as PurchaseTopLimitTo,
-                   d2.[Percent]
+                   d1.[Percent]
               from discounts d1
                    left outer join discounts d2
                 on d2.RowNumber = d1.RowNumber - 1
@@ -48,7 +48,7 @@ begin
             and dc.TotalPurchaseValue < dq.PurchaseTopLimitTo)
      where dc.ID = @discountCardID
      order by dq.PurchaseTopLimitTo desc
-    
+     
     if(@newDiscount < @initialDiscount)
     begin
         select top 1

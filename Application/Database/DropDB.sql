@@ -10,7 +10,7 @@ GO
 
 if(exists(select 1 
             from master.dbo.syslogins 
-           where name = @loginName and dbname = 'AppUser'))
+           where name = 'AppUser'))
 begin 
 	DROP LOGIN [AppUser]
 end;
