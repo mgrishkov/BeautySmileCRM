@@ -128,6 +128,8 @@
     <Build Include="CONF\Tables\Service.sql" />
     <Build Include="STF\Tables\StaffService.sql" />
     <Build Include="CST\Tables\AppointmentDetail.sql" />
+    <Build Include="BackupDB.sql" />
+    <Build Include="RestoreDB.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SchemaCompare.scmp" />

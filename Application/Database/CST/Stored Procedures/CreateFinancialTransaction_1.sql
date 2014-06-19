@@ -18,7 +18,7 @@ begin
     begin transaction;
     begin try
         insert into CST.FinancialTransaction 
-            (CustomerID, AppointmentID, TransactionTypeID, Amount, Comment, CreationTIme, CreatedBy)
+            (CustomerID, AppointmentID, TransactionTypeID, Amount, Comment, CreationTime, CreatedBy)
         values 
             (@customerID, @appointmentID, @transactionTypeID, @amount, @comment, getdate(), @userID);
         set @id = scope_identity();

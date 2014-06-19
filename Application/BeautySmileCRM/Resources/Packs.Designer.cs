@@ -205,6 +205,15 @@ namespace BeautySmileCRM.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to print &apos;No DB updates&apos;.
+        /// </summary>
+        internal static string v_1_2_0_11 {
+            get {
+                return ResourceManager.GetString("v_1_2_0_11", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to use CRM
         ///go
         ///

@@ -4969,6 +4969,9 @@ GO
 
 PRINT N'Update complete.';</value>
   </data>
+  <data name="v_1_2_0_11" xml:space="preserve">
+    <value>print 'No DB updates'</value>
+  </data>
   <data name="v_1_2_0_4" xml:space="preserve">
     <value>use CRM
 go
