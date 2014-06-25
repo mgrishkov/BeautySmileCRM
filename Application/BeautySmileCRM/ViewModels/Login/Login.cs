@@ -259,61 +259,68 @@ namespace BeautySmileCRM.ViewModels
                                 }
                             };
                         }
-
-                        var dbVersionRow = dc.DBVersions
-                            .OrderByDescending(x => x.Major)
-                            .ThenByDescending(x => x.Minor)
-                            .ThenByDescending(x => x.Build)
-                            .ThenByDescending(x => x.Revision)
-                            .FirstOrDefault();
-
-                        if(dbVersionRow == null)
+                        try
                         {
-                            Stage = LoginStage.Error;
-                            ErrorMessage = "База данных не иницализирована. Обратитесь к администратору для инициализации БД.";
-                            return;
-                        }
+                            var dbVersionRow = dc.DBVersions
+                                .OrderByDescending(x => x.Major)
+                                .ThenByDescending(x => x.Minor)
+                                .ThenByDescending(x => x.Build)
+                                .ThenByDescending(x => x.Revision)
+                                .FirstOrDefault();
 
-                        var dbVersion = new Version(dbVersionRow.Major, dbVersionRow.Minor, dbVersionRow.Build, dbVersionRow.Revision);
-                        if (dbVersion != ApplicationService.AppVersion)
-                        {
-                            Stage = LoginStage.Error;
-                            ErrorMessage = String.Format("Не совпадают версии БД ({0}) и приложения ({1})", dbVersion.ToString(), ApplicationService.AppVersion.ToString());
-                            return;
-                        }
-    
-                        Stage = Enums.LoginStage.Authorization;
-                        var encriptedPassword = Password.ToMD5Hash();
-                        var user = dc.Users
-                            .Where(x => x.Login == Account && x.Password == encriptedPassword)
-                            .Include(x => x.Privileges)
-                            .SingleOrDefault();
-                        if (user != null)
-                        {
-                            user.Password = "*".PadLeft(user.Password.Length, '*');
-
-                            if (user.ExpirationDate.HasValue && user.ExpirationDate < DateTime.Now)
+                            if (dbVersionRow == null)
                             {
-                                ErrorMessage = String.Format("Учетная запись заблокирована с {0:d}", user.ExpirationDate);
-                                Stage = Enums.LoginStage.Error;
+                                Stage = LoginStage.Error;
+                                ErrorMessage = "База данных не иницализирована. Обратитесь к администратору для инициализации БД.";
+                                return;
                             }
-                            else if (!user.Privileges.Any(x => x.ID == (int)Enums.Privilege.Login))
+
+                            var dbVersion = new Version(dbVersionRow.Major, dbVersionRow.Minor, dbVersionRow.Build, dbVersionRow.Revision);
+                            if (dbVersion != ApplicationService.AppVersion)
                             {
-                                ErrorMessage = "Пользователь не имеет достаточно прав для запуска приложения";
-                                Stage = Enums.LoginStage.Error;
+                                Stage = LoginStage.Error;
+                                ErrorMessage = String.Format("Не совпадают версии БД ({0}) и приложения ({1})", dbVersion.ToString(), ApplicationService.AppVersion.ToString());
+                                return;
+                            }
+
+                            Stage = Enums.LoginStage.Authorization;
+                            var encriptedPassword = Password.ToMD5Hash();
+                            var user = dc.Users
+                                .Where(x => x.Login == Account && x.Password == encriptedPassword)
+                                .Include(x => x.Privileges)
+                                .SingleOrDefault();
+                            if (user != null)
+                            {
+                                user.Password = "*".PadLeft(user.Password.Length, '*');
+
+                                if (user.ExpirationDate.HasValue && user.ExpirationDate < DateTime.Now)
+                                {
+                                    ErrorMessage = String.Format("Учетная запись заблокирована с {0:d}", user.ExpirationDate);
+                                    Stage = Enums.LoginStage.Error;
+                                }
+                                else if (!user.Privileges.Any(x => x.ID == (int)Enums.Privilege.Login))
+                                {
+                                    ErrorMessage = "Пользователь не имеет достаточно прав для запуска приложения";
+                                    Stage = Enums.LoginStage.Error;
+                                }
+                                else
+                                {
+                                    CurrentUser = user;
+                                    Stage = Enums.LoginStage.Authorized;
+                                    NavigationService.Navigate("DashboardView", null, this);
+                                    UserProfileService.SetLogins(user.Login);
+                                    UserProfileService.SetServers(Server);
+                                };
                             }
                             else
                             {
-                                CurrentUser = user;
-                                Stage = Enums.LoginStage.Authorized;
-                                NavigationService.Navigate("DashboardView", null, this);
-                                UserProfileService.SetLogins(user.Login);
-                                UserProfileService.SetServers(Server);
-                            };
+                                ErrorMessage = "Пользователь с указанным логином и паролем не найден";
+                                Stage = Enums.LoginStage.Error;
+                            }
                         }
-                        else
+                        catch (Exception e)
                         {
-                            ErrorMessage = "Пользователь с указанным логином и паролем не найден";
+                            ErrorMessage = String.Format("Ошибка операции: {0}", e.Message);
                             Stage = Enums.LoginStage.Error;
                         }
                     };                    
